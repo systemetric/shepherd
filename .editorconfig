@@ -1,0 +1,6 @@
+[*.css]
+indent_style = space
+indent_size = 2
+
+[*.py]
+max_line_length = 119

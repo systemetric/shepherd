@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 119
+ignore = E121,E126,E226,E704,FI12,FI15,FI16,FI17,FI50,FI51,FI53,FI54
+# Don't warn about __future__ imports in empty files
+require-code = true
