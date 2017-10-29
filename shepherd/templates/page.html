@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block head %}
+<title>{% if title %}{{ title }} | Shepherd{% else %}Shepherd{% endif %}</title>
+<link rel="stylesheet" href="/static/styles/page.css">
+{% endblock %}
+{% block body %}
+<div class="header">Shepherd Code Management System (<a href="{{ url_for("index") }}">home</a>)</div>
+{% for category, msg in get_flashed_messages(with_categories=True) %}
+<p class="flash flash--{{ category }}">{{ msg }}</p>
+{% endfor %}
+{% endblock %}

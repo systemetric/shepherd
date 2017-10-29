@@ -1,0 +1,100 @@
+{% extends "page.html" %}
+{% set title = "Run" %}
+{% block head %}
+{{ super() }}
+<style>
+  .status {
+    font-size: 1.8em;
+    padding: 0.5em;
+    margin: 0;
+  }
+  .status--running {
+    background-color: hsl(240, 60%, 90%); /* blue */
+  }
+  .status--ready, .status--finished {
+    background-color: hsl(120, 60%, 90%); /* green */
+  }
+  .status--unknown {
+    background-color: hsl(0, 60%, 90%); /* red */
+  }
+  iframe {
+    width: 100%;
+    height: auto;
+    border-width: 0;
+  }
+  iframe.time-left {
+    width: 3em;
+    height: 1.3em;
+    overflow: hidden;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="clearfix">
+  <h1 style="float: left;">Run</h1>
+  <div style="float: right;">
+    {% if auto_refresh %}
+    <form method="post" action="{{ url_for("run.toggle_auto_refresh") }}">
+      Auto-refresh is enabled.
+      <button>Disable auto-refresh</button>
+    </form>
+    {% else %}
+    <form method="post" action="{{ url_for("run.toggle_auto_refresh") }}">
+      Auto-refresh is disabled.
+      <button>Enable auto-refresh</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% if state == states.ready %}
+<p class="status status--ready">Status: Ready to run</p>
+<p>The robot is ready to run.</p>
+<form method="post" action="start">
+  <fieldset><legend>Zone:</legend>
+    <input type="radio" name="zone" id="zone-0" value="0" checked><label for="zone-0">0</label>
+    <input type="radio" name="zone" id="zone-1" value="1"><label for="zone-1">1</label>
+    <input type="radio" name="zone" id="zone-2" value="2"><label for="zone-2">2</label>
+    <input type="radio" name="zone" id="zone-3" value="3"><label for="zone-3">3</label>
+  </fieldset>
+  <fieldset><legend>Mode:</legend>
+    <input type="radio" name="mode" id="mode-development" value="development" checked><label for="mode-development">Development</label>
+    <input type="radio" name="mode" id="mode-competition" value="competition"><label for="mode-competition">Competition</label>
+  </fieldset>
+  <fieldset><legend>Debugging help (development mode only):</legend>
+    <input type="checkbox" name="disable-reaper" id="disable-reaper"><label for="disable-reaper">Continue running code after the competition ends</label>
+  </fieldset>
+  <p><button class="big">Start</button></p>
+</form>
+{% elif state == states.running %}
+<p class="status status--running">Status: Running</p>
+<p>The robot is currently running! You can stop it with this button{% if time_left is not none %} (or it will stop automatically in approximately <iframe class="time-left" src="{{ url_for(".get_time_left") }}"></iframe> second{% if time_left != 1 %}s{% endif %}){% endif %}:</p>
+<form method="post" action="stop">
+  <button class="big">Stop</button>
+</form>
+{% elif state == states.post_run %}
+<p class="status status--finished">Status: Finished</p>
+<p>The robot has finished running its code. You'll need to reboot it before it can run again.</p>
+<form method="post" action="reset">
+  <p>Alternatively, you could attempt to reset the robot without a reboot by using this button: <button>Reset</button></p>
+  <p>Note that this may not work as intended, especially if you're using any custom hardware. You may get strange errors after doing a software reset that would not occur after a fresh boot.</p>
+</form>
+{% else %}
+<p class="status status--unknown">Status: Broken</p>
+<p>Something has gone terribly wrong! Shepherd can't tell what state the robot is in. Try a reboot.</p>
+{% endif %}
+
+{% if state == states.running or state == states.post_run %}
+<p>Output (stdout):</p>
+<iframe src="{{ url_for(".get_stdout") }}"></iframe>
+<p>Error output (stderr):</p>
+<iframe src="{{ url_for(".get_stderr") }}"></iframe>
+<p>Configuration:</p>
+<ul>
+  <li>Zone: {{ zone }}</li>
+  <li>Mode: {{ mode }}</li>
+  <li>Competition timer disabled: {{ disable_reaper }}</li>
+</ul>
+{% endif %}
+{% endblock %}

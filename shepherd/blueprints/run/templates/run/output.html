@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<style>
+  pre {
+    margin: 0;
+  }
+</style>
+<meta http-equiv="refresh" content="5">
+{% endblock %}
+{% block body %}
+<pre><code>{{ output }}</code></pre>
+{% endblock %}

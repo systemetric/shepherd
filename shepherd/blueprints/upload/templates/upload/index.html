@@ -1,0 +1,19 @@
+{% extends "page.html" %}
+{% set title = "Upload" %}
+{% block body %}
+{{ super() }}
+<h1>Upload</h1>
+<p>You can upload code to your robot on this page.</p>
+<p>Acceptable code formats:</p>
+<ul>
+  <li>A single Python 2 source file</li>
+  <li>A zip file containing one or more Python 2 source files (the entry point must be named <code>main.py</code>, and be at the root of the archive)</li>
+</ul>
+<form method="post" action="{{ url_for("upload.upload") }}" enctype="multipart/form-data">
+  <p><input type="file" name="uploaded_file"></p>
+  <p><button>Upload</button></p>
+</form>
+{% if last_upload_time is not none %}
+<p>Your last code upload was at approximately {{ last_upload_time.strftime("%c") }}.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,122 @@
+@font-face {
+  font-family: "Ubuntu";
+  src: url("/static/fonts/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Ubuntu Mono";
+  src: url("/static/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter UI";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/static/fonts/inter-ui/Inter-UI-Regular.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Inter UI";
+  font-style: italic;
+  font-weight: 400;
+  src: url("/static/fonts/inter-ui/Inter-UI-Italic.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-Italic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Inter UI";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/static/fonts/inter-ui/Inter-UI-Medium.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: "Inter UI";
+  font-style: italic;
+  font-weight: 500;
+  src: url("/static/fonts/inter-ui/Inter-UI-MediumItalic.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-MediumItalic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Inter UI";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/static/fonts/inter-ui/Inter-UI-Bold.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "Inter UI";
+  font-style: italic;
+  font-weight: 700;
+  src: url("/static/fonts/inter-ui/Inter-UI-BoldItalic.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-BoldItalic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Inter UI";
+  font-style: normal;
+  font-weight: 900;
+  src: url("/static/fonts/inter-ui/Inter-UI-Black.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-Black.woff") format("woff");
+}
+@font-face {
+  font-family: "Inter UI";
+  font-style: italic;
+  font-weight: 900;
+  src: url("/static/fonts/inter-ui/Inter-UI-BlackItalic.woff2") format("woff2"),
+       url("/static/fonts/inter-ui/Inter-UI-BlackItalic.woff") format("woff");
+}
+
+html {
+  font-family: "Inter UI", "Roboto", "Calibri", sans-serif;
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+h1, h2, h3, h4, h5, h6, .header {
+  font-family: "Ubuntu", "Segoe UI", "Verdana", sans-serif;
+}
+.header {
+  font-size: 1.2em;
+}
+pre, code {
+  font-family: "Ubuntu Mono", "Inconsolata", "Consolas", monospace;
+  background-color: hsl(0, 0%, 90%);
+  padding: 4px;
+}
+a, u {
+  text-decoration-skip: ink;
+  -webkit-text-decoration-skip: ink;
+}
+button, input, optgroup, select, textarea {
+  font-family: inherit; /* override Normalize.css */
+}
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.flash {
+  padding: 1em;
+}
+.flash--message {
+  background-color: hsl(180, 60%, 90%);
+}
+.flash--error {
+  background-color: hsl(0, 60%, 90%);
+}
+.flash--debug {
+  background-color: hsl(0, 0%, 90%);
+}
+.flash--success {
+  background-color: hsl(120, 60%, 90%);
+}
+.big {
+  font-size: 1.8em;
+}
+button.big {
+  font-size: 1.4em;
+  padding: 0.4em;
+}

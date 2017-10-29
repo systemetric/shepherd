@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% if time_left is not none %}
+<meta http-equiv="refresh" content="5">
+{% else %}
+<meta http-equiv="refresh" content="1" frame="_parent" src="{{ url_for(".index") }}">
+{% endif %}
+{% endblock %}
+{% block body %}
+{{ time_left }}
+{% endblock %}
