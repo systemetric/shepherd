@@ -67,11 +67,18 @@ def reset():
 
 
 # <https://stackoverflow.com/a/4896288/5951320>
-def buffer_from_file(file, lst):
+def buffer_from_file(f, lst):
     """Copy lines from a file-like object to a list."""
-    with file:
-        for line in iter(file.read, b""):  # The second argument is a sentinel.
-            lst.append(line)
+    with f:
+        # This is a nasty hack, described here:
+        # <https://web.archive.org/web/20141015064057/http://mail.python.org/pipermail/python-list/2013-August/654330.html>
+        # to work around a wart in Python 2 that causes `f` to be
+        # buffered in advance of the current line. This intermittently
+        # causes the loop body to stop execution until there is more
+        # output available from `f` -- frequently only after a
+        # significant amount of output has been generated (4 KiB).
+        for line in iter(f.readline, b""):  # The second argument is a sentinel.
+            lst.append(line.rstrip("\n"))
 
 
 def time_left():
@@ -127,7 +134,7 @@ def start():
         else:
             state = State.running
             user_code = subprocess.Popen(
-                [sys.executable, current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"]],
+                [sys.executable, "-u", current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"]],
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 bufsize=1,  # Line-buffered
                 close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
