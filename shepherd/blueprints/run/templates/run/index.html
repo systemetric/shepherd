@@ -86,10 +86,8 @@
 {% endif %}
 
 {% if state == states.running or state == states.post_run %}
-<p>Output (stdout):</p>
-<iframe src="{{ url_for(".get_stdout") }}"></iframe>
-<p>Error output (stderr):</p>
-<iframe src="{{ url_for(".get_stderr") }}"></iframe>
+<p>Output:</p>
+<iframe src="{{ url_for(".get_output") }}"></iframe>
 <p>Configuration:</p>
 <ul>
   <li>Zone: {{ zone }}</li>

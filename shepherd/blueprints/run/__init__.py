@@ -53,7 +53,7 @@ class Mode(Enum):  # Values are important -- they let us get a Mode from the sub
 @blueprint.before_app_first_request
 @blueprint.route("/reset", methods=["POST"])
 def reset():
-    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, stdout, stderr
+    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
     # Yes, it's (literally) global state. Deal with it.
     state = State.ready  # The state of the user code.
     zone = None  # The robot's home zone, an integer from 0 to 3.
@@ -62,8 +62,7 @@ def reset():
     reaper_timer = None  # The threading.Timer object that controls the reaper.
     reap_time = None  # The time at which the user code will be killed.
     user_code = None  # A subprocess.Popen object representing the running user code.
-    stdout = []  # A list containing lines of the user code's stdout.
-    stderr = []  # A list containing lines of the user code's stderr.
+    user_output = []  # A list containing lines of the user code's stdout and stderr.
     return redirect(url_for(".index"))
 
 
@@ -93,18 +92,13 @@ def index():
         mode=mode.value if mode is not None else None,
         disable_reaper=bool(disable_reaper),
         time_left=time_left(),
-        stdout="\n".join(stdout), stderr="\n".join(stderr),
+        output="\n".join(user_output),
     )
 
 
-@blueprint.route("/stdout")
-def get_stdout():
-    return render_template("run/output.html", output="\n".join(stdout))
-
-
-@blueprint.route("/stderr")
-def get_stderr():
-    return render_template("run/output.html", output="\n".join(stderr))
+@blueprint.route("/output")
+def get_output():
+    return render_template("run/output.html", output="\n".join(user_output))
 
 
 @blueprint.route("/time_left")
@@ -123,7 +117,7 @@ def toggle_auto_refresh():
 
 @blueprint.route("/start", methods=["POST"])
 def start():
-    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, stdout, stderr
+    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
     zone = request.form["zone"]
     mode = Mode[request.form["mode"]]
     disable_reaper = request.form.get("disable-reaper")
@@ -134,17 +128,14 @@ def start():
             state = State.running
             user_code = subprocess.Popen(
                 [sys.executable, current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"]],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 bufsize=1,  # Line-buffered
                 close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
             )
             atexit.register(reap)  # Attempt to kill the user code (doesn't work if we crash or get signalled to die).
-            stdout_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, stdout))
-            stdout_queuer.daemon = True  # Program exits even if thread hasn't exited.
-            stdout_queuer.start()
-            stderr_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stderr, stderr))
-            stderr_queuer.daemon = True
-            stderr_queuer.start()
+            output_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, user_output))
+            output_queuer.daemon = True  # Program exits even if thread hasn't exited.
+            output_queuer.start()
             if not disable_reaper:
                 reaper_timer = threading.Timer(ROUND_LENGTH, reap)
                 # If we get told to exit, there's no point waiting around for the round to finish.
