@@ -147,6 +147,8 @@ def start():
             stderr_queuer.start()
             if not disable_reaper:
                 reaper_timer = threading.Timer(ROUND_LENGTH, reap)
+                # If we get told to exit, there's no point waiting around for the round to finish.
+                reaper_timer.daemon = True
                 reaper_timer.start()
                 reap_time = datetime.now(tz=utc) + timedelta(seconds=ROUND_LENGTH)
                 flash("Started the robot! It will stop automatically in {} seconds.".format(ROUND_LENGTH))
