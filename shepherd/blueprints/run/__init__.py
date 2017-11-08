@@ -93,6 +93,10 @@ def time_left():
 
 @blueprint.route("/")
 def index():
+    global state
+    if state == State.running:
+        if user_code.poll() is not None:
+            state = State.post_run
     return render_template(
         "run/index.html", state=state, states=State,
         zone=zone,
