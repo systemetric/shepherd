@@ -27,13 +27,22 @@ REAP_GRACE_TIME = 5  # Seconds before user code is forcefully killed
 # Since we can't access app.debug in a blueprint, this will be run
 # manually when the app is constructed.
 def init(app):
-    global USER_FIFO_PATH, user_code, output_queuer
+    global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
+    # Yes, it's (literally) global state. Deal with it.
 
     # tempfile.mktemp is deprecated, but there's no possibility of a race --
     # os.mkfifo raises if its path already exists.
     USER_FIFO_PATH = mktemp(prefix="shepherd-fifo-")
     os.mkfifo(USER_FIFO_PATH)
     atexit.register(partial(os.remove, USER_FIFO_PATH))
+    state = State.ready  # The state of the user code.
+    zone = None  # The robot's home zone, an integer from 0 to 3.
+    mode = None  # The robot's mode (development or competition), used for marker recognition.
+    disable_reaper = None  # Whether the reaper will kill the user code or not.
+    reaper_timer = None  # The threading.Timer object that controls the reaper.
+    reap_time = None  # The time at which the user code will be killed.
+    user_code = None  # A subprocess.Popen object representing the running user code.
+    user_output = []  # A list containing lines of the user code's stdout and stderr.
 
     # Start the user code.
     user_code = subprocess.Popen(
@@ -69,17 +78,8 @@ class Mode(Enum):  # Values are important -- they let us get a Mode from the sub
 @blueprint.before_app_first_request
 @blueprint.route("/reset", methods=["POST"])
 def reset():
-    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
-    # Yes, it's (literally) global state. Deal with it.
-    state = State.ready  # The state of the user code.
-    zone = None  # The robot's home zone, an integer from 0 to 3.
-    mode = None  # The robot's mode (development or competition), used for marker recognition.
-    disable_reaper = None  # Whether the reaper will kill the user code or not.
-    reaper_timer = None  # The threading.Timer object that controls the reaper.
-    reap_time = None  # The time at which the user code will be killed.
-    user_code = None  # A subprocess.Popen object representing the running user code.
-    user_output = []  # A list containing lines of the user code's stdout and stderr.
-    return redirect(url_for(".index"))
+    # TODO
+    return "This is no longer functional."
 
 
 # <https://stackoverflow.com/a/4896288/5951320>
