@@ -71,9 +71,9 @@ class State(Enum):
     post_run = object()
 
 
-class Mode(Enum):  # Values are important -- they let us get a Mode from the submitted (HTML) form.
-    development = "development"
-    competition = "competition"
+class Mode(Enum):  # Names are important -- they let us get a Mode from the submitted (HTML) form.
+    development = "dev"
+    competition = "comp"
 
 
 @blueprint.before_app_first_request
@@ -117,7 +117,7 @@ def index():
     return render_template(
         "run/index.html", state=state, states=State,
         zone=zone,
-        mode=mode.value if mode is not None else None,
+        mode=mode.name if mode is not None else None,
         disable_reaper=bool(disable_reaper),
         time_left=time_left(),
         output="\n".join(user_output),
@@ -158,7 +158,7 @@ def start():
             with open(USER_FIFO_PATH, "w") as f:
                 json.dump(
                     {
-                        "mode": mode,
+                        "mode": mode.value,
                         "zone": zone,
                         "arena": "A",
                     }, f
