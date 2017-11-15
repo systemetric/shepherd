@@ -23,18 +23,34 @@ blueprint = Blueprint("run", __name__, template_folder="templates")
 
 REAP_GRACE_TIME = 5  # Seconds before user code is forcefully killed
 
-# tempfile.mktemp is deprecated, but there's no possibility of a race --
-# os.mkfifo raises if its path already exists.
-#
-# TODO: do we want to do this? Should user code be started via a FIFO
-# (i.e. user code call to hrsfc.robocon.Robot.wait_start), or should we
-# just wait to start the user code until start? (Probably depends on the
-# start mechanism.)
-#
-# Also TODO: need to actually send something down the fifo.
-USER_FIFO_PATH = mktemp(prefix="shepherd-fifo-")
-os.mkfifo(USER_FIFO_PATH)
-atexit.register(partial(os.remove, USER_FIFO_PATH))
+
+# Since we can't access app.debug in a blueprint, this will be run
+# manually when the app is constructed.
+def init(app):
+    global USER_FIFO_PATH, user_code, output_queuer
+
+    # tempfile.mktemp is deprecated, but there's no possibility of a race --
+    # os.mkfifo raises if its path already exists.
+    USER_FIFO_PATH = mktemp(prefix="shepherd-fifo-")
+    os.mkfifo(USER_FIFO_PATH)
+    atexit.register(partial(os.remove, USER_FIFO_PATH))
+
+    # Start the user code.
+    user_code = subprocess.Popen(
+        [
+            # python -u /path/to/the_code.py
+            sys.executable, "-u", app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"],
+            # --startfifo /path/to/fifo
+            "--startfifo", USER_FIFO_PATH,
+        ],
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        bufsize=1,  # Line-buffered
+        close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
+    )
+    atexit.register(reap)  # Attempt to kill the user code (might not work if we crash or get signalled to die).
+    output_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, user_output))
+    output_queuer.daemon = True  # Program exits even if thread hasn't exited.
+    output_queuer.start()
 
 
 class State(Enum):
@@ -137,16 +153,15 @@ def start():
             flash("You're not allowed to use debug options in the competition!", "error")
         else:
             state = State.running
-            user_code = subprocess.Popen(
-                [sys.executable, "-u", current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"]],
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                bufsize=1,  # Line-buffered
-                close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
-            )
-            atexit.register(reap)  # Attempt to kill the user code (doesn't work if we crash or get signalled to die).
-            output_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, user_output))
-            output_queuer.daemon = True  # Program exits even if thread hasn't exited.
-            output_queuer.start()
+            # TODO: is this the correct information to be passing?
+            with open(USER_FIFO_PATH, "w") as f:
+                json.dump(
+                    {
+                        "mode": mode,
+                        "zone": zone,
+                        "arena": "A",
+                    }, f
+                )
             if not disable_reaper:
                 reaper_timer = threading.Timer(ROUND_LENGTH, reap)
                 # If we get told to exit, there's no point waiting around for the round to finish.

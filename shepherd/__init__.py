@@ -26,6 +26,10 @@ except OSError as e:
     else:
         raise
 
+# Avoid running the user code twice.
+if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
+    run.init(app)
+
 app.register_blueprint(upload.blueprint, url_prefix="/upload")
 app.register_blueprint(run.blueprint, url_prefix="/run")
 
