@@ -159,7 +159,7 @@ def start():
                 json.dump(
                     {
                         "mode": mode.value,
-                        "zone": zone,
+                        "zone": int(zone),
                         "arena": "A",
                     }, f
                 )
