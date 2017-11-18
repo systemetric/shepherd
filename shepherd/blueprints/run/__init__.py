@@ -214,7 +214,11 @@ def reap():
             raise
     if user_code.poll() is None:
         threading.Timer(REAP_GRACE_TIME, butcher).start()
-        user_code.communicate()
+        try:
+            user_code.communicate()
+        except IOError as e:
+            print("Caught IOError while killing user code, why oh why does Python's IO suck so much...")
+            print(e)
     state = State.post_run
     print("Done reaping user code")
 
