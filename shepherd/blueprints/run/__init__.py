@@ -28,6 +28,14 @@ REAP_GRACE_TIME = 5  # Seconds before user code is forcefully killed
 # Since we can't access app.debug in a blueprint, this will be run
 # manually when the app is constructed.
 def init(app):
+    # Factored into separate functions so we can call them separately in
+    # `blueprints.upload` (tight coupling ftw!!1!)
+    _reset_state()
+    _start_user_code(app)
+    _set_reaper_at_exit()
+    _start_output_queuer()
+
+def _reset_state():
     global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
     # Yes, it's (literally) global state. Deal with it.
 
@@ -45,6 +53,8 @@ def init(app):
     user_code = None  # A subprocess.Popen object representing the running user code.
     user_output = []  # A list containing lines of the user code's stdout and stderr.
 
+def _start_user_code(app):
+    global user_code
     # Start the user code.
     user_code = subprocess.Popen(
         [
@@ -57,7 +67,12 @@ def init(app):
         bufsize=1,  # Line-buffered
         close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
     )
+
+def _set_reaper_at_exit():
     atexit.register(reap)  # Attempt to kill the user code (might not work if we crash or get signalled to die).
+
+def _start_output_queuer():
+    global output_queuer, user_code, user_output
     output_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, user_output))
     output_queuer.daemon = True  # Program exits even if thread hasn't exited.
     output_queuer.start()

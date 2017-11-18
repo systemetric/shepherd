@@ -11,6 +11,8 @@ import zipfile
 
 from flask import Blueprint, render_template, flash, redirect, url_for, request, abort, current_app
 
+from shepherd.blueprints import run  # FIXME: this coupling is horrific
+
 
 blueprint = Blueprint("upload", __name__, template_folder="templates")
 
@@ -44,6 +46,9 @@ def upload():
             flash(err, "error")
         else:
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
+            run.reap(reason="new code upload")
+            run._reset_state()
+            run._start_user_code()
     return redirect(url_for(".index"))
 
 
