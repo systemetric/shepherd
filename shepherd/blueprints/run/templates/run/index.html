@@ -85,9 +85,9 @@
 <p>Something has gone terribly wrong! Shepherd can't tell what state the robot is in. Try a reboot.</p>
 {% endif %}
 
-{% if state == states.running or state == states.post_run %}
-<p>Output:</p>
+<p>Program output:</p>
 <iframe src="{{ url_for(".get_output") }}"></iframe>
+{% if state == states.running or state == states.post_run %}
 <p>Configuration:</p>
 <ul>
   <li>Zone: {{ zone }}</li>
