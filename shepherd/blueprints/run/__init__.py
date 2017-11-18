@@ -126,7 +126,7 @@ def index():
 
 @blueprint.route("/output")
 def get_output():
-    return render_template("run/output.html", output="\n".join(user_output))
+    return render_template("run/output.html", output="\n".join(user_output), time_left=time_left())
 
 
 @blueprint.route("/time_left")
@@ -155,7 +155,9 @@ def start():
         else:
             state = State.running
             # TODO: is this the correct information to be passing?
+            print("opening fifo")
             with open(USER_FIFO_PATH, "w") as f:
+                print("dumping json")
                 json.dump(
                     {
                         "mode": mode.value,
@@ -163,6 +165,7 @@ def start():
                         "arena": "A",
                     }, f
                 )
+                print("json dumped")
             if not disable_reaper:
                 reaper_timer = threading.Timer(ROUND_LENGTH, reap)
                 # If we get told to exit, there's no point waiting around for the round to finish.

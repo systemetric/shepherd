@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
 {{ super() }}
+<script src="/static/iframeResizer.contentWindow.min.js"></script>
 <style>
   pre {
     margin: 0;
@@ -9,7 +10,9 @@
     padding: 0;
   }
 </style>
+{% if time_left is not none %}
 <meta http-equiv="refresh" content="5">
+{% endif %}
 {% endblock %}
 {% block body %}
 <pre><code>{{ output }}</code></pre>

@@ -2,6 +2,7 @@
 {% set title = "Run" %}
 {% block head %}
 {{ super() }}
+<script src="/static/iframeResizer.min.js"></script>
 <style>
   .status {
     font-size: 1.8em;
@@ -22,10 +23,8 @@
     height: auto;
     border-width: 0;
   }
-  iframe.time-left {
-    width: 3em;
-    height: 1.3em;
-    overflow: hidden;
+  iframe#time-left {
+    height: 4em;
   }
 </style>
 {% endblock %}
@@ -69,10 +68,11 @@
 </form>
 {% elif state == states.running %}
 <p class="status status--running">Status: Running</p>
-<p>The robot is currently running! You can stop it with this button{% if time_left is not none %} (or it will stop automatically in approximately <iframe class="time-left" src="{{ url_for(".get_time_left") }}"></iframe> second{% if time_left != 1 %}s{% endif %}){% endif %}:</p>
+<p>The robot is currently running! You can stop it with this button:</p>
 <form method="post" action="stop">
   <button class="big">Stop</button>
 </form>
+<iframe frameborder="0" id="time-left" src="{{ url_for(".get_time_left") }}"></iframe>
 {% elif state == states.post_run %}
 <p class="status status--finished">Status: Finished</p>
 <p>The robot has finished running its code. You'll need to reboot it before it can run again.</p>
@@ -86,7 +86,7 @@
 {% endif %}
 
 <p>Program output:</p>
-<iframe src="{{ url_for(".get_output") }}"></iframe>
+<iframe frameborder="0" id="output" src="{{ url_for(".get_output") }}"></iframe>
 {% if state == states.running or state == states.post_run %}
 <p>Configuration:</p>
 <ul>
@@ -95,4 +95,7 @@
   <li>Competition timer disabled: {{ disable_reaper }}</li>
 </ul>
 {% endif %}
+<script>
+  iFrameResize({warningTimeout: 9}, "#output");
+</script>
 {% endblock %}

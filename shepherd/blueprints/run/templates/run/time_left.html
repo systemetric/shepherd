@@ -3,10 +3,13 @@
 {{ super() }}
 {% if time_left is not none %}
 <meta http-equiv="refresh" content="5">
-{% else %}
-<meta http-equiv="refresh" content="1" frame="_parent" src="{{ url_for(".index") }}">
 {% endif %}
+<script src="/static/iframeResizer.contentWindow.min.js"></script>
 {% endblock %}
 {% block body %}
-{{ time_left }}
+{% if time_left is not none %}
+<p>The robot will stop automatically in about {{ time_left }} seconds.</p>
+{% else %}
+<p>The robot has stopped – please refresh the page.</p>
+{% endif %}
 {% endblock %}
