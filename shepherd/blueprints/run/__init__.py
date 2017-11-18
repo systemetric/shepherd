@@ -141,7 +141,8 @@ def index():
 
 @blueprint.route("/output")
 def get_output():
-    return render_template("run/output.html", output="\n".join(user_output), time_left=time_left())
+    global state
+    return render_template("run/output.html", output="\n".join(user_output), state=state, states=State)
 
 
 @blueprint.route("/time_left")
