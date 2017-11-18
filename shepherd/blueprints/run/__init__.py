@@ -203,9 +203,12 @@ def stop():
     return redirect(url_for(".index"))
 
 
-def reap():
+def reap(reason=None):
     global state, user_code
-    print("Reaping user code")
+    if reason is None:
+        print("Reaping user code")
+    else:
+        print("Reaping user code ({})".format(reason))
     if state != State.running:
         print("Warning: told to stop code, but state is {}, not State.running!".format(state))
     try:
