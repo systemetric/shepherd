@@ -222,9 +222,9 @@ def reap(reason=None):
         threading.Timer(REAP_GRACE_TIME, butcher).start()
         try:
             user_code.communicate()
-        except IOError as e:
-            print("Caught IOError while killing user code, why oh why does Python's IO suck so much...")
-            print(e)
+        except Exception as e:
+            print("death: Caught an error while killing user code, sod Python's I/O handling...")
+            print("death: The error was: {}: {}".format(type(e), e))
     state = State.post_run
     print("Done reaping user code")
 
