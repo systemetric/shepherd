@@ -26,7 +26,7 @@ def index():
             last_upload_time = None
         else:
             raise
-    return render_template("upload/index.html", last_upload_time=last_upload_time)
+    return render_template("upload/index.html", last_upload_time=None)
 
 
 @blueprint.route("/upload", methods=["POST"])
