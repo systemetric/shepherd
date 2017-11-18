@@ -8,7 +8,7 @@
 {% endblock %}
 {% block body %}
 {% if time_left is not none %}
-<p>The robot will stop automatically in about {{ time_left }} seconds.</p>
+<p>The robot will stop automatically in about {{ time_left }} second{% if time_left > 1 %}s{% endif %}.</p>
 {% else %}
 <p>The robot has stopped – please refresh the page.</p>
 {% endif %}
