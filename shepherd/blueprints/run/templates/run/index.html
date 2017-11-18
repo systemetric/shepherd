@@ -33,19 +33,7 @@
 {{ super() }}
 <div class="clearfix">
   <h1 style="float: left;">Run</h1>
-  <div style="float: right;">
-    {% if auto_refresh %}
-    <form method="post" action="{{ url_for("run.toggle_auto_refresh") }}">
-      Auto-refresh is enabled.
-      <button>Disable auto-refresh</button>
-    </form>
-    {% else %}
-    <form method="post" action="{{ url_for("run.toggle_auto_refresh") }}">
-      Auto-refresh is disabled.
-      <button>Enable auto-refresh</button>
-    </form>
-    {% endif %}
-  </div>
+  <div style="float: right;"></div>
 </div>
 {% if state == states.ready %}
 <p class="status status--ready">Status: Ready to run</p>
