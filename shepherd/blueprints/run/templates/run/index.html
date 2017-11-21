@@ -64,10 +64,12 @@
 {% elif state == states.post_run %}
 <p class="status status--finished">Status: Finished</p>
 <p>The robot has finished running its code. You'll need to reboot it before it can run again.</p>
+<!--
 <form method="post" action="reset">
   <p>Alternatively, you could attempt to reset the robot without a reboot by using this button: <button>Reset</button></p>
   <p>Note that this may not work as intended, especially if you're using any custom hardware. You may get strange errors after doing a software reset that would not occur after a fresh boot.</p>
 </form>
+-->
 {% else %}
 <p class="status status--unknown">Status: Broken</p>
 <p>Something has gone terribly wrong! Shepherd can't tell what state the robot is in. Try a reboot.</p>
