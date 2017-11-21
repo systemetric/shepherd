@@ -6,12 +6,19 @@ import errno
 import os
 
 from flask import Flask, render_template, send_file
+import RPi.GPIO as GPIO
 
 from shepherd.blueprints import upload, run
 
+
+START_BUTTON_PIN = 0  # This is a BCM pin number (BCM0 corresponds to phys27).
+
+
 app = Flask(__name__, template_folder="templates")
 
+
 app.secret_key = os.urandom(32)
+
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MiB
 app.config["SHEPHERD_USER_CODE_PATH"] = os.path.join("/", "opt", "shepherd")
@@ -25,9 +32,14 @@ except OSError as e:
     else:
         raise
 
+
 # Avoid running the user code twice.
 if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
     run.init(app)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(START_BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=run.start, bouncetime=3000)
+
 
 app.register_blueprint(upload.blueprint, url_prefix="/upload")
 app.register_blueprint(run.blueprint, url_prefix="/run")
