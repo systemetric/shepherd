@@ -48,7 +48,7 @@ def upload():
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
             run.reap(reason="new code upload")
             run._reset_state()
-            run._start_user_code()
+            run._start_user_code(current_app)
     return redirect(url_for(".index"))
 
 
