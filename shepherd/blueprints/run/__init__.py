@@ -170,27 +170,31 @@ def start():
             flash("You're not allowed to use debug options in the competition!", "error")
         else:
             state = State.running
-            # TODO: is this the correct information to be passing?
-            print("opening fifo")
-            with open(USER_FIFO_PATH, "w") as f:
-                print("dumping json")
-                json.dump(
-                    {
-                        "mode": mode.value,
-                        "zone": int(zone),
-                        "arena": "A",
-                    }, f
-                )
-                print("json dumped")
-            if not disable_reaper:
-                reaper_timer = threading.Timer(ROUND_LENGTH, reap)
-                # If we get told to exit, there's no point waiting around for the round to finish.
-                reaper_timer.daemon = True
-                reaper_timer.start()
-                reap_time = datetime.now(tz=utc) + timedelta(seconds=ROUND_LENGTH)
-                flash("Started the robot! It will stop automatically in {} seconds.".format(ROUND_LENGTH))
+            if user_code.poll() is not None:
+                # User code is not running any more, don't bother starting it.
+                reap(reason="code is already dead")
+                flash("Your code seems to have crashed, not starting it.", "error")
             else:
-                flash("Started the robot! It will not stop automatically.")
+                print("opening fifo")
+                with open(USER_FIFO_PATH, "w") as f:
+                    print("dumping json")
+                    json.dump(
+                        {
+                            "mode": mode.value,
+                            "zone": int(zone),
+                            "arena": "A",
+                        }, f
+                    )
+                    print("json dumped")
+                if not disable_reaper:
+                    reaper_timer = threading.Timer(ROUND_LENGTH, reap)
+                    # If we get told to exit, there's no point waiting around for the round to finish.
+                    reaper_timer.daemon = True
+                    reaper_timer.start()
+                    reap_time = datetime.now(tz=utc) + timedelta(seconds=ROUND_LENGTH)
+                    flash("Started the robot! It will stop automatically in {} seconds.".format(ROUND_LENGTH))
+                else:
+                    flash("Started the robot! It will not stop automatically.")
     elif state == State.running:
         flash("The robot is already running, can't start it again.")
     elif state == State.post_run:
