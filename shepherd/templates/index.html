@@ -1,7 +1,13 @@
 {% extends "page.html" %}
 {% block body %}
 {{ super() }}
-<p>Welcome to the Hills Road RoboCon robot management interface!</p>
-<p>Useful links: <a href="{{ url_for("upload.index") }}">upload</a>, <a href="{{ url_for("run.index") }}">run</a></p>
+
+<img src="/static/hello-world.png">
+<div style="text-align: center;">
+  <p><a href="/upload/"><img src="/static/upload.png"></a>, <a href="/run/"><img src="/static/run.png"></a></p>
+</div>
+<p></p>
+<p><img src="/static/footer.png" style='height: 100%; width: 100%; object-fit: contain'></p>
+
 <p><a href="{{ url_for("about") }}">Copyright notices</a></p>
 {% endblock %}
