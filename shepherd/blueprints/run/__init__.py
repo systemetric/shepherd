@@ -72,7 +72,12 @@ def _set_reaper_at_exit():
     atexit.register(reap)  # Attempt to kill the user code (might not work if we crash or get signalled to die).
 
 def _start_output_queuer():
-    global output_queuer, user_code, user_output
+    global output_queuer, user_code, user_output, output_queuer_id
+    # Signal to any existing output queuer that it is stale and should exit.
+    try:
+        output_queuer_id += 1
+    except NameError:
+        output_queuer_id = 1
     output_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, user_output))
     output_queuer.daemon = True  # Program exits even if thread hasn't exited.
     output_queuer.start()
@@ -101,6 +106,9 @@ def reset():
 # <https://stackoverflow.com/a/4896288/5951320>
 def buffer_from_file(f, lst):
     """Copy lines from a file-like object to a list."""
+    global output_queuer_id
+    my_id = output_queuer_id
+    print("output_queuer starting, id {}".format(my_id))
     with f:
         # This is a nasty hack, described here:
         # <https://web.archive.org/web/20141015064057/http://mail.python.org/pipermail/python-list/2013-August/654330.html>
@@ -111,6 +119,12 @@ def buffer_from_file(f, lst):
         # significant amount of output has been generated (4 KiB).
         for line in iter(f.readline, b""):  # The second argument is a sentinel.
             lst.append(line.rstrip("\n"))
+            if output_queuer_id > my_id:
+                print("output_queuer with id {} is now stale, exiting (current id is {})".format(my_id, output_queuer_id))
+                break
+        else:
+            print("output_queuer with id {} got EOF on user_code output, exiting".format(my_id))
+    print("output_queuer finished, id {} (less than current id {})".format(my_id, output_queuer_id))
 
 
 def time_left():
