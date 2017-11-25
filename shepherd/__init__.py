@@ -11,7 +11,7 @@ import RPi.GPIO as GPIO
 from shepherd.blueprints import upload, run
 
 
-START_BUTTON_PIN = 0  # This is a BCM pin number (BCM0 corresponds to phys27).
+START_BUTTON_PIN = 5  # This is a BCM pin number (BCM0 corresponds to phys27).
 
 
 app = Flask(__name__, template_folder="templates")
