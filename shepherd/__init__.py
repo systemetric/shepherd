@@ -38,7 +38,9 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
     run.init(app)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(START_BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=run.start, bouncetime=3000)
+    def _start(channel):
+        run.start()
+    GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=_start, bouncetime=3000)
 
 
 app.register_blueprint(upload.blueprint, url_prefix="/upload")
