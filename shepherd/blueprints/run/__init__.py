@@ -149,6 +149,7 @@ def index():
         mode=mode.name if mode is not None else None,
         disable_reaper=bool(disable_reaper),
         time_left=time_left(),
+        display_time_left=reap_time is not None,
         output="\n".join(user_output),
     )
 

@@ -60,7 +60,9 @@
 <form method="post" action="stop">
   <button class="big">Stop</button>
 </form>
+{% if display_time_left %}
 <iframe frameborder="0" id="time-left" src="{{ url_for(".get_time_left") }}"></iframe>
+{% endif %}
 {% elif state == states.post_run %}
 <p class="status status--finished">Status: Finished</p>
 <p>The robot has finished running its code. You'll need to reboot it before it can run again.</p>
