@@ -254,12 +254,15 @@ def reap(reason=None):
         else:
             raise
     if user_code.poll() is None:
-        threading.Timer(REAP_GRACE_TIME, butcher).start()
+        butcher_thread = threading.Timer(REAP_GRACE_TIME, butcher)
+        butcher_thread.daemon = True
+        butcher_thread.start()
         try:
             user_code.communicate()
         except Exception as e:
             print("death: Caught an error while killing user code, sod Python's I/O handling...")
             print("death: The error was: {}: {}".format(type(e), e))
+        butcher_thread.cancel()
     state = State.post_run
     print("Done reaping user code")
 
