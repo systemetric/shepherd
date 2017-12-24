@@ -46,6 +46,8 @@ def upload():
             flash(err, "error")
         else:
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
+            if run.reaper_timer is not None:
+                run.reaper_timer.cancel()
             run.reap(reason="new code upload")
             run._reset_state()
             run._start_user_code(current_app)
