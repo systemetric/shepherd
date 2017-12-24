@@ -19,15 +19,6 @@ blueprint = Blueprint("upload", __name__, template_folder="templates")
 
 @blueprint.route("/")
 def index():
-    try:
-        last_upload_time = datetime.fromtimestamp(os.stat(
-            current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"]
-        ).st_mtime)
-    except OSError as e:
-        if e.errno in (errno.ENOENT, errno.ENOTDIR):
-            last_upload_time = None
-        else:
-            raise
     return render_template("upload/index.html", last_upload_time=None)
 
 
