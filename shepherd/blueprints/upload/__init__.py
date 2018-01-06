@@ -42,7 +42,6 @@ def upload():
             run.reap(reason="new code upload")
             run._reset_state()
             run._start_user_code(current_app)
-            run._start_output_queuer()
     return redirect(url_for(".index"))
 
 

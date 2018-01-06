@@ -14,7 +14,7 @@ from tempfile import mktemp
 import threading
 
 from enum import Enum
-from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session
+from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
 
 from shepherd.competition import ROUND_LENGTH
@@ -23,6 +23,7 @@ from shepherd.competition import ROUND_LENGTH
 blueprint = Blueprint("run", __name__, template_folder="templates")
 
 REAP_GRACE_TIME = 5  # Seconds before user code is forcefully killed
+OUTPUT_FILE_PATH = "/media/RobotUSB/logs.txt"
 
 
 # Since we can't access app.debug in a blueprint, this will be run
@@ -33,10 +34,9 @@ def init(app):
     _reset_state()
     _start_user_code(app)
     _set_reaper_at_exit()
-    _start_output_queuer()
 
 def _reset_state():
-    global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
+    global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file
     # Yes, it's (literally) global state. Deal with it.
 
     # tempfile.mktemp is deprecated, but there's no possibility of a race --
@@ -51,10 +51,11 @@ def _reset_state():
     reaper_timer = None  # The threading.Timer object that controls the reaper.
     reap_time = None  # The time at which the user code will be killed.
     user_code = None  # A subprocess.Popen object representing the running user code.
-    user_output = []  # A list containing lines of the user code's stdout and stderr.
+    output_file = None  # The file to which output from the user code goes.
 
 def _start_user_code(app):
-    global user_code
+    global user_code, output_file
+    output_file = open(OUTPUT_FILE_PATH, "w", 1)
     # Start the user code.
     user_code = subprocess.Popen(
         [
@@ -63,24 +64,13 @@ def _start_user_code(app):
             # --startfifo /path/to/fifo
             "--startfifo", USER_FIFO_PATH,
         ],
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        stdout=output_file, stderr=subprocess.STDOUT,
         bufsize=1,  # Line-buffered
         close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
     )
 
 def _set_reaper_at_exit():
     atexit.register(reap)  # Attempt to kill the user code (might not work if we crash or get signalled to die).
-
-def _start_output_queuer():
-    global output_queuer, user_code, user_output, output_queuer_id
-    # Signal to any existing output queuer that it is stale and should exit.
-    try:
-        output_queuer_id += 1
-    except NameError:
-        output_queuer_id = 1
-    output_queuer = threading.Thread(target=buffer_from_file, args=(user_code.stdout, user_output))
-    output_queuer.daemon = True  # Program exits even if thread hasn't exited.
-    output_queuer.start()
 
 
 class State(Enum):
@@ -101,30 +91,6 @@ class Mode(Enum):  # Names are important -- they let us get a Mode from the subm
 def reset():
     # TODO
     return "This is no longer functional."
-
-
-# <https://stackoverflow.com/a/4896288/5951320>
-def buffer_from_file(f, lst):
-    """Copy lines from a file-like object to a list."""
-    global output_queuer_id
-    my_id = output_queuer_id
-    print("output_queuer starting, id {}".format(my_id))
-    with f:
-        # This is a nasty hack, described here:
-        # <https://web.archive.org/web/20141015064057/http://mail.python.org/pipermail/python-list/2013-August/654330.html>
-        # to work around a wart in Python 2 that causes `f` to be
-        # buffered in advance of the current line. This intermittently
-        # causes the loop body to stop execution until there is more
-        # output available from `f` -- frequently only after a
-        # significant amount of output has been generated (4 KiB).
-        for line in iter(f.readline, b""):  # The second argument is a sentinel.
-            lst.append(line.rstrip("\n"))
-            if output_queuer_id > my_id:
-                print("output_queuer with id {} is now stale, exiting (current id is {})".format(my_id, output_queuer_id))
-                break
-        else:
-            print("output_queuer with id {} got EOF on user_code output, exiting".format(my_id))
-    print("output_queuer finished, id {} (less than current id {})".format(my_id, output_queuer_id))
 
 
 def time_left():
@@ -150,14 +116,12 @@ def index():
         disable_reaper=bool(disable_reaper),
         time_left=time_left(),
         display_time_left=reap_time is not None,
-        output="\n".join(user_output),
     )
 
 
 @blueprint.route("/output")
 def get_output():
-    global state
-    return render_template("run/output.html", output="\n".join(user_output), state=state, states=State)
+    return send_file(OUTPUT_FILE_PATH, mimetype="text/plain", cache_timeout=0)
 
 
 @blueprint.route("/time_left")
@@ -181,7 +145,7 @@ def toggle_auto_refresh():
 
 @blueprint.route("/start", methods=["POST"])
 def start():
-    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, user_output
+    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code
     zone = request.form["zone"]
     mode = Mode[request.form["mode"]]
     disable_reaper = request.form.get("disable-reaper")
@@ -244,7 +208,7 @@ def stop():
 
 
 def reap(reason=None):
-    global state, user_code
+    global state, user_code, output_file
     if reason is None:
         print("Reaping user code")
     else:
@@ -268,6 +232,12 @@ def reap(reason=None):
             print("death: Caught an error while killing user code, sod Python's I/O handling...")
             print("death: The error was: {}: {}".format(type(e), e))
         butcher_thread.cancel()
+    if output_file is not None:
+        try:
+            output_file.close()
+        except Exception as e:
+            print("death: Caught an error while closing user code's output.")
+            print("death: The error was: {}: {}".format(type(e).__name__, e))
     state = State.post_run
     print("Done reaping user code")
 

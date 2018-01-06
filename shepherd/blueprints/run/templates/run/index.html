@@ -82,6 +82,15 @@
 
 <p>Program output:</p>
 <iframe frameborder="0" id="output" src="{{ url_for(".get_output") }}"></iframe>
+{% if state == states.running %}
+<script>
+  function reloadOutput() {
+    /* https://stackoverflow.com/a/86771/5951320 */
+    document.getElementById("output").contentWindow.location.reload()
+  }
+  window.setInterval(reloadOutput, 1000)
+</script>
+{% endif %}
 <iframe frameborder="0" id="picture" src="{{ url_for(".get_picture") }}"></iframe>
 {% if state == states.running or state == states.post_run %}
 <p>Configuration:</p>
