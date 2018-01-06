@@ -26,6 +26,9 @@
   iframe#time-left {
     height: 4em;
   }
+  iframe#picture {
+    height: 600px;
+  }
 </style>
 {% endblock %}
 
@@ -79,6 +82,7 @@
 
 <p>Program output:</p>
 <iframe frameborder="0" id="output" src="{{ url_for(".get_output") }}"></iframe>
+<iframe frameborder="0" id="picture" src="{{ url_for(".get_picture") }}"></iframe>
 {% if state == states.running or state == states.post_run %}
 <p>Configuration:</p>
 <ul>

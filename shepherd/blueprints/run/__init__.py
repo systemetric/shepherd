@@ -168,6 +168,11 @@ def get_time_left():
     )
 
 
+@blueprint.route("/picture")
+def get_picture():
+    return render_template("run/picture.html", state=state, states=State)
+
+
 @blueprint.route("/toggle_auto_refresh", methods=["POST"])
 def toggle_auto_refresh():
     session["auto_refresh"] = not session.get("auto_refresh", True)
