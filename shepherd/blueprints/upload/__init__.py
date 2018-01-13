@@ -73,8 +73,8 @@ def process_uploaded_file(file):
             else:
                 errorcode = errno.errorcode[e.errno]
                 return "Your file is a zip file, but something went wrong after extracting it! (error: {})".format(errorcode)
+        shutil.rmtree(current_app.config["SHEPHERD_USER_CODE_PATH"])
         os.rename(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
-        shutil.rmtree(tempdir)
         return None
     else:
         return "Your file doesn't look like valid code. Make sure the extension is correct."
