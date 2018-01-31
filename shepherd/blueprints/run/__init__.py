@@ -148,37 +148,33 @@ def start():
     global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code
     zone = request.form["zone"]
     mode = Mode[request.form["mode"]]
-    disable_reaper = request.form.get("disable-reaper")
     if state == State.ready:
-        if mode == Mode.competition and disable_reaper:
-            flash("You're not allowed to use debug options in the competition!", "error")
+        state = State.running
+        if user_code.poll() is not None:
+            # User code is not running any more, don't bother starting it.
+            reap(reason="code is already dead")
+            flash("Your code seems to have crashed, not starting it.", "error")
         else:
-            state = State.running
-            if user_code.poll() is not None:
-                # User code is not running any more, don't bother starting it.
-                reap(reason="code is already dead")
-                flash("Your code seems to have crashed, not starting it.", "error")
+            print("opening fifo")
+            with open(USER_FIFO_PATH, "w") as f:
+                print("dumping json")
+                json.dump(
+                    {
+                        "mode": mode.value,
+                        "zone": int(zone),
+                        "arena": "A",
+                    }, f
+                )
+                print("json dumped")
+            if mode == Mode.competition:
+                reaper_timer = threading.Timer(ROUND_LENGTH, reap)
+                # If we get told to exit, there's no point waiting around for the round to finish.
+                reaper_timer.daemon = True
+                reaper_timer.start()
+                reap_time = datetime.now(tz=utc) + timedelta(seconds=ROUND_LENGTH)
+                flash("Started the robot! It will stop automatically in {} seconds.".format(ROUND_LENGTH))
             else:
-                print("opening fifo")
-                with open(USER_FIFO_PATH, "w") as f:
-                    print("dumping json")
-                    json.dump(
-                        {
-                            "mode": mode.value,
-                            "zone": int(zone),
-                            "arena": "A",
-                        }, f
-                    )
-                    print("json dumped")
-                if not disable_reaper:
-                    reaper_timer = threading.Timer(ROUND_LENGTH, reap)
-                    # If we get told to exit, there's no point waiting around for the round to finish.
-                    reaper_timer.daemon = True
-                    reaper_timer.start()
-                    reap_time = datetime.now(tz=utc) + timedelta(seconds=ROUND_LENGTH)
-                    flash("Started the robot! It will stop automatically in {} seconds.".format(ROUND_LENGTH))
-                else:
-                    flash("Started the robot! It will not stop automatically.")
+                flash("Started the robot! It will not stop automatically.")
     elif state == State.running:
         flash("The robot is already running, can't start it again.")
     elif state == State.post_run:
