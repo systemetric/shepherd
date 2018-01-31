@@ -167,7 +167,7 @@ def start():
                 )
                 print("json dumped")
             if mode == Mode.competition:
-                reaper_timer = threading.Timer(ROUND_LENGTH, reap)
+                reaper_timer = threading.Timer(ROUND_LENGTH, reap, kwargs={"reason": "round end"})
                 # If we get told to exit, there's no point waiting around for the round to finish.
                 reaper_timer.daemon = True
                 reaper_timer.start()
@@ -194,7 +194,7 @@ def stop():
             reaper_timer.cancel()
         except AttributeError:  # probably because reaper_timer is None
             pass
-        reap()
+        reap(reason="round stopped")
         flash("Stopped the robot!")
     elif state == State.post_run:
         flash("Code already ran, can't stop it")
