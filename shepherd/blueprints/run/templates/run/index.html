@@ -29,6 +29,9 @@
   iframe#picture {
     height: 600px;
   }
+  iframe#output {
+    height: 9999px;
+  }
 </style>
 {% endblock %}
 
@@ -77,6 +80,7 @@
 <p>Something has gone terribly wrong! Shepherd can't tell what state the robot is in. Try a reboot.</p>
 {% endif %}
 
+<iframe frameborder="0" id="picture" src="{{ url_for(".get_picture") }}"></iframe>
 <p>Program output:</p>
 <iframe frameborder="0" id="output" src="{{ url_for(".get_output") }}"></iframe>
 {% if state == states.running %}
@@ -88,7 +92,6 @@
   window.setInterval(reloadOutput, 1000)
 </script>
 {% endif %}
-<iframe frameborder="0" id="picture" src="{{ url_for(".get_picture") }}"></iframe>
 {% if state == states.running or state == states.post_run %}
 <p>Configuration:</p>
 <ul>
@@ -97,7 +100,4 @@
   <li>Competition timer disabled: {{ disable_reaper }}</li>
 </ul>
 {% endif %}
-<script>
-  iFrameResize({warningTimeout: 9}, "#output");
-</script>
 {% endblock %}
