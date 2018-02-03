@@ -16,6 +16,9 @@ import threading
 from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
+import smbus
+
+import sr.robot.thunderborg as thunderborg  # This *should* be safe, if nasty.
 
 from shepherd.competition import ROUND_LENGTH
 
@@ -52,6 +55,7 @@ def _reset_state():
     reap_time = None  # The time at which the user code will be killed.
     user_code = None  # A subprocess.Popen object representing the running user code.
     output_file = None  # The file to which output from the user code goes.
+    _reset_robot_state()
 
 def _start_user_code(app):
     global user_code, output_file
@@ -167,7 +171,7 @@ def start():
                 )
                 print("json dumped")
             if mode == Mode.competition:
-                reaper_timer = threading.Timer(ROUND_LENGTH, reap, kwargs={"reason": "round end"})
+                reaper_timer = threading.Timer(ROUND_LENGTH, round_end)
                 # If we get told to exit, there's no point waiting around for the round to finish.
                 reaper_timer.daemon = True
                 reaper_timer.start()
@@ -201,6 +205,42 @@ def stop():
     else:
         raise Exception("This can't happen")
     return redirect(url_for(".index"))
+
+
+def round_end():
+    reap(reason="end of round")
+    _reset_robot_state()
+
+
+def _reset_robot_state():
+    bus = smbus.SMBus(1)
+    try:
+        # Set all the GPIOs to inputs.
+        gpios = thunderborg.BlackJackBoardGPIO(bus)
+        for i in range(1, 5):
+            try:
+                gpios.pin_mode(i, thunderborg.INPUT)
+            except Exception:
+                pass
+        del gpios
+
+        # Set all the servos to 0%.
+        servos = thunderborg.BlackJackBoardPWM(bus)
+        for i in range(4):
+            try:
+                servos[i] = 0
+            except Exception:
+                pass
+        del servos
+
+        # Turn off all the motors.
+        for i, addr in enumerate([0x14, 0x15, 0x16, 0x17]):
+            try:
+                thunderborg.ThunderBorgBoard(addr).off()
+            except Exception:
+                pass
+    finally:
+        bus.close()
 
 
 def reap(reason=None):
