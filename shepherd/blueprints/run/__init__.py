@@ -34,9 +34,15 @@ OUTPUT_FILE_PATH = "/media/RobotUSB/logs.txt"
 def init(app):
     # Factored into separate functions so we can call them separately in
     # `blueprints.upload` (tight coupling ftw!!1!)
+
+    _work_around_pic_servo_bug()
+
     _reset_state()
     _start_user_code(app)
     _set_reaper_at_exit()
+
+def _work_around_pic_servo_bug():
+    _set_servos(100)
 
 def _reset_state():
     global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file
@@ -55,7 +61,6 @@ def _reset_state():
     reap_time = None  # The time at which the user code will be killed.
     user_code = None  # A subprocess.Popen object representing the running user code.
     output_file = None  # The file to which output from the user code goes.
-    _reset_robot_state()
 
 def _start_user_code(app):
     global user_code, output_file
@@ -209,34 +214,46 @@ def stop():
 
 def round_end():
     reap(reason="end of round")
-    _reset_robot_state()
+    _kill_motors()
+    _kill_gpios()
+    _set_servos(0)
 
 
-def _reset_robot_state():
+def _kill_motors():
+    """Turn off all the motors."""
     bus = smbus.SMBus(1)
     try:
-        # Set all the GPIOs to inputs.
+        for i, addr in enumerate([0x14, 0x15, 0x16, 0x17]):
+            try:
+                thunderborg.ThunderBorgBoard(addr).off()
+            except Exception:
+                pass
+    finally:
+        bus.close()
+
+
+def _kill_gpios():
+    """Set all the GPIOs to inputs."""
+    bus = smbus.SMBus(1)
+    try:
         gpios = thunderborg.BlackJackBoardGPIO(bus)
         for i in range(1, 5):
             try:
                 gpios.pin_mode(i, thunderborg.INPUT)
             except Exception:
                 pass
-        del gpios
+    finally:
+        bus.close()
 
-        # Set all the servos to 0%.
+
+def _set_servos(value):
+    assert -100 <= value <= 100
+    bus = smbus.SMBus(1)
+    try:
         servos = thunderborg.BlackJackBoardPWM(bus)
         for i in range(4):
             try:
-                servos[i] = 0
-            except Exception:
-                pass
-        del servos
-
-        # Turn off all the motors.
-        for i, addr in enumerate([0x14, 0x15, 0x16, 0x17]):
-            try:
-                thunderborg.ThunderBorgBoard(addr).off()
+                servos[i] = value
             except Exception:
                 pass
     finally:

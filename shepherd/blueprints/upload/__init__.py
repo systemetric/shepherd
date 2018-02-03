@@ -40,7 +40,15 @@ def upload():
             if run.reaper_timer is not None:
                 run.reaper_timer.cancel()
             run.reap(reason="new code upload")
+
+            # Turn everything off
+            run._kill_motors()
+            run._kill_gpios()
+
+            # Make the world look like the Pi just booted
+            run._work_around_pic_servo_bug()
             run._reset_state()
+
             run._start_user_code(current_app)
     return redirect(url_for(".index"))
 
