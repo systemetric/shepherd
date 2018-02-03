@@ -39,7 +39,20 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(START_BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     def _start(channel):
-        run.start()
+        zone = "0"
+        if os.path.exists("/media/RobotUSB/zone1.txt"):
+            zone = "1"
+        elif os.path.exists("/media/RobotUSB/zone2.txt"):
+            zone = "2"
+        elif os.path.exists("/media/RobotUSB/zone3.txt"):
+            zone = "3"
+        # this is the weirdest calling convention
+        ctx = app.test_request_context(data={
+            "zone": zone,
+            "mode": "competition",
+        })
+        with app.request_context(ctx):
+            run.start()
     GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=_start, bouncetime=3000)
 
 
