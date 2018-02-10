@@ -51,7 +51,7 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
             "zone": zone,
             "mode": "competition",
         })
-        with app.request_context(ctx):
+        with ctx:
             run.start()
     GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=_start, bouncetime=3000)
 
