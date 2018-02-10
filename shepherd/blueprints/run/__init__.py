@@ -12,6 +12,7 @@ import subprocess
 import sys
 from tempfile import mktemp
 import threading
+import time
 
 from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
@@ -215,8 +216,9 @@ def stop():
 def round_end():
     reap(reason="end of round")
     _kill_motors()
-    _kill_gpios()
     _set_servos(0)
+    time.sleep(0.5)
+    _kill_gpios()
 
 
 def _kill_motors():
