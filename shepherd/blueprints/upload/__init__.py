@@ -77,7 +77,7 @@ def process_uploaded_file(file):
         except IOError as e:
             shutil.rmtree(tempdir)
             if e.errno in (errno.ENOENT, errno.EISDIR):
-                return "Your file is a zip file, but it doesn't include a <code>main.py</code> file!"
+                return "Your file is a zip file, but it doesn't include a main.py file!"
             else:
                 errorcode = errno.errorcode[e.errno]
                 return "Your file is a zip file, but something went wrong after extracting it! (error: {})".format(errorcode)
