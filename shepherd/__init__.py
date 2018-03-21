@@ -40,11 +40,11 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
     GPIO.setup(START_BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     def _start(channel):
         zone = "0"
-        if os.path.exists("/media/RobotUSB/zone1.txt"):
+        if os.path.exists("/media/ArenaUSB/zone1.txt"):
             zone = "1"
-        elif os.path.exists("/media/RobotUSB/zone2.txt"):
+        elif os.path.exists("/media/ArenaUSB/zone2.txt"):
             zone = "2"
-        elif os.path.exists("/media/RobotUSB/zone3.txt"):
+        elif os.path.exists("/media/ArenaUSB/zone3.txt"):
             zone = "3"
         # this is the weirdest calling convention
         ctx = app.test_request_context(data={
