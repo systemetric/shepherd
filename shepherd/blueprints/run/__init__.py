@@ -289,6 +289,10 @@ def reap(reason=None):
         butcher_thread.cancel()
     if output_file is not None:
         try:
+            output_file.write("\n==== END OF ROUND ====\n\n")
+        except Exception:
+            pass
+        try:
             output_file.close()
         except Exception as e:
             print("death: Caught an error while closing user code's output.")
