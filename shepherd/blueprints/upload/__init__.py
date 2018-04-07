@@ -59,7 +59,7 @@ def process_uploaded_file(file):
         tempdir = tempfile.mkdtemp(prefix="shepherd-user-code-")
         file.save(os.path.join(tempdir, current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"]))
         shutil.rmtree(current_app.config["SHEPHERD_USER_CODE_PATH"])
-        os.rename(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
+        shutil.move(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
         return None
     elif ("zip" in file.mimetype or file.filename.endswith(".zip")) and zipfile.is_zipfile(file):
         # Hopefully a zip file.
@@ -82,7 +82,7 @@ def process_uploaded_file(file):
                 errorcode = errno.errorcode[e.errno]
                 return "Your file is a zip file, but something went wrong after extracting it! (error: {})".format(errorcode)
         shutil.rmtree(current_app.config["SHEPHERD_USER_CODE_PATH"])
-        os.rename(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
+        shutil.move(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
         return None
     else:
         return "Your file doesn't look like valid code. Make sure the extension is correct."
