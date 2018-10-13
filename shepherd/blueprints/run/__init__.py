@@ -63,6 +63,13 @@ def _reset_state():
     user_code = None  # A subprocess.Popen object representing the running user code.
     output_file = None  # The file to which output from the user code goes.
 
+def _user_code_wait():
+    global user_code
+    exit_code = user_code.wait()
+    # TODO: instead of checking for error code 1, check if the code isn't an expected code from SIGTERM or SIGKILL
+    if exit_code == 1:
+        round_end()
+
 def _start_user_code(app):
     global user_code, output_file
     output_file = open(OUTPUT_FILE_PATH, "w", 1)
@@ -78,6 +85,9 @@ def _start_user_code(app):
         bufsize=1,  # Line-buffered
         close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
     )
+    user_code_wait_thread = threading.Thread(target=_user_code_wait)
+    user_code_wait_thread.daemon = True
+    user_code_wait_thread.start()
 
 def _set_reaper_at_exit():
     atexit.register(reap)  # Attempt to kill the user code (might not work if we crash or get signalled to die).
@@ -204,7 +214,7 @@ def stop():
             reaper_timer.cancel()
         except AttributeError:  # probably because reaper_timer is None
             pass
-        reap(reason="round stopped")
+        round_end()
         flash("Stopped the robot!")
     elif state == State.post_run:
         flash("Code already ran, can't stop it")
