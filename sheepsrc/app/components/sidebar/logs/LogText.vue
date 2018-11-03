@@ -4,12 +4,35 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { makeFullUrl } from "../../../store";
+
+interface Data {
+  text: string;
+}
 
 export default Vue.extend({
   name: "log-text",
-  computed: {
-    text() {
-      return "Logs\n".repeat(100);
+  data(): Data {
+    return {
+      text: ""
+    };
+  },
+  mounted() {
+    this.loadText();
+  },
+  methods: {
+    loadText() {
+        fetch(makeFullUrl("/run/output"))
+          .then(res => res.text())
+          .then(res => {
+            this.text = res;
+            setTimeout(() => this.loadText(), 1000);
+          })
+          .catch(e => {
+            console.error(e);
+            e.text = "Unable to load logs!";
+            setTimeout(() => this.loadText(), 1000);
+          });
     }
   }
 });

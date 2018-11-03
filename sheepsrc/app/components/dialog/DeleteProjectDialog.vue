@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { ACTION_DELETE_PROJECT } from "../../store";
 
 export default Vue.extend({
   name: "delete-project-dialog",
@@ -23,7 +24,8 @@ export default Vue.extend({
   },
   methods: {
     doDelete() {
-      alert(`Deleting ${this.project.filename}`);
+      // noinspection JSIgnoredPromiseFromCall
+      this.$store.dispatch(ACTION_DELETE_PROJECT, this.project.filename);
       this.$emit("close");
     }
   }

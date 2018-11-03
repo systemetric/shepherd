@@ -44,3 +44,11 @@ def save_file(filename):
         f.write(request.data)
         f.close()
     return ""
+
+
+@blueprint.route("/delete/<string:filename>", methods=["DELETE"])
+def delete_file(filename):
+    dots = len(re.findall("\.", filename))
+    if dots == 1:
+        os.unlink(path.join(robotsrc_path, filename))
+    return ""

@@ -25,7 +25,7 @@
             </div>
         </div>
         <template slot="actions">
-            <button @click="$emit('close')">Cancel</button>
+            <button @click="close">Cancel</button>
             <button @click="create" :disabled="name === ''">Create</button>
         </template>
     </DialogWrapper>
@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { ACTION_CREATE_PROJECT } from "../../store";
 
 interface Data {
   name: string;
@@ -48,9 +49,15 @@ export default Vue.extend({
     };
   },
   methods: {
-    create() {
-      alert(`Creating ${this.type} project ${this.name}`);
+    close() {
       this.$emit("close");
+      this.name = "";
+      this.type = "python";
+    },
+    create() {
+      // noinspection JSIgnoredPromiseFromCall
+      this.$store.dispatch(ACTION_CREATE_PROJECT, { type: this.type, name: this.name});
+      this.close();
     }
   }
 });

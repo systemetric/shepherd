@@ -9,6 +9,8 @@ import {
 import * as monaco from "monaco-editor";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { tokens } from "./tokens";
+// noinspection TypeScriptPreferShortImport
+import { makeFullUrl } from "../../../../store";
 
 monaco.languages.register({
   id: "python",
@@ -23,7 +25,7 @@ export default function registerPythonLanguage(
 ) {
   MonacoServices.install(monacoEditor);
 
-  const url = `ws://${location.hostname}:5000/pyls`;
+  const url = makeFullUrl("/pyls", "ws");
   const webSocket = createWebSocket(url);
 
   listen({

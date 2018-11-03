@@ -41,7 +41,6 @@ except OSError as e:
 
 
 # Avoid running the user code twice.
-# TODO: UNCOMMENT THIS STUFF
 # if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
 #     run.init(app)
 #     GPIO.setmode(GPIO.BCM)
@@ -63,7 +62,6 @@ except OSError as e:
 #             run.start()
 #     GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=_start, bouncetime=3000)
 
-# TODO: AND THIS
 # app.register_blueprint(upload.blueprint, url_prefix="/upload")
 # app.register_blueprint(run.blueprint, url_prefix="/run")
 app.register_blueprint(editor.blueprint, url_prefix="/files")
