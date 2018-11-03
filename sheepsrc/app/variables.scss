@@ -1,0 +1,18 @@
+$sidebar-width: 250px;
+
+@mixin scrollbar() {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #222222;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #333333;
+    &:hover {
+      background-color: #444444;
+    }
+  }
+}
