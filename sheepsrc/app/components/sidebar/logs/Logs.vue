@@ -1,7 +1,7 @@
 <template>
     <div id="logs">
         <ProjectTab name="Logs" :header="true">
-            <IconButton v-if="currentProject" @click="run" :class="{disabled: running}">
+            <IconButton v-if="currentProject && !currentProject.filename.endsWith('.json')" @click="run" :class="{disabled: running}">
                 <FontAwesomeIcon :icon="running ? ['far', 'sync-alt'] : ['fas', 'play']" :spin="running"/>
             </IconButton>
             <IconButton @click="stop">

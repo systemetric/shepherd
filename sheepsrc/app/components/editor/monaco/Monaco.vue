@@ -58,7 +58,9 @@ export default Vue.extend({
         | Project
         | undefined;
       return (
-        (currentProject && currentProject.filename.endsWith(".py")) ||
+        (currentProject &&
+          (currentProject.filename.endsWith(".py") ||
+            currentProject.filename.endsWith(".json"))) ||
         !this.editor
       );
     }
@@ -68,10 +70,9 @@ export default Vue.extend({
     this.editor.onDidChangeModelContent(() => {
       if (this.saveTimeout) clearTimeout(this.saveTimeout);
       if (this.editor) {
-        this.$store.commit(
-          MUTATION_UPDATE_PROJECT,
-          {content: this.editor.getModel().getValue()}
-        );
+        this.$store.commit(MUTATION_UPDATE_PROJECT, {
+          content: this.editor.getModel().getValue()
+        });
       }
       this.saveTimeout = setTimeout(() => {
         this.saveTimeout = undefined;
@@ -81,8 +82,16 @@ export default Vue.extend({
   },
   watch: {
     ["$store.state.currentProject"](newValue?: Project) {
-      if (newValue && newValue.filename.endsWith(".py") && this.editor) {
-        this.editor.getModel().setValue(newValue.content);
+      if (newValue) {
+        const extension = newValue.filename.substring(
+          newValue.filename.lastIndexOf(".")
+        );
+
+        if ((extension === ".py" || extension === ".json") && this.editor) {
+          this.editor.getModel().setValue(newValue.content);
+          const language = extension == ".py" ? "python" : "json";
+          monaco.editor.setModelLanguage(this.editor.getModel(), language);
+        }
       }
     },
     visible(newValue) {

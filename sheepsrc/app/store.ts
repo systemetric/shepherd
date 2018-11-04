@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import JSZip from "jszip";
+import { BlocksConfiguration } from "./components/editor/blockly/block-loader";
 
 const _ = {
   startCase: require("lodash/startCase"),
@@ -19,12 +20,14 @@ export interface Project {
 interface ProjectsResponse {
   main: string;
   projects: Project[];
+  blocks: BlocksConfiguration;
 }
 
 interface State {
   loaded: boolean;
   main: string;
   projects: Project[];
+  blocksConfiguration?: BlocksConfiguration;
   openProjects: Project[];
   currentProject?: Project;
   running: boolean;
@@ -62,12 +65,20 @@ export function wait(time: number): Promise<number> {
   });
 }
 
+function compareProjects(a: Project, b: Project): number {
+  if (a.filename === b.filename) return 0;
+  if (a.filename.endsWith(".json")) return 1;
+  if (b.filename.endsWith(".json")) return -1;
+  return a.filename < b.filename ? -1 : 1;
+}
+
 export default new Vuex.Store<State>({
   state: {
     loaded: false,
     main: "",
     projects: [],
     openProjects: [],
+    blocksConfiguration: undefined,
     currentProject: undefined,
     running: false
   },
@@ -76,6 +87,8 @@ export default new Vuex.Store<State>({
       state.loaded = true;
       state.main = res.main;
       state.projects = res.projects;
+      state.projects.sort(compareProjects);
+      state.blocksConfiguration = res.blocks;
     },
     [MUTATION_OPEN_PROJECT](state: State, filename?: string) {
       const findProject = (project: Project) => project.filename === filename;
@@ -120,6 +133,7 @@ export default new Vuex.Store<State>({
     },
     [MUTATION_CREATE_PROJECT](state: State, project: Project) {
       state.projects.push(project);
+      state.projects.sort(compareProjects);
     },
     [MUTATION_DELETE_PROJECT](state: State, filename: string) {
       const foundIndex = state.projects.findIndex(
@@ -212,27 +226,46 @@ export default new Vuex.Store<State>({
         method: "DELETE"
       });
     },
-    [ACTION_RUN_PROJECT]({ state, commit }) {
+    async [ACTION_RUN_PROJECT]({ state, commit, dispatch }) {
       if (state.currentProject) {
         commit(MUTATION_SET_RUNNING, true);
+
+        await dispatch(ACTION_SAVE_PROJECT);
 
         const filename = state.currentProject.filename;
         const zip = new JSZip();
 
+        let filesToPack: Project[] = [];
         if (state.currentProject.filename.endsWith(".xml")) {
-          const generated = state.currentProject.blocklyGenerated;
+          const blocksConfiguration: BlocksConfiguration = state.blocksConfiguration || {
+            header: "",
+            footer: "",
+            requires: [],
+            blocks: []
+          };
+
+          const generated = `${blocksConfiguration.header}\n${
+            state.currentProject.blocklyGenerated
+          }\n${blocksConfiguration.footer}`;
+
           zip.file("main.py", generated || "");
+
+          filesToPack = state.projects.filter(
+            project =>
+              project.filename.endsWith(".py") &&
+              blocksConfiguration.requires.includes(project.filename)
+          );
         } else {
           zip.file("main.py", state.currentProject.content);
 
-          const filesToPack = state.projects.filter(
+          filesToPack = state.projects.filter(
             project =>
               project.filename.endsWith(".py") && project.filename != filename
           );
+        }
 
-          for (let i = 0; i < filesToPack.length; i++) {
-            zip.file(filesToPack[i].filename, filesToPack[i].content);
-          }
+        for (let i = 0; i < filesToPack.length; i++) {
+          zip.file(filesToPack[i].filename, filesToPack[i].content);
         }
 
         zip

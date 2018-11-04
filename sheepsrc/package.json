@@ -6,6 +6,7 @@
     "build": "rimraf ../shepherd/static/editor/*.* && cross-env NODE_ENV=production webpack --progress --config webpack.config.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-pro": "^5.5.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/pro-regular-svg-icons": "^5.5.0",
     "@fortawesome/pro-solid-svg-icons": "^5.5.0",

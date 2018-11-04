@@ -56,7 +56,7 @@ module.exports = {
   },
   plugins: [
     new MonacoWebpackPlugin({
-      languages: []
+      languages: ["json"]
     }),
     new MiniCssExtractPlugin({
       filename: "style.css"

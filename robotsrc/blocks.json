@@ -1,0 +1,61 @@
+{
+  "requires": ["nice_robot.py"],
+  "header": "from __future__ import print_function\nfrom nice_robot import *\nimport time",
+  "blocks": [
+    {
+      "id": "print",
+      "definition": [
+        "Say",
+        {
+          "id": "msg",
+          "type": "text",
+          "default": "Hello!"
+        }
+      ],
+      "template": "print(\"<%= msg %>\")"
+    },
+    {
+      "id": "sleep",
+      "definition": [
+        "Wait",
+        {
+          "id": "seconds",
+          "type": "number",
+          "default": 1
+        },
+        "second(s)"
+      ],
+      "template": "time.sleep(<%= seconds %>)"
+    },
+    {
+      "id": "robot_move",
+      "definition": [
+        "Move",
+        {
+          "id": "distance",
+          "type": "number",
+          "default": 1
+        },
+        "metre(s)"
+      ],
+      "template": "move(<%= distance %>)"
+    },
+    {
+      "id": "robot_turn",
+      "definition": [
+        "Turn",
+        {
+          "id": "angle",
+          "type": "angle",
+          "default": 90
+        }
+      ],
+      "template": "move(<%= angle %>)"
+    },
+    {
+      "id": "find_cube",
+      "definition": "Find cube",
+      "template": "find_cube()"
+    }
+  ]
+}

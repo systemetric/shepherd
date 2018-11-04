@@ -8,7 +8,53 @@
 </template>
 
 <script lang="ts">
-const toolbox = `<xml id="toolbox">
+import Vue from "vue";
+import { mapState } from "vuex";
+import {
+  ACTION_SAVE_PROJECT,
+  MUTATION_UPDATE_PROJECT,
+  Project
+} from "../../../store";
+const Blockly = require("node-blockly/browser");
+import loadBlocks from "./block-loader";
+
+interface Data {
+  workspace?: any;
+  loaded: boolean;
+  saveTimeout?: number;
+  code: string;
+}
+
+export default Vue.extend({
+  name: "blockly",
+  data(): Data {
+    return {
+      workspace: undefined,
+      loaded: false,
+      saveTimeout: undefined,
+      code: ""
+    };
+  },
+  computed: {
+    ...mapState(["currentProject", "blocksConfiguration"]),
+    visible(): boolean {
+      const currentProject = (this as any).currentProject as
+        | Project
+        | undefined;
+      return (
+        (currentProject && currentProject.filename.endsWith(".xml")) ||
+        !this.loaded
+      );
+    }
+  },
+  mounted() {
+    const robotToolbox = loadBlocks(
+      Blockly,
+      (this as any).blocksConfiguration.blocks
+    );
+
+    this.workspace = Blockly.inject(this.$refs.blockly, {
+      toolbox: `<xml id="toolbox">
   <category name="Text">
     <block type="text"></block>
     <block type="text_print"></block>
@@ -106,49 +152,12 @@ const toolbox = `<xml id="toolbox">
   </category>
   <category name="Variables" custom="VARIABLE"></category>
   <sep></sep>
-  <category name="Robot"></category>
-</xml>`;
-
-import Vue from "vue";
-import { mapState } from "vuex";
-import {
-  ACTION_SAVE_PROJECT,
-  MUTATION_UPDATE_PROJECT,
-  Project
-} from "../../../store";
-const Blockly = require("node-blockly/browser");
-
-interface Data {
-  workspace?: any;
-  loaded: boolean;
-  saveTimeout?: number;
-  code: string;
-}
-
-export default Vue.extend({
-  name: "blockly",
-  data(): Data {
-    return {
-      workspace: undefined,
-      loaded: false,
-      saveTimeout: undefined,
-      code: ""
-    };
-  },
-  computed: {
-    ...mapState(["currentProject"]),
-    visible(): boolean {
-      const currentProject = (this as any).currentProject as
-        | Project
-        | undefined;
-      return (
-        (currentProject && currentProject.filename.endsWith(".xml")) ||
-        !this.loaded
-      );
-    }
-  },
-  mounted() {
-    this.workspace = Blockly.inject(this.$refs.blockly, { toolbox });
+  <category name="Robot">
+    ${robotToolbox}
+  </category>
+</xml>`,
+      trashcan: false
+    });
     window.addEventListener("resize", this.onResize, false);
     this.onResize();
     // noinspection TypeScriptUnresolvedFunction
@@ -161,7 +170,10 @@ export default Vue.extend({
 
       if (this.saveTimeout) clearTimeout(this.saveTimeout);
       if (this.workspace) {
-        this.$store.commit(MUTATION_UPDATE_PROJECT, {content: this.toXML(), blocklyGenerated: this.code});
+        this.$store.commit(MUTATION_UPDATE_PROJECT, {
+          content: this.toXML(),
+          blocklyGenerated: this.code
+        });
       }
       this.saveTimeout = setTimeout(() => {
         this.saveTimeout = undefined;

@@ -1,14 +1,10 @@
 <xml xmlns="http://www.w3.org/1999/xhtml">
-  <block type="controls_if" id="yRV80uEI{zv1:+5OM#yK" x="467" y="359">
-    <value name="IF0">
-      <block type="logic_compare" id="Y(W-JGrkodDT`W4dx75g">
-        <field name="OP">EQ</field>
-        <value name="A">
-          <block type="math_number" id="@l.~s/h/`C.sDP2y*M?I">
-            <field name="NUM">2</field>
-          </block>
-        </value>
+  <block type="robot_move" id="Kalcr%-Q$xF6NES:;|h6" x="1741" y="330">
+    <field name="distance">1</field>
+    <next>
+      <block type="print" id="Z~x)%M]o6UN?;Q9_wtx!">
+        <field name="msg">Hi</field>
       </block>
-    </value>
+    </next>
   </block>
 </xml>

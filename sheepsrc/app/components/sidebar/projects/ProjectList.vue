@@ -10,7 +10,9 @@
                 :key="project.filename"
                 :name="project.name"
                 :filename="project.filename">
-            <IconButton @click="$emit('delete', project)">
+            <IconButton
+                    v-if="!project.filename.endsWith('.json')"
+                    @click="$emit('delete', project)">
                 <FontAwesomeIcon :icon="['far', 'trash']"/>
             </IconButton>
         </ProjectTab>

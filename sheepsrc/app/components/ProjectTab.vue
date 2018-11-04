@@ -92,12 +92,16 @@ export default Vue.extend({
     background-size: contain;
     background-repeat: no-repeat;
 
-    &[class$="py"] {
+    &[class$=".py"] {
       background-image: url("../assets/python.svg");
     }
 
-    &[class$="xml"] {
+    &[class$=".xml"] {
       background-image: url("../assets/blocks.svg");
+    }
+
+    &[class$=".json"] {
+      background-image: url("../assets/block_definitions.svg");
     }
   }
 
