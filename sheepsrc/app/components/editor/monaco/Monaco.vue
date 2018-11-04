@@ -70,7 +70,7 @@ export default Vue.extend({
       if (this.editor) {
         this.$store.commit(
           MUTATION_UPDATE_PROJECT,
-          this.editor.getModel().getValue()
+          {content: this.editor.getModel().getValue()}
         );
       }
       this.saveTimeout = setTimeout(() => {

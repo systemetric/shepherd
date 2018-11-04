@@ -12,7 +12,7 @@ module.exports = {
   entry: "./app/index.ts",
   devtool: "inline-source-map",
   output: {
-    path: path.resolve(__dirname, "..", "static"),
+    path: path.resolve(__dirname, "..", "shepherd", "static", "editor"),
     filename: "bundle.js"
   },
   optimization: {

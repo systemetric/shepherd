@@ -41,9 +41,12 @@ export default Vue.extend({
 <style lang="scss">
 @import "../../../variables";
 
+//noinspection CssOptimizeSimilarProperties
 #camera {
   width: 100%;
   height: $sidebar-width * 0.5625;
-  background-color: #2a2a2a;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 </style>

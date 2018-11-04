@@ -32,5 +32,11 @@ export default Vue.extend({
   &:active {
     background-color: rgba(255, 255, 255, 0.2);
   }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: transparent;
+  }
 }
 </style>

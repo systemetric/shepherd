@@ -5,9 +5,15 @@ import Vue from "vue";
 import store, { ACTION_FETCH_PROJECTS } from "./store";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlus, faTrash } from "@fortawesome/pro-regular-svg-icons";
+import { faPlay, faStop } from "@fortawesome/pro-solid-svg-icons";
+import {
+  faPlus,
+  faTrash,
+  faSyncAlt,
+  faExclamationTriangle
+} from "@fortawesome/pro-regular-svg-icons";
 
-library.add(faPlus, faTrash);
+library.add(faPlay, faStop, faPlus, faTrash, faSyncAlt, faExclamationTriangle);
 
 import App from "./App.vue";
 
@@ -49,11 +55,19 @@ Vue.component("FontAwesomeIcon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
-store.dispatch(ACTION_FETCH_PROJECTS).then(() => {
+function init() {
   // noinspection JSUnusedGlobalSymbols
   new Vue({
     el: "#app",
     store,
     render: h => h(App)
   });
-});
+}
+
+store
+  .dispatch(ACTION_FETCH_PROJECTS)
+  .then(init)
+  .catch(e => {
+    console.error(e);
+    init();
+  });
