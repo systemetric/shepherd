@@ -17,7 +17,6 @@ import time
 from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
-import smbus
 
 import robot.reset as robot_reset  # This *should* be safe, if nasty.
 

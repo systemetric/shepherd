@@ -105,3 +105,10 @@ sheepsrc/node_modules
 
 # pycharm config
 .idea
+
+# fake pi packages
+RPi
+smbus
+robot
+usercode
+shepherd/static/image.jpg

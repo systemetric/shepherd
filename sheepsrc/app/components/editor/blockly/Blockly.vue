@@ -161,7 +161,7 @@ export default Vue.extend({
 
       if (this.saveTimeout) clearTimeout(this.saveTimeout);
       if (this.workspace) {
-        this.$store.commit(MUTATION_UPDATE_PROJECT, this.toXML());
+        this.$store.commit(MUTATION_UPDATE_PROJECT, {content: this.toXML(), blocklyGenerated: this.code});
       }
       this.saveTimeout = setTimeout(() => {
         this.saveTimeout = undefined;

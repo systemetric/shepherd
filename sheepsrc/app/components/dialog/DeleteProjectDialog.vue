@@ -1,7 +1,7 @@
 <template>
     <DialogWrapper>
         <template slot="title">Delete Project</template>
-        <div class="create-dialog">
+        <div class="delete-dialog">
             <p>Are you sure you want to delete <b>{{project && project.name}}</b>?</p>
         </div>
         <template slot="actions">

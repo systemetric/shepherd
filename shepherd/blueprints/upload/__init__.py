@@ -12,7 +12,7 @@ import zipfile
 from flask import Blueprint, render_template, flash, redirect, url_for, request, abort, current_app
 
 from shepherd.blueprints import run  # FIXME: this coupling is horrific
-
+import robot.reset as robot_reset  # This *should* be safe, if nasty.
 
 blueprint = Blueprint("upload", __name__, template_folder="templates")
 
@@ -42,11 +42,13 @@ def upload():
             run.reap(reason="new code upload")
 
             # Turn everything off
-            run._kill_motors()
-            run._kill_gpios()
+            # run._kill_motors()
+            # run._kill_gpios()
+
+            robot_reset.reset()
 
             # Make the world look like the Pi just booted
-            run._work_around_pic_servo_bug()
+            # run._work_around_pic_servo_bug()
             run._reset_state()
 
             run._start_user_code(current_app)
