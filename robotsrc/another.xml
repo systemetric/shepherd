@@ -1,9 +1,9 @@
 <xml xmlns="http://www.w3.org/1999/xhtml">
-  <block type="robot_move" id="Kalcr%-Q$xF6NES:;|h6" x="1741" y="330">
-    <field name="distance">1</field>
+  <block type="robot_sleep" id="eUz5*9+)lG~l{AV6#-0s" x="30" y="140">
+    <field name="seconds">1</field>
     <next>
-      <block type="print" id="Z~x)%M]o6UN?;Q9_wtx!">
-        <field name="msg">Hi</field>
+      <block type="robot_move" id="C2ZzFB-Q}yNejXdg{a;v">
+        <field name="distance">1</field>
       </block>
     </next>
   </block>

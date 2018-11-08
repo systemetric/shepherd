@@ -3,18 +3,6 @@
   "header": "from __future__ import print_function\nfrom nice_robot import *\nimport time",
   "blocks": [
     {
-      "id": "print",
-      "definition": [
-        "Say",
-        {
-          "id": "msg",
-          "type": "text",
-          "default": "Hello!"
-        }
-      ],
-      "template": "print(\"<%= msg %>\")"
-    },
-    {
       "id": "sleep",
       "definition": [
         "Wait",
@@ -28,7 +16,7 @@
       "template": "time.sleep(<%= seconds %>)"
     },
     {
-      "id": "robot_move",
+      "id": "move",
       "definition": [
         "Move",
         {
@@ -41,7 +29,7 @@
       "template": "move(<%= distance %>)"
     },
     {
-      "id": "robot_turn",
+      "id": "turn",
       "definition": [
         "Turn",
         {

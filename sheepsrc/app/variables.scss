@@ -1,12 +1,12 @@
 $sidebar-width: 250px;
 
-@mixin scrollbar() {
+@mixin scrollbar($background-color: #222222) {
   &::-webkit-scrollbar {
     width: 10px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #222222;
+    background-color: $background-color;
   }
 
   &::-webkit-scrollbar-thumb {

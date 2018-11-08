@@ -4,6 +4,7 @@
         <div id="editor-container">
             <Monaco/>
             <Blockly/>
+            <!--<BlockDefinitions/>-->
         </div>
     </div>
 </template>

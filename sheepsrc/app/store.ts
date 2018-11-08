@@ -86,7 +86,10 @@ export default new Vuex.Store<State>({
     [MUTATION_SET_PROJECTS](state: State, res: ProjectsResponse) {
       state.loaded = true;
       state.main = res.main;
-      state.projects = res.projects;
+      state.projects = res.projects.filter(
+        test =>
+          window.location.hash === "#blocks" || test.filename !== "blocks.json"
+      );
       state.projects.sort(compareProjects);
       state.blocksConfiguration = res.blocks;
     },

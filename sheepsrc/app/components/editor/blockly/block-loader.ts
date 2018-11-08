@@ -46,9 +46,11 @@ export default function loadBlocks(
   let toolbox = "";
 
   blocks.forEach(block => {
-    toolbox += `<block type="${block.id}"></block>\n`;
+    const id = `robot_${block.id}`;
 
-    Blockly.Blocks[block.id] = {
+    toolbox += `<block type="${id}"></block>\n`;
+
+    Blockly.Blocks[id] = {
       init: function() {
         let dummy = this.appendDummyInput();
 
@@ -90,7 +92,7 @@ export default function loadBlocks(
 
     const compiled = _.template(block.template);
 
-    Blockly.Python[block.id] = function(item: any) {
+    Blockly.Python[id] = function(item: any) {
       const input: { [index: string]: any } = {};
       for (let field of fields) {
         input[field] = item.getFieldValue(field);
