@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --hot",
-    "build": "rimraf ../shepherd/static/editor/*.* && cross-env NODE_ENV=production webpack --progress --config webpack.config.js"
+    "build": "rimraf ../shepherd/static/editor/*.* && cross-env NODE_ENV=production webpack --progress --config webpack.config.js",
+    "vuepress:update": "rimraf ./docs/full && git clone --depth 1 https://github.com/systemetric/hr-robocon.org ./docs/full && cpy ./docs/full/docs/*.md ./docs/ && cpy ./docs/full/.vuepress/public/images/*.* ./docs/.vuepress/public/images/ && node ./docs/transform.js && rimraf ./docs/full",
+    "vuepress:dev": "vuepress dev docs",
+    "vuepress:build": "vuepress build docs --dest ../shepherd/static/docs/"
   },
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^5.5.0",
@@ -34,8 +37,10 @@
     "@types/node": "^10.12.2",
     "@types/normalize-url": "^1.9.1",
     "@types/vue": "^2.0.0",
+    "cpy-cli": "^2.0.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
+    "front-matter": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.4",
     "monaco-editor-webpack-plugin": "^1.5.4",
@@ -52,6 +57,7 @@
     "typescript": "^3.1.5",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.17",
+    "vuepress": "^0.14.4",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
