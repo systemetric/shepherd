@@ -2,13 +2,13 @@
     <div id="app">
         <template v-if="loaded">
             <Sidebar>
-            <ProjectList @create="createOpen = true" @delete="showDelete"/>
+            <ProjectList @create="openCreate" @delete="showDelete" @download="download"/>
         </Sidebar>
         <Editor/>
         <Sidebar>
             <Logs/>
         </Sidebar>
-        <CreateProjectDialog @close="createOpen = false" v-show="createOpen"/>
+        <CreateProjectDialog @close="closeCreate" v-show="createOpen"/>
         <DeleteProjectDialog :project="deleteProject" @close="deleteOpen = false" v-show="deleteOpen"/>
         </template>
         <div v-else class="empty-state">
@@ -21,10 +21,9 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapState } from "vuex";
-import { Project } from "./store";
+import { MUTATION_SET_CREATE_OPEN, Project, saveProject } from "./store";
 
 interface Data {
-  createOpen: boolean;
   deleteOpen: boolean;
   deleteProject: any;
 }
@@ -33,16 +32,24 @@ export default Vue.extend({
   name: "app",
   data(): Data {
     return {
-      createOpen: false,
       deleteOpen: false,
       deleteProject: undefined
     };
   },
-  computed: mapState(["loaded"]),
+  computed: mapState(["loaded", "createOpen"]),
   methods: {
+    openCreate() {
+      this.$store.commit(MUTATION_SET_CREATE_OPEN, true);
+    },
+    closeCreate() {
+      this.$store.commit(MUTATION_SET_CREATE_OPEN, false);
+    },
     showDelete(project: Project) {
       this.deleteProject = project;
       this.deleteOpen = true;
+    },
+    download(project: Project) {
+      saveProject(project);
     }
   }
 });

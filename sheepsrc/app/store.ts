@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import JSZip from "jszip";
 import { BlocksConfiguration } from "./components/editor/blockly/block-loader";
+import FileSaver from "file-saver";
 
 const _ = {
   startCase: require("lodash/startCase"),
@@ -14,6 +15,7 @@ export interface Project {
   filename: string;
   name: string;
   content: string;
+  lastSaveContent?: string;
   blocklyGenerated?: string;
 }
 
@@ -31,6 +33,9 @@ interface State {
   openProjects: Project[];
   currentProject?: Project;
   running: boolean;
+  saving: number;
+  createOpen: boolean;
+  uploadFileKeyPressId: number;
 }
 
 const MUTATION_SET_PROJECTS = "SET_PROJECTS";
@@ -40,6 +45,10 @@ export const MUTATION_UPDATE_PROJECT = "UPDATE_PROJECT";
 const MUTATION_CREATE_PROJECT = "CREATE_PROJECT";
 const MUTATION_DELETE_PROJECT = "DELETE_PROJECT";
 const MUTATION_SET_RUNNING = "SET_RUNNING";
+const MUTATION_SET_SAVING = "SET_SAVING";
+const MUTATION_MARK_PROJECT_SAVED = "MARK_SAVED";
+export const MUTATION_SET_CREATE_OPEN = "SET_CREATE_OPEN";
+export const MUTATION_SHOW_UPLOAD_DIALOG = "SHOW_UPLOAD_DIALOG";
 
 export const ACTION_FETCH_PROJECTS = "FETCH_PROJECTS";
 export const ACTION_OPEN_PROJECT = "OPEN_PROJECT";
@@ -72,6 +81,18 @@ function compareProjects(a: Project, b: Project): number {
   return a.filename < b.filename ? -1 : 1;
 }
 
+export function saveProject(p: Project) {
+  const ext = p.filename.substring(p.filename.lastIndexOf(".") + 1);
+  const mime =
+    ext === "py"
+      ? "application/x-python"
+      : ext === "xml"
+        ? "application/xml"
+        : "text/plain";
+  const blob = new Blob([p.content], { type: `${mime};charset=utf-8` });
+  FileSaver.saveAs(blob, p.filename);
+}
+
 export default new Vuex.Store<State>({
   state: {
     loaded: false,
@@ -80,7 +101,10 @@ export default new Vuex.Store<State>({
     openProjects: [],
     blocksConfiguration: undefined,
     currentProject: undefined,
-    running: false
+    running: false,
+    saving: 0,
+    createOpen: false,
+    uploadFileKeyPressId: 0
   },
   mutations: {
     [MUTATION_SET_PROJECTS](state: State, res: ProjectsResponse) {
@@ -126,10 +150,19 @@ export default new Vuex.Store<State>({
       state: State,
       {
         content,
-        blocklyGenerated
-      }: { content: string; blocklyGenerated?: string }
+        blocklyGenerated,
+        filename
+      }: { content: string; blocklyGenerated?: string; filename?: string }
     ) {
-      if (state.currentProject) {
+      if (filename) {
+        state.projects = state.projects.map(v => {
+          if (v.filename === filename) {
+            v.content = content;
+            v.blocklyGenerated = blocklyGenerated;
+          }
+          return v;
+        });
+      } else if (state.currentProject) {
         state.currentProject.content = content;
         state.currentProject.blocklyGenerated = blocklyGenerated;
       }
@@ -148,6 +181,29 @@ export default new Vuex.Store<State>({
     },
     [MUTATION_SET_RUNNING](state: State, running: boolean) {
       state.running = running;
+    },
+    [MUTATION_SET_SAVING](state: State, saving: boolean) {
+      state.saving += saving ? 1 : -1;
+    },
+    [MUTATION_MARK_PROJECT_SAVED](state: State, filename: string) {
+      const markSaved = (v: Project) => {
+        if (v.filename === filename) {
+          v.lastSaveContent = v.content;
+        }
+        return v;
+      };
+
+      if (state.currentProject && state.currentProject.filename) {
+        state.currentProject.lastSaveContent = state.currentProject.content;
+      }
+      state.projects = state.projects.map(markSaved);
+      state.openProjects = state.openProjects.map(markSaved);
+    },
+    [MUTATION_SET_CREATE_OPEN](state: State, open: boolean) {
+      state.createOpen = open;
+    },
+    [MUTATION_SHOW_UPLOAD_DIALOG](state: State) {
+      state.uploadFileKeyPressId++;
     }
   },
   actions: {
@@ -167,50 +223,82 @@ export default new Vuex.Store<State>({
     [ACTION_OPEN_PROJECT]({ state, commit, dispatch }, filename?: string) {
       if (state.currentProject)
         dispatch(ACTION_SAVE_PROJECT, state.currentProject.filename);
+      commit(MUTATION_MARK_PROJECT_SAVED, filename);
       commit(MUTATION_OPEN_PROJECT, filename);
     },
     [ACTION_CLOSE_PROJECT]({ commit, dispatch }, filename?: string) {
       dispatch(ACTION_SAVE_PROJECT, filename);
       commit(MUTATION_CLOSE_PROJECT, filename);
     },
-    [ACTION_SAVE_PROJECT]({ state }, filename?: string) {
+    [ACTION_SAVE_PROJECT]({ state, commit }, filename?: string) {
       if (!filename && state.currentProject)
         filename = state.currentProject.filename;
       const foundProject = state.projects.find(
         project => project.filename === filename
       );
       if (foundProject) {
+        if (foundProject.content === foundProject.lastSaveContent) return;
+        commit(MUTATION_SET_SAVING, true);
         return fetch(makeFullUrl(`/files/save/${foundProject.filename}`), {
           method: "POST",
           body: foundProject.content
+        }).then(res => {
+          setTimeout(() => {
+            commit(MUTATION_MARK_PROJECT_SAVED, filename);
+            commit(MUTATION_SET_SAVING, false);
+          }, 250);
+          return res;
         });
       }
       return Promise.resolve();
     },
     [ACTION_CREATE_PROJECT](
       { state, commit, dispatch },
-      { type, name }: { type: string; name: string }
+      {
+        type,
+        name,
+        filename,
+        loadContent
+      }: { type: string; name: string; filename: string; loadContent: string }
     ) {
-      const extension = type === "python" ? "py" : "xml";
-      const snakeName = _.snakeCase(name);
-      const filename = `${snakeName}.${extension}`;
+      if (filename) {
+        name = _.startCase(filename.substring(0, filename.lastIndexOf(".")));
+      } else {
+        const extension = type === "python" ? "py" : "xml";
+        const snakeName = _.snakeCase(name);
+        filename = `${snakeName}.${extension}`;
+        name = _.startCase(snakeName);
+      }
 
       const foundProject = state.projects.find(
         project => project.filename === filename
       );
       if (foundProject) {
-        alert("Project with that name already exists!");
-        return;
+        if (filename) {
+          commit(MUTATION_CLOSE_PROJECT, filename);
+          commit(MUTATION_UPDATE_PROJECT, {
+            filename: filename,
+            content: loadContent
+          });
+          dispatch(ACTION_SAVE_PROJECT, filename);
+          dispatch(ACTION_OPEN_PROJECT, filename);
+          return;
+        } else {
+          alert("Project with that name already exists!");
+          return;
+        }
       }
 
       const project: Project = {
-        name: _.startCase(snakeName),
+        name: name,
         filename: filename,
         content:
-          type === "python"
+          loadContent ||
+          (type === "python"
             ? ""
-            : '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
+            : '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>')
       };
+      //project.lastSaveContent = project.content;
 
       commit(MUTATION_CREATE_PROJECT, project);
       dispatch(ACTION_SAVE_PROJECT, project.filename);
@@ -225,14 +313,17 @@ export default new Vuex.Store<State>({
       }
       commit(MUTATION_DELETE_PROJECT, filename);
 
-      return fetch(makeFullUrl(`/files/save/${filename}`), {
+      return fetch(makeFullUrl(`/files/delete/${filename}`), {
         method: "DELETE"
       });
     },
-    async [ACTION_RUN_PROJECT]({ state, commit, dispatch }) {
+    async [ACTION_RUN_PROJECT]({ state, commit, dispatch }, noSave: boolean) {
+      if (state.running) return;
+
       if (state.currentProject) {
         commit(MUTATION_SET_RUNNING, true);
 
+        if (!noSave) saveProject(state.currentProject);
         await dispatch(ACTION_SAVE_PROJECT);
 
         const filename = state.currentProject.filename;

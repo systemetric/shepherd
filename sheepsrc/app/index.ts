@@ -2,7 +2,14 @@ import "./styles.scss";
 import "./prism";
 
 import Vue from "vue";
-import store, { ACTION_FETCH_PROJECTS } from "./store";
+import store, {
+  ACTION_FETCH_PROJECTS,
+  ACTION_RUN_PROJECT,
+  ACTION_SAVE_PROJECT,
+  ACTION_STOP_PROJECT,
+  MUTATION_SET_CREATE_OPEN,
+  MUTATION_SHOW_UPLOAD_DIALOG
+} from "./store";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlay, faStop } from "@fortawesome/pro-solid-svg-icons";
@@ -10,10 +17,21 @@ import {
   faPlus,
   faTrash,
   faSyncAlt,
-  faExclamationTriangle
+  faExclamationTriangle,
+  faUpload,
+  faDownload
 } from "@fortawesome/pro-regular-svg-icons";
 
-library.add(faPlay, faStop, faPlus, faTrash, faSyncAlt, faExclamationTriangle);
+library.add(
+  faPlay,
+  faStop,
+  faPlus,
+  faTrash,
+  faSyncAlt,
+  faExclamationTriangle,
+  faUpload,
+  faDownload
+);
 
 import App from "./App.vue";
 
@@ -73,3 +91,39 @@ store
     console.error(e);
     init();
   });
+
+window.addEventListener("keydown", e => {
+  if (e.key === "F5") {
+    e.preventDefault();
+    if (e.ctrlKey) {
+      // CTRL-F5: Stop
+      // noinspection JSIgnoredPromiseFromCall
+      store.dispatch(ACTION_STOP_PROJECT);
+    } else {
+      // F5: Run
+      // SHIFT-F5: Run without save as dialog
+      // noinspection JSIgnoredPromiseFromCall
+      store.dispatch(ACTION_RUN_PROJECT, e.shiftKey);
+    }
+  }
+
+  // CTRL-S: Save
+  if (e.ctrlKey && e.key === "s") {
+    e.preventDefault();
+    // noinspection JSIgnoredPromiseFromCall
+    store.dispatch(ACTION_SAVE_PROJECT);
+  }
+
+  // CTRL-ALT-N: New project
+  // Must be CTRL-ALT-N as apps can't override CTRL(-SHIFT)-N in Chrome
+  if (e.ctrlKey && e.altKey && e.key === "n") {
+    e.preventDefault();
+    store.commit(MUTATION_SET_CREATE_OPEN, true);
+  }
+
+  // CTRL-U: Upload
+  if (e.ctrlKey && e.key === "u") {
+    e.preventDefault();
+    store.commit(MUTATION_SHOW_UPLOAD_DIALOG);
+  }
+});

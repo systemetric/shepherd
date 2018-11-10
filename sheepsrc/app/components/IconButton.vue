@@ -1,5 +1,5 @@
 <template>
-    <a class="icon-button" @click.stop="$emit('click')">
+    <a class="icon-button" @click.stop="$emit('click', $event)" :title="tooltip">
         <slot></slot>
     </a>
 </template>
@@ -8,7 +8,12 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "icon-button"
+  name: "icon-button",
+  props: {
+    tooltip: {
+      type: String
+    }
+  }
 });
 </script>
 

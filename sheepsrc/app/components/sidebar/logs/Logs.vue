@@ -1,10 +1,10 @@
 <template>
     <div id="logs">
         <ProjectTab name="Logs" :header="true">
-            <IconButton v-if="currentProject && !currentProject.filename.endsWith('.json')" @click="run" :class="{disabled: running}">
+            <IconButton v-if="currentProject && !currentProject.filename.endsWith('.json')" @click="run" :class="{disabled: running}" tooltip="Run (F5)">
                 <FontAwesomeIcon :icon="running ? ['far', 'sync-alt'] : ['fas', 'play']" :spin="running"/>
             </IconButton>
-            <IconButton @click="stop">
+            <IconButton @click="stop" tooltip="Stop (CTRL-F5)">
                 <FontAwesomeIcon :icon="['fas', 'stop']"/>
             </IconButton>
         </ProjectTab>
@@ -24,10 +24,8 @@ export default Vue.extend({
   name: "logs",
   computed: mapState(["running", "currentProject"]),
   methods: {
-    run() {
-      if (!(this as any).running) {
-        return this.$store.dispatch(ACTION_RUN_PROJECT);
-      }
+    run(e: MouseEvent) {
+      return this.$store.dispatch(ACTION_RUN_PROJECT, e.shiftKey);
     },
     stop() {
       return this.$store.dispatch(ACTION_STOP_PROJECT);

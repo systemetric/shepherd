@@ -5,6 +5,7 @@
                 :key="project.filename"
                 :name="project.name"
                 :filename="project.filename"
+                :unsaved="project.content !== project.lastSaveContent"
                 :tab="true"/>
     </div>
 </template>
