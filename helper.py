@@ -28,8 +28,8 @@ while True:
                     img = img.resize((int(width*scale_x), int(height*scale_x)), Image.ANTIALIAS)
 
                 mod_time = stat_obj.st_mtime
-                img.save("/root/shepherd/shepherd/static/image.jpg","JPEG")
-                with open("/root/shepherd/shepherd/static/imgtime.txt", "w") as myfile:
+                img.save("/root/shepherd2/shepherd/static/image.jpg","JPEG")
+                with open("/root/shepherd2/shepherd/static/imgtime.txt", "w") as myfile:
                     myfile.write(str(mod_time))
             except IOError:
                 pass
