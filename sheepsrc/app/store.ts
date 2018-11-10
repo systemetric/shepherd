@@ -54,7 +54,7 @@ export function makeFullUrl(route: string, protocol?: string): string {
   if (!protocol) protocol = "http";
   let host = window.location.host;
   if (window.location.port === "8080") {
-    host = `${window.location.hostname}:5000`;
+    host = `${window.location.hostname}:80`;
   }
   return `${protocol}://${host}${route}`;
 }
