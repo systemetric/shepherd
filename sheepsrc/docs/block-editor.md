@@ -14,13 +14,13 @@ Here are some instructions on how to get started with Sheep, our Scratch-like In
 2. Click on the WiFi icon in the bottom right and connect to `robocon-TEAMXX` where `XX` is your team number.
 3. Navigate to <http://robot.go:1337> in your web browser of choice (Chrome or Firefox is recommended). You should see an interface similar to this:
 
-![The Interface](/images/sheep.png)
+![The Interface](./images/sheep.png)
 
 ## Blocks
 
 You should be able to see a set of tabs down the left side. Each tab contains a selection of blocks that you can use to build programs. Try clicking on the **Robot** tab. You should see something like this:
 
-![The Robot Tab](/images/robottab.png)
+![The Robot Tab](./images/robottab.png)
 
 Try dragging the **Move 1 metre(s)** block to the blank area on the screen.
 
@@ -46,7 +46,7 @@ Loops are just a way to run the same piece of code more than once. Click on the 
 
 You should end up with something like this:
 
-![Square Blocks](/images/square.png)
+![Square Blocks](./images/square.png)
 
 When you <span style="color: #4CAF50">**Run on Robot**</span> now, you should get a **square with side lengths of 1m**.
 

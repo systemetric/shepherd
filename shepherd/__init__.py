@@ -10,7 +10,7 @@ from flask_sockets import Sockets
 from flask_cors import CORS
 import RPi.GPIO as GPIO
 
-from shepherd.blueprints import upload, run, pyls, editor
+from shepherd.blueprints import upload, run, pyls, editor, staticroutes
 
 START_BUTTON_PIN = 5  # This is a BCM pin number (BCM0 corresponds to phys27).
 
@@ -64,6 +64,7 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
 app.register_blueprint(upload.blueprint, url_prefix="/upload")
 app.register_blueprint(run.blueprint, url_prefix="/run")
 app.register_blueprint(editor.blueprint, url_prefix="/files")
+app.register_blueprint(staticroutes.blueprint, url_prefix="/")
 sockets.register_blueprint(pyls.blueprint)
 
 

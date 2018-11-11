@@ -56,8 +56,12 @@ const docsSidebar = makeSidebar(path.resolve(__dirname, ".."), docsCategories);
 
 module.exports = {
   title: "Robocon",
-  base: "/static/docs/",
+  base: "/docs/",
   themeConfig: {
+    nav: [
+      { text: "Shepherd", link: "http://robot.go" },
+      { text: "Editor", link: "http://robot.go/editor" }
+    ],
     sidebar: {
       "/": docsSidebar
     }
