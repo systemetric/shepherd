@@ -1,9 +1,10 @@
+//TODO: split this into separate files at some point (see Vuex modules)
+
 import Vue from "vue";
 import Vuex from "vuex";
 import JSZip from "jszip";
 import { BlocksConfiguration } from "./components/editor/blockly/block-loader";
 import FileSaver from "file-saver";
-import * as monaco from "monaco-editor";
 import Ajv from "ajv";
 import blocksSchema from "./components/editor/monaco/json/schema.json";
 
