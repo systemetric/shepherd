@@ -1,6 +1,6 @@
 ---
-title: Scratch-like Interface
-category: Programming
+title: Motors
+category: Activities
 position: 1
 ---
 
