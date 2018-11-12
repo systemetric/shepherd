@@ -52,6 +52,8 @@ interface State {
   uploadFileKeyPressId: number;
   messages: Message[];
   messageCount: number;
+  textLog: string;
+  textLogOutputState: number;
 }
 
 const MUTATION_SET_PROJECTS = "SET_PROJECTS";
@@ -67,6 +69,8 @@ export const MUTATION_SET_CREATE_OPEN = "SET_CREATE_OPEN";
 export const MUTATION_SHOW_UPLOAD_DIALOG = "SHOW_UPLOAD_DIALOG";
 const MUTATION_SHOW_MESSAGE = "SHOW_MESSAGE";
 export const MUTATION_DISMISS_MESSAGE = "DISMISS_MESSAGE";
+const MUTATION_SET_TEXT_LOG = "SET_TEXT_LOG";
+const MUTATION_RESET_TEXT_LOG_OUTPUT = "RESET_TEXT_LOG_OUTPUT";
 
 export const ACTION_FETCH_PROJECTS = "FETCH_PROJECTS";
 export const ACTION_OPEN_PROJECT = "OPEN_PROJECT";
@@ -89,6 +93,9 @@ export function makeFullUrl(route: string, protocol?: string): string {
   if (window.location.port === "8080") {
     host = `${window.location.hostname}:80`;
   }
+
+  host = "192.168.137.2";
+
   return `${protocol}://${host}${route}`;
 }
 
@@ -130,7 +137,9 @@ export default new Vuex.Store<State>({
     createOpen: false,
     uploadFileKeyPressId: 0,
     messages: [],
-    messageCount: 0
+    messageCount: 0,
+    textLog: "",
+    textLogOutputState: 0
   },
   mutations: {
     [MUTATION_SET_PROJECTS](state: State, res: ProjectsResponse) {
@@ -249,6 +258,19 @@ export default new Vuex.Store<State>({
         }
         state.messages.splice(foundIndex, 1);
       }
+    },
+    [MUTATION_SET_TEXT_LOG](state: State, log: string) {
+      if (state.textLog !== log) {
+        if (state.textLogOutputState == 0) {
+          if (log.trim() === "") state.textLogOutputState = 1;
+        } else if (state.textLogOutputState == 1) {
+          if (log.trim() !== "") state.textLogOutputState = 2;
+        }
+      }
+      state.textLog = log;
+    },
+    [MUTATION_RESET_TEXT_LOG_OUTPUT](state: State) {
+      state.textLogOutputState = 0;
     }
   },
   actions: {
@@ -261,8 +283,26 @@ export default new Vuex.Store<State>({
               project.filename.substring(0, project.filename.lastIndexOf("."))
             );
           });
-
           commit(MUTATION_SET_PROJECTS, res);
+          return true;
+        })
+        .then((loaded: boolean) => {
+          if (loaded) {
+            const loadText = () => {
+              fetch(makeFullUrl("/run/output"))
+                .then(res => res.text())
+                .then(res => {
+                  commit(MUTATION_SET_TEXT_LOG, res);
+                  setTimeout(() => loadText(), 1000);
+                })
+                .catch(e => {
+                  console.error(e);
+                  e.text = "Unable to load logs!";
+                  setTimeout(() => loadText(), 1000);
+                });
+            };
+            loadText();
+          }
         });
     },
     [ACTION_OPEN_PROJECT]({ state, commit, dispatch }, filename?: string) {
@@ -451,21 +491,26 @@ export default new Vuex.Store<State>({
             uploadFormData.append("uploaded_file", blob, "code.zip");
 
             dispatch(ACTION_SHOW_MESSAGE, {
-              id: "RUNNING"
-            });
-
-            dispatch(ACTION_SHOW_MESSAGE, {
               id: MESSAGE_RUN,
               message: "Running on Robot...",
               icon: "info-circle"
             });
+            commit(MUTATION_RESET_TEXT_LOG_OUTPUT);
 
             return fetch(makeFullUrl(`/upload/upload`), {
               method: "POST",
               body: uploadFormData
             });
           })
-          .then(() => wait(500))
+          .then(async () => {
+            let i = 0;
+            while (state.textLogOutputState !== 2) {
+              await wait(500);
+              i++;
+              if (i == 10) break;
+            }
+            await wait(1000);
+          })
           .then(() => {
             const runFormData = new FormData();
             runFormData.append("zone", "0");
