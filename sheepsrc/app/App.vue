@@ -15,6 +15,7 @@
             <FontAwesomeIcon :icon="['far', 'exclamation-triangle']" size="10x"/>
             <h2>Unable to connect to Shepherd!</h2>
         </div>
+        <Messages/>
     </div>
 </template>
 

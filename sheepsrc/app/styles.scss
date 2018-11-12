@@ -1,4 +1,5 @@
 @import "../node_modules/minireset.css/minireset.css";
+@import "variables";
 
 body {
   background-color: #1e1e1e;
@@ -42,4 +43,12 @@ button {
     background-color: transparent;
     opacity: 0.5;
   }
+}
+
+.close {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url($close) 50% no-repeat;
+  cursor: pointer;
 }

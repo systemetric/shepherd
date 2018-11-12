@@ -26,7 +26,7 @@ app.secret_key = os.urandom(32)
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MiB
-app.config["SHEPHERD_USER_CODE_PATH"] = os.path.join("/", "opt", "shepherd")
+# app.config["SHEPHERD_USER_CODE_PATH"] = os.path.join("/", "opt", "shepherd")
 app.config["SHEPHERD_USER_CODE_PATH"] = os.path.join(os.getcwd(), "usercode")
 app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"] = "main.py"
 app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"] = os.path.join(app.config["SHEPHERD_USER_CODE_PATH"], app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"])

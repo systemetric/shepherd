@@ -19,7 +19,9 @@ import {
   faSyncAlt,
   faExclamationTriangle,
   faUpload,
-  faDownload
+  faDownload,
+  faInfoCircle,
+  faExclamationCircle
 } from "@fortawesome/pro-regular-svg-icons";
 
 library.add(
@@ -28,7 +30,9 @@ library.add(
   faPlus,
   faTrash,
   faSyncAlt,
+  faInfoCircle,
   faExclamationTriangle,
+  faExclamationCircle,
   faUpload,
   faDownload
 );
@@ -36,6 +40,7 @@ library.add(
 import App from "./App.vue";
 
 import IconButton from "./components/IconButton.vue";
+import Messages from "./components/Messages.vue";
 import Editor from "./components/editor/Editor.vue";
 import Tabs from "./components/editor/Tabs.vue";
 import Monaco from "./components/editor/monaco/Monaco.vue";
@@ -56,6 +61,7 @@ import Prism from "vue-prism-component";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 Vue.component("IconButton", IconButton);
+Vue.component("Messages", Messages);
 Vue.component("Editor", Editor);
 Vue.component("Tabs", Tabs);
 Vue.component("Monaco", Monaco);

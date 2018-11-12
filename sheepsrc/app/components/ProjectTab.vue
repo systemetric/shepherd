@@ -64,7 +64,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-$close: "data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.428 8L12 10.573 10.572 12 8 9.428 5.428 12 4 10.573 6.572 8 4 5.428 5.427 4 8 6.572 10.573 4 12 5.428 9.428 8z' fill='%23E8E8E8'/%3E%3C/svg%3E";
+@import "../variables";
 
 .file,
 .header {
@@ -131,11 +131,7 @@ $close: "data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='16' viewBox=
     min-width: fit-content;
 
     .close {
-      width: 16px;
-      height: 16px;
       opacity: 0;
-
-      background: url($close) 50% no-repeat;
 
       &.unsaved {
         opacity: 1;

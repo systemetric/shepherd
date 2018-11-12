@@ -8,6 +8,7 @@ import { mapState } from "vuex";
 import * as monaco from "monaco-editor";
 
 import registerPythonLanguage from "./python/language";
+import "./json/language";
 import {
   ACTION_SAVE_PROJECT,
   MUTATION_UPDATE_PROJECT,

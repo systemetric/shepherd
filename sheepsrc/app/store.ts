@@ -3,6 +3,12 @@ import Vuex from "vuex";
 import JSZip from "jszip";
 import { BlocksConfiguration } from "./components/editor/blockly/block-loader";
 import FileSaver from "file-saver";
+import * as monaco from "monaco-editor";
+import Ajv from "ajv";
+import blocksSchema from "./components/editor/monaco/json/schema.json";
+
+const ajv = new Ajv();
+const validateBlocks = ajv.compile(blocksSchema);
 
 const _ = {
   startCase: require("lodash/startCase"),
@@ -25,6 +31,13 @@ interface ProjectsResponse {
   blocks: BlocksConfiguration;
 }
 
+interface Message {
+  id: string | number;
+  message: string;
+  icon: "info-circle" | "exclamation-triangle" | "exclamation-circle";
+  timeout?: any;
+}
+
 interface State {
   loaded: boolean;
   main: string;
@@ -36,6 +49,8 @@ interface State {
   saving: number;
   createOpen: boolean;
   uploadFileKeyPressId: number;
+  messages: Message[];
+  messageCount: number;
 }
 
 const MUTATION_SET_PROJECTS = "SET_PROJECTS";
@@ -49,6 +64,8 @@ const MUTATION_SET_SAVING = "SET_SAVING";
 const MUTATION_MARK_PROJECT_SAVED = "MARK_SAVED";
 export const MUTATION_SET_CREATE_OPEN = "SET_CREATE_OPEN";
 export const MUTATION_SHOW_UPLOAD_DIALOG = "SHOW_UPLOAD_DIALOG";
+const MUTATION_SHOW_MESSAGE = "SHOW_MESSAGE";
+export const MUTATION_DISMISS_MESSAGE = "DISMISS_MESSAGE";
 
 export const ACTION_FETCH_PROJECTS = "FETCH_PROJECTS";
 export const ACTION_OPEN_PROJECT = "OPEN_PROJECT";
@@ -58,6 +75,12 @@ export const ACTION_CREATE_PROJECT = "CREATE_PROJECT";
 export const ACTION_DELETE_PROJECT = "DELETE_PROJECT";
 export const ACTION_RUN_PROJECT = "RUN_PROJECT";
 export const ACTION_STOP_PROJECT = "STOP_PROJECT";
+export const ACTION_SHOW_MESSAGE = "SHOW_MESSAGE";
+
+const MESSAGE_RUN = "RUN";
+const MESSAGE_STOP = "STOP";
+const MESSAGE_SAVED = "SAVED";
+const MESSAGE_JSON_ERROR = "JSON_ERROR";
 
 export function makeFullUrl(route: string, protocol?: string): string {
   if (!protocol) protocol = "http";
@@ -104,7 +127,9 @@ export default new Vuex.Store<State>({
     running: false,
     saving: 0,
     createOpen: false,
-    uploadFileKeyPressId: 0
+    uploadFileKeyPressId: 0,
+    messages: [],
+    messageCount: 0
   },
   mutations: {
     [MUTATION_SET_PROJECTS](state: State, res: ProjectsResponse) {
@@ -204,6 +229,25 @@ export default new Vuex.Store<State>({
     },
     [MUTATION_SHOW_UPLOAD_DIALOG](state: State) {
       state.uploadFileKeyPressId++;
+    },
+    [MUTATION_SHOW_MESSAGE](state: State, { id, message, icon }: Message) {
+      const foundIndex = state.messages.findIndex(test => test.id === id);
+      if (foundIndex >= 0) {
+        state.messages[foundIndex].message = message;
+        state.messages[foundIndex].icon = icon;
+      } else {
+        state.messages.push({ id, message, icon });
+      }
+      state.messageCount++;
+    },
+    [MUTATION_DISMISS_MESSAGE](state: State, id: string | number) {
+      const foundIndex = state.messages.findIndex(test => test.id === id);
+      if (foundIndex >= 0) {
+        if (state.messages[foundIndex].timeout) {
+          clearTimeout(state.messages[foundIndex].timeout);
+        }
+        state.messages.splice(foundIndex, 1);
+      }
     }
   },
   actions: {
@@ -230,14 +274,44 @@ export default new Vuex.Store<State>({
       dispatch(ACTION_SAVE_PROJECT, filename);
       commit(MUTATION_CLOSE_PROJECT, filename);
     },
-    [ACTION_SAVE_PROJECT]({ state, commit }, filename?: string) {
-      if (!filename && state.currentProject)
+    [ACTION_SAVE_PROJECT]({ state, commit, dispatch }, filename?: string) {
+      if (!filename && state.currentProject) {
         filename = state.currentProject.filename;
+      }
       const foundProject = state.projects.find(
         project => project.filename === filename
       );
       if (foundProject) {
         if (foundProject.content === foundProject.lastSaveContent) return;
+
+        if (foundProject.filename.endsWith(".json")) {
+          let parsed;
+          try {
+            parsed = JSON.parse(foundProject.content);
+          } catch (e) {
+            dispatch(ACTION_SHOW_MESSAGE, {
+              id: MESSAGE_JSON_ERROR,
+              message:
+                "Unable to save block definitions! Failed to parse JSON!",
+              icon: "exclamation-circle"
+            });
+            return;
+          }
+          const valid = validateBlocks(parsed);
+          if (!valid && validateBlocks.errors) {
+            console.log(validateBlocks.errors);
+            const error = validateBlocks.errors[0];
+            dispatch(ACTION_SHOW_MESSAGE, {
+              id: MESSAGE_JSON_ERROR,
+              message: `Unable to save block definitions! At ${
+                error.dataPath
+              }, ${error.message}`,
+              icon: "exclamation-circle"
+            });
+            return;
+          }
+        }
+
         commit(MUTATION_SET_SAVING, true);
         return fetch(makeFullUrl(`/files/save/${foundProject.filename}`), {
           method: "POST",
@@ -246,6 +320,11 @@ export default new Vuex.Store<State>({
           setTimeout(() => {
             commit(MUTATION_MARK_PROJECT_SAVED, filename);
             commit(MUTATION_SET_SAVING, false);
+            dispatch(ACTION_SHOW_MESSAGE, {
+              id: MESSAGE_SAVED,
+              message: `${foundProject.name} saved!`,
+              icon: "info-circle"
+            });
           }, 250);
           return res;
         });
@@ -370,6 +449,16 @@ export default new Vuex.Store<State>({
             const uploadFormData = new FormData();
             uploadFormData.append("uploaded_file", blob, "code.zip");
 
+            dispatch(ACTION_SHOW_MESSAGE, {
+              id: "RUNNING"
+            });
+
+            dispatch(ACTION_SHOW_MESSAGE, {
+              id: MESSAGE_RUN,
+              message: "Running on Robot...",
+              icon: "info-circle"
+            });
+
             return fetch(makeFullUrl(`/upload/upload`), {
               method: "POST",
               body: uploadFormData
@@ -393,10 +482,29 @@ export default new Vuex.Store<State>({
           });
       }
     },
-    [ACTION_STOP_PROJECT]() {
+    [ACTION_STOP_PROJECT]({ dispatch }) {
+      dispatch(ACTION_SHOW_MESSAGE, {
+        id: MESSAGE_STOP,
+        message: "Robot stopped!",
+        icon: "info-circle"
+      });
+
       return fetch(makeFullUrl(`/run/stop`), {
         method: "POST"
       });
+    },
+    [ACTION_SHOW_MESSAGE]({ commit, state }, message: Message) {
+      message.id = message.id || state.messageCount;
+      let foundIndex = state.messages.findIndex(test => test.id === message.id);
+      if (foundIndex >= 0) {
+        clearTimeout(state.messages[foundIndex].timeout);
+      } else {
+        foundIndex = state.messages.length;
+      }
+      commit(MUTATION_SHOW_MESSAGE, message);
+      state.messages[foundIndex].timeout = setTimeout(() => {
+        commit(MUTATION_DISMISS_MESSAGE, message.id);
+      }, 5000);
     }
   }
 });
