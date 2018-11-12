@@ -34,16 +34,22 @@
                 "Turn",
                 {
                     "id": "angle",
-                    "type": "angle",
+                    "type": "number",
                     "default": 90
-                }
+                },
+                "degree(s)"
             ],
             "template": "move(<%= angle %>)"
         },
         {
-            "id": "find_cube",
-            "definition": "Find cube",
-            "template": "find_cube()"
+            "id": "turn_to_cube",
+            "definition": "Turn to cube",
+            "template": "turn_to_cube()"
+        },
+        {
+            "id": "move_to_cube",
+            "definition": "Move to cube",
+            "template": "move_to_cube()"
         }
     ]
 }

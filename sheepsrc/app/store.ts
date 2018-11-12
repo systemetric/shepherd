@@ -93,9 +93,7 @@ export function makeFullUrl(route: string, protocol?: string): string {
   if (window.location.port === "8080") {
     host = `${window.location.hostname}:80`;
   }
-
-  host = "192.168.137.2";
-
+  //host = "192.168.137.2";
   return `${protocol}://${host}${route}`;
 }
 
