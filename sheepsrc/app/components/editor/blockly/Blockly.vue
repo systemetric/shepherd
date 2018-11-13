@@ -16,7 +16,9 @@ import {
   Project
 } from "../../../store";
 const Blockly = require("node-blockly/browser");
-import loadBlocks from "./block-loader";
+import loadBlocks from "./blocks";
+import loadCustomBlocks from "./block-loader";
+import toolbox from "./toolbox.xml";
 
 interface Data {
   workspace?: any;
@@ -48,114 +50,15 @@ export default Vue.extend({
     }
   },
   mounted() {
-    const robotToolbox = loadBlocks(
+    loadBlocks(Blockly);
+
+    /*const robotToolbox = loadCustomBlocks(
       Blockly,
       (this as any).blocksConfiguration.blocks
-    );
+    );*/
 
     this.workspace = Blockly.inject(this.$refs.blockly, {
-      toolbox: `<xml id="toolbox">
-  <category name="Text">
-    <block type="text"></block>
-    <block type="text_print"></block>
-  </category>
-  <category name="Logic">
-    <block type="controls_if"></block>
-    <block type="logic_compare"></block>
-    <block type="logic_operation"></block>
-    <block type="logic_negate"></block>
-    <block type="logic_boolean"></block>
-    <block type="logic_null"></block>
-    <block type="logic_ternary"></block>
-  </category>
-  <category name="Loops">
-    <block type="controls_repeat_ext">
-      <value name="TIMES">
-        <block type="math_number">
-          <field name="NUM">10</field>
-        </block>
-      </value>
-    </block>
-    <block type="controls_whileUntil"></block>
-    <block type="controls_for">
-      <field name="VAR">i</field>
-      <value name="FROM">
-        <block type="math_number">
-          <field name="NUM">1</field>
-        </block>
-      </value>
-      <value name="TO">
-        <block type="math_number">
-          <field name="NUM">10</field>
-        </block>
-      </value>
-      <value name="BY">
-        <block type="math_number">
-          <field name="NUM">1</field>
-        </block>
-      </value>
-    </block>
-    <block type="controls_forEach"></block>
-    <block type="controls_flow_statements"></block>
-  </category>
-  <category name="Math">
-    <block type="math_number"></block>
-    <block type="math_arithmetic"></block>
-    <block type="math_single"></block>
-    <block type="math_trig"></block>
-    <block type="math_constant"></block>
-    <block type="math_number_property"></block>
-    <block type="math_round"></block>
-    <block type="math_on_list"></block>
-    <block type="math_modulo"></block>
-    <block type="math_constrain">
-      <value name="LOW">
-        <block type="math_number">
-          <field name="NUM">1</field>
-        </block>
-      </value>
-      <value name="HIGH">
-        <block type="math_number">
-          <field name="NUM">100</field>
-        </block>
-      </value>
-    </block>
-    <block type="math_random_int">
-      <value name="FROM">
-        <block type="math_number">
-          <field name="NUM">1</field>
-        </block>
-      </value>
-      <value name="TO">
-        <block type="math_number">
-          <field name="NUM">100</field>
-        </block>
-      </value>
-    </block>
-    <block type="math_random_float"></block>
-  </category>
-  <category name="Lists">
-    <block type="lists_create_empty"></block>
-    <block type="lists_create_with"></block>
-    <block type="lists_repeat">
-      <value name="NUM">
-        <block type="math_number">
-          <field name="NUM">5</field>
-        </block>
-      </value>
-    </block>
-    <block type="lists_length"></block>
-    <block type="lists_isEmpty"></block>
-    <block type="lists_indexOf"></block>
-    <block type="lists_getIndex"></block>
-    <block type="lists_setIndex"></block>
-  </category>
-  <category name="Variables" custom="VARIABLE"></category>
-  <sep></sep>
-  <category name="Robot">
-    ${robotToolbox}
-  </category>
-</xml>`,
+      toolbox: toolbox,
       trashcan: false
     });
     window.addEventListener("resize", this.onResize, false);
@@ -166,7 +69,14 @@ export default Vue.extend({
     // noinspection TypeScriptUnresolvedFunction
     this.workspace.addChangeListener(() => {
       // noinspection TypeScriptUnresolvedFunction
-      this.code = Blockly.Python.workspaceToCode(this.workspace);
+      this.code = `from __future__ import print_function
+from robot import *
+import time
+
+R = Robot()
+
+${Blockly.Python.workspaceToCode(this.workspace)}
+`;
 
       if (this.saveTimeout) clearTimeout(this.saveTimeout);
       if (this.workspace) {
@@ -246,7 +156,7 @@ export default Vue.extend({
 }
 
 #blockly-output {
-  width: $sidebar-width;
+  width: $sidebar-width * 1.5;
   height: 100%;
   background-color: #1e1e1e;
 }
@@ -277,6 +187,7 @@ export default Vue.extend({
 
   .blocklyTreeSeparator {
     border-bottom-color: #333333;
+    border-left-color: #333333 !important;
   }
 
   .blocklyScrollbarHandle {

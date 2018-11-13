@@ -2,10 +2,10 @@
     <div id="logs">
         <ProjectTab name="Logs" :header="true">
             <IconButton v-if="currentProject && !currentProject.filename.endsWith('.json')" @click="run" :class="{disabled: running}" tooltip="Run (F5)">
-                <FontAwesomeIcon :icon="running ? ['far', 'sync-alt'] : ['fas', 'play']" :spin="running"/>
+                <FontAwesomeIcon :icon="running ? ['far', 'sync-alt'] : ['fas', 'play']" :spin="running" class="run-button"/>
             </IconButton>
             <IconButton @click="stop" tooltip="Stop (CTRL-F5)">
-                <FontAwesomeIcon :icon="['fas', 'stop']"/>
+                <FontAwesomeIcon :icon="['fas', 'stop']" class="stop-button"/>
             </IconButton>
         </ProjectTab>
         <Camera/>
@@ -45,6 +45,14 @@ export default Vue.extend({
     overflow-y: scroll;
 
     @include scrollbar();
+  }
+
+  .run-button path {
+    fill: #5ba55b;
+  }
+
+  .stop-button path {
+    fill: #a55b5b;
   }
 }
 </style>

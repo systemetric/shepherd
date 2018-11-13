@@ -145,7 +145,8 @@ export default new Vuex.Store<State>({
       state.main = res.main;
       state.projects = res.projects.filter(
         test =>
-          window.location.hash === "#blocks" || test.filename !== "blocks.json"
+          /*window.location.hash === "#blocks" ||*/ test.filename !==
+          "blocks.json"
       );
       state.projects.sort(compareProjects);
       state.blocksConfiguration = res.blocks;
@@ -456,9 +457,10 @@ export default new Vuex.Store<State>({
             blocks: []
           };
 
-          const generated = `${blocksConfiguration.header}\n${
+          /*const generated = `${blocksConfiguration.header}\n${
             state.currentProject.blocklyGenerated
-          }\n${blocksConfiguration.footer}`;
+          }\n${blocksConfiguration.footer}`;*/
+          const generated = state.currentProject.blocklyGenerated;
 
           zip.file("main.py", generated || "");
 
