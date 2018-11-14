@@ -156,7 +156,7 @@ ${Blockly.Python.workspaceToCode(this.workspace)}
 }
 
 #blockly-output {
-  width: $sidebar-width * 1.5;
+  width: $sidebar-width;
   height: 100%;
   background-color: #1e1e1e;
 }
