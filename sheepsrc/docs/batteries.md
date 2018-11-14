@@ -12,7 +12,7 @@ Your kit will come with several pieces of battery related equipment:
 Two 11.1V 2200mAh LiPo Batteries.
  One battery charger.
  One battery charging bag.
- You must not use any batteries, chargers, bags or cables **not** explicitly authorised by **Hills Road RoboCon**. If you have any doubts or wish to request permission to use a battery, charger, charging bag or battery cable not provided by **Hills Road RoboCon**, please contact <mailto:robotics@hrsfc.ac.uk>.
+ You must not use any batteries, chargers, bags or cables **not** explicitly authorised by **Hills Road RoboCon**. If you have any doubts or wish to request permission to use a battery, charger, charging bag or battery cable not provided by **Hills Road RoboCon**, please contact [robotics@hrsfc.ac.uk](mailto:robotics@hrsfc.ac.uk).
 
 :::warning
 
@@ -20,7 +20,7 @@ Two 11.1V 2200mAh LiPo Batteries.
 * Always place the batteries in the provided charging bag when charging or storing.
 * Do not charge or use a damaged battery.
 * Do not tamper with the battery wires.
-* If a battery has any cuts, nicks, exposed copper on wires or is bulging, contact <mailto:robotics@hrsfc.ac.uk> immediately.
+* If a battery has any cuts, nicks, exposed copper on wires or is bulging, contact [robotics@hrsfc.ac.uk](mailto:robotics@hrsfc.ac.uk) immediately.
 
 :::
 
@@ -38,7 +38,7 @@ During operation, the battery is protected by over-current protection by a regul
 
 :::warning
 
-Do **NOT**, under any circumstances, bypass or replace the fuse. If the fuse has blown then the power board has failed and **must** be replaced for safe operation. If you suspect the fuse has blown then please contact <mailto:robotics@hrsfc.ac.uk> straight away.
+Do **NOT**, under any circumstances, bypass or replace the fuse. If the fuse has blown then the power board has failed and **must** be replaced for safe operation. If you suspect the fuse has blown then please contact [robotics@hrsfc.ac.uk](mailto:robotics@hrsfc.ac.uk) straight away.
 
 :::
 
