@@ -282,7 +282,7 @@ function loadVisionBlocks(Blockly) {
       this.appendValueInput("MARKER")
         .setCheck("Marker")
         .appendField("Distance to");
-      this.setInputsInline(true);
+      this.setInputsInline(false);
       this.setOutput(true, "Number");
       this.setColour(90);
       this.setTooltip("");
@@ -295,7 +295,7 @@ function loadVisionBlocks(Blockly) {
       this.appendValueInput("MARKER")
         .setCheck("Marker")
         .appendField("Angle to");
-      this.setInputsInline(true);
+      this.setInputsInline(false);
       this.setOutput(true, "Number");
       this.setColour(90);
       this.setTooltip("");
@@ -308,7 +308,7 @@ function loadVisionBlocks(Blockly) {
       this.appendValueInput("MARKER")
         .setCheck("Marker")
         .appendField("Marker type of");
-      this.setInputsInline(true);
+      this.setInputsInline(false);
       this.setOutput(true, "MarkerType");
       this.setColour(90);
       this.setTooltip("");
@@ -321,7 +321,7 @@ function loadVisionBlocks(Blockly) {
       this.appendValueInput("MARKER")
         .setCheck("Token")
         .appendField("Token type of");
-      this.setInputsInline(true);
+      this.setInputsInline(false);
       this.setOutput(true, "TokenType");
       this.setColour(90);
       this.setTooltip("");
