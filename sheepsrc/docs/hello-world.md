@@ -9,7 +9,7 @@ Welcome to the tutorials of Robocon 2019!
 
 Following each of the tasks in this category will start you on your way to getting your robot doing stuff.
 
-Ready? Lets go!
+Ready? Let's go!
 
 > These tutorials will always assume that you have connected to the robot,  started on the homepage and completed the previous tutorials. To find out how to connect to your robot click \*Link to the connecting docs\*
 

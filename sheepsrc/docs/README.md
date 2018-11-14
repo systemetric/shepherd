@@ -8,4 +8,4 @@ position: 1
 
 Welcome to the docs for Robocon 2019!
 
-We're going to be adding more content when it's ready, but for now, why not look at the [tutorial](/block-editor.html) for our Scratch-like interface: Sheep. 🐑
+You'll first need to [connect to your robot](/connecting.html).
