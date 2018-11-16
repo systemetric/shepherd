@@ -7,7 +7,7 @@ position: 2
 # Uploading and Running code on the Robot
 
 If you've already got some code you want to run on the robot, or you prefer to code in another application you'll need
-to follow these steps when uploading and running code on the robot.
+to follow these steps when uploading and running code on the robot. If not, we **strongly** recommend [using the editor](/editor.md).
 
 ## Upload
 

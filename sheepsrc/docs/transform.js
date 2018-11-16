@@ -17,5 +17,21 @@ fs.readdirSync(__dirname)
     // Make image urls relative
     data = data.replace(/]\(\/images\//g, "](./images/");
 
+    // Remove PI_REMOVE sections
+    data = data.replace(/<!--PI_REMOVE-->[\s\S]*<!--END_PI_REMOVE-->/g, "");
+
+    // Add PI_EXTERNAL_LINK_WARNING
+    data = data.replace(
+      /<!--PI_EXTERNAL_LINK_WARNING-->/g,
+      [
+        ":::danger",
+        "These links won't work when you're connected to your Robot.",
+        ":::"
+      ].join("\n")
+    );
+
+    // Transform PDF links
+    data = data.replace(/]\(\/(.*)\.pdf\)/g, "](/docs/$1.pdf)");
+
     fs.writeFileSync(filePath, data, { encoding: "utf8" });
   });

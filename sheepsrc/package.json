@@ -4,7 +4,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "build": "rimraf ../shepherd/blueprints/staticroutes/editor/*.* && cross-env NODE_ENV=production webpack --progress --config webpack.config.js",
-    "vuepress:update": "rimraf ./docs/full && rimraf ./docs/*.md && git clone --single-branch -b dev --depth 1 https://github.com/systemetric/hr-robocon.org ./docs/full && cpy ./docs/full/docs/*.md ./docs/ && cpy ./docs/full/.vuepress/public/images/*.* ./docs/images/ && cpy ./docs/full/.vuepress/categories.json ./docs/.vuepress/ && node ./docs/transform.js && rimraf ./docs/full",
+    "vuepress:update": "rimraf ./docs/full && rimraf ./docs/*.md && git clone --single-branch -b dev --depth 1 https://github.com/systemetric/hr-robocon.org ./docs/full && cpy ./docs/full/docs/*.md ./docs/ && cpy ./docs/full/.vuepress/public/images/*.* ./docs/images/ && cpy ./docs/full/.vuepress/categories.json ./docs/.vuepress/ && cpy ./docs/full/.vuepress/public/*.pdf ./docs/.vuepress/public && node ./docs/transform.js && rimraf ./docs/full",
     "vuepress:dev": "vuepress dev docs",
     "vuepress:build": "vuepress build docs --dest ../shepherd/blueprints/staticroutes/docs/",
     "updatebuild": "npm run vuepress:update && npm run vuepress:build && npm run build"

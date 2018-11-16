@@ -6,6 +6,8 @@ position: 1
 
 # Getting Started
 
-Welcome to the docs for Robocon 2019!
+Welcome to the docs for **Robocon 2019**!
 
-We're going to be adding more content when it's ready, but for now, why not look at the [tutorial](/block-editor.html) for our Scratch-like interface: Sheep. 🐑
+We suggest you first get familiar with the [rules](/rules.md). Once you've done that, you'll need to [connect to your robot](/connecting.md).
+
+

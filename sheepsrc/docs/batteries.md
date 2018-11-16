@@ -5,6 +5,8 @@ position: 1
 ---
 ![Zippy Compact 2200mAh battery](./images/63391_m_1__6.jpg)
 
+# Batteries
+
 The electronics kit contains two lithium-ion polymer (LiPo) batteries. These are similar to those used in laptops, and are small and light for the amount of energy they contain. This is great for your robot but it is vital to treat such a high concentration of energy with respect. If you do not, there is a serious risk of fire and injury. To avoid this, you should follow the safety information on this page closely, at all times.
 
 Your kit will come with several pieces of battery related equipment:
@@ -12,7 +14,7 @@ Your kit will come with several pieces of battery related equipment:
 Two 11.1V 2200mAh LiPo Batteries.
  One battery charger.
  One battery charging bag.
- You must not use any batteries, chargers, bags or cables **not** explicitly authorised by **Hills Road RoboCon**. If you have any doubts or wish to request permission to use a battery, charger, charging bag or battery cable not provided by **Hills Road RoboCon**, please contact <mailto:robotics@hrsfc.ac.uk>.
+ You must not use any batteries, chargers, bags or cables **not** explicitly authorised by **Hills Road RoboCon**. If you have any doubts or wish to request permission to use a battery, charger, charging bag or battery cable not provided by **Hills Road RoboCon**, please contact [robotics@hrsfc.ac.uk](mailto:robotics@hrsfc.ac.uk).
 
 :::warning
 
@@ -20,7 +22,7 @@ Two 11.1V 2200mAh LiPo Batteries.
 * Always place the batteries in the provided charging bag when charging or storing.
 * Do not charge or use a damaged battery.
 * Do not tamper with the battery wires.
-* If a battery has any cuts, nicks, exposed copper on wires or is bulging, contact <mailto:robotics@hrsfc.ac.uk> immediately.
+* If a battery has any cuts, nicks, exposed copper on wires or is bulging, contact [robotics@hrsfc.ac.uk](mailto:robotics@hrsfc.ac.uk) immediately.
 
 :::
 
@@ -38,7 +40,7 @@ During operation, the battery is protected by over-current protection by a regul
 
 :::warning
 
-Do **NOT**, under any circumstances, bypass or replace the fuse. If the fuse has blown then the power board has failed and **must** be replaced for safe operation. If you suspect the fuse has blown then please contact <mailto:robotics@hrsfc.ac.uk> straight away.
+Do **NOT**, under any circumstances, bypass or replace the fuse. If the fuse has blown then the power board has failed and **must** be replaced for safe operation. If you suspect the fuse has blown then please contact [robotics@hrsfc.ac.uk](mailto:robotics@hrsfc.ac.uk) straight away.
 
 :::
 
