@@ -37,7 +37,7 @@ markers = R.see()
 |-|-|
 |`marker.dist`|Distance to the marker in metres|
 |`marker.rot_y`|Angle to the marker in degrees|
-|`marker.info.code`|Code of the marker|
+|`marker.info.code`|Numeric code of the marker|
 |`marker.info.marker_type`|One of `MARKER_ARENA` or `MARKER_TOKEN`|
 |`marker.info.token_type`|One of `TOKEN_NONE`, `TOKEN_ORE`, `TOKEN_GOLD`, or `TOKEN_FOOLS_GOLD`|
 
@@ -48,7 +48,6 @@ import robot
 
 R = robot.Robot()
 
-# see below for more info on what markers is
 markers = R.see()
 
 for marker in markers:
