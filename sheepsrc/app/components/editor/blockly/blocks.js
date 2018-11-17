@@ -82,6 +82,17 @@ function loadMovementBlocks(Blockly) {
     }
   };
 
+  Blockly.Blocks["motors_safety_override"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Enable motor safety override");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(0);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
   Blockly.Blocks["servo_set_position"] = {
     init: function() {
       this.appendDummyInput()
@@ -159,6 +170,10 @@ function loadMovementBlocks(Blockly) {
 
   Blockly.Python["motors_reset"] = function() {
     return "R.motors[1] = 0\nR.motors[2] = 0\n";
+  };
+
+  Blockly.Python["motors_safety_override"] = function() {
+    return "R.motors.safety_override = True\n";
   };
 
   Blockly.Python["servo_set_position"] = function(block) {
@@ -269,7 +284,19 @@ function loadGPIOBlocks(Blockly) {
 function loadVisionBlocks(Blockly) {
   Blockly.Blocks["vision_see"] = {
     init: function() {
-      this.appendDummyInput().appendField("Visible markers");
+      this.appendDummyInput()
+        .appendField("Visible markers at")
+        .appendField(
+          new Blockly.FieldDropdown([
+            ["640x480", "(640, 480)"],
+            ["1296x736", "(1296, 736)"],
+            ["1296x976", "(1296, 976)"],
+            ["1920x1088", "(1920, 1088)"],
+            ["1920x1440", "(1920, 1440)"]
+          ]),
+          "VISION_RESOLUTION"
+        )
+        .appendField("px");
       this.setOutput(true, "Array");
       this.setColour(90);
       this.setTooltip("");
@@ -379,8 +406,9 @@ function loadVisionBlocks(Blockly) {
     }
   };
 
-  Blockly.Python["vision_see"] = function() {
-    const code = "R.see()";
+  Blockly.Python["vision_see"] = function(block) {
+    const dropdown_vision_resolution = block.getFieldValue("VISION_RESOLUTION");
+    const code = `R.see(res=${dropdown_vision_resolution})`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 
