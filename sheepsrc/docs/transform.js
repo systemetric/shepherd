@@ -36,5 +36,8 @@ fs.readdirSync(__dirname)
     // Transform ZIP links
     data = data.replace(/]\(\/(.*)\.zip\)/g, "](/docs/$1.zip)");
 
+    // Transform PY links
+    data = data.replace(/]\(\/(.*)\.py\)/g, "](/docs/$1.py)");
+
     fs.writeFileSync(filePath, data, { encoding: "utf8" });
   });

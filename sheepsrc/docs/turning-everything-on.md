@@ -1,7 +1,7 @@
 ---
 title: Turning everything on
-category: None
-position: 3
+category: Tutorials
+position: 1
 ---
 # The brain box
 

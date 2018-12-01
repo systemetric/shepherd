@@ -1,7 +1,7 @@
 ---
 title: Hello Challenges
 category: Tutorials
-position: 6
+position: 7
 ---
 # Challenges
 

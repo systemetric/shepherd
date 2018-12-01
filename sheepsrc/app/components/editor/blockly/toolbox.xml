@@ -346,7 +346,6 @@
       </value>
     </block>
     <block type="motors_reset"></block>
-    <block type="motors_safety_override"></block>
     <block type="servo_set_position">
       <field name="SERVO_INDEX">1</field>
       <value name="SERVO_POSITION">
@@ -355,6 +354,7 @@
         </shadow>
       </value>
     </block>
+    <block type="zone"></block>
   </category>
   <category name="GPIO" colour="#5b80a5">
     <block type="gpio_set_mode">

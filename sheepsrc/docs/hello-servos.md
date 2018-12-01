@@ -1,7 +1,7 @@
 ---
 title: Hello Servos
 category: Tutorials
-position: 5
+position: 6
 ---
 # Servos
 

@@ -82,7 +82,7 @@ function loadMovementBlocks(Blockly) {
     }
   };
 
-  Blockly.Blocks["motors_safety_override"] = {
+  /*Blockly.Blocks["motors_safety_override"] = {
     init: function() {
       this.appendDummyInput().appendField("Enable motor safety override");
       this.setPreviousStatement(true, null);
@@ -91,7 +91,7 @@ function loadMovementBlocks(Blockly) {
       this.setTooltip("");
       this.setHelpUrl("");
     }
-  };
+  };*/
 
   Blockly.Blocks["servo_set_position"] = {
     init: function() {
@@ -105,6 +105,17 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
+      this.setColour(0);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks["zone"] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Zone");
+      this.setOutput(true, null);
       this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
@@ -172,9 +183,9 @@ function loadMovementBlocks(Blockly) {
     return "R.motors[1] = 0\nR.motors[2] = 0\n";
   };
 
-  Blockly.Python["motors_safety_override"] = function() {
+  /*Blockly.Python["motors_safety_override"] = function() {
     return "R.motors.safety_override = True\n";
-  };
+  };*/
 
   Blockly.Python["servo_set_position"] = function(block) {
     const number_servo_index = block.getFieldValue("SERVO_INDEX");
@@ -184,6 +195,11 @@ function loadMovementBlocks(Blockly) {
       Blockly.Python.ORDER_ATOMIC
     );
     return `R.servos[${number_servo_index}] = ${value_servo_position}\n`;
+  };
+
+  Blockly.Python["zone"] = function() {
+    const code = "R.zone";
+    return [code, Blockly.Python.ORDER_NONE];
   };
 }
 

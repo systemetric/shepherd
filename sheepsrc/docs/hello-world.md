@@ -1,7 +1,7 @@
 ---
 title: Hello World
 category: Tutorials
-position: 1
+position: 2
 ---
 # Hello
 
