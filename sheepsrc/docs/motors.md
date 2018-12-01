@@ -16,11 +16,14 @@ Avoid immediately starting your motors at 100%. This may cause them to stall. In
 If you want to spin your motors in reverse, just stick a negative sign in front of your percentage.
 
 ## Python
-You can control motors using the `motors` property of the `Robot` object. To set the power of the first motor to 50% use:
+You can control motors using the `motors` property of the `Robot` object. To set the power of the first motor to 20% use:
 
 ```python
-R.motors[1] = 50
+R.motors[1] = 20
 ```
+:::warning
+Do not exceed a motor power of 25% otherwise they will burn out.
+:::
 
 To control the second motor instead, replace `motors[1]` with `motors[2]`.
 
@@ -38,11 +41,11 @@ import robot
 
 R = robot.Robot()
 
-# set motor 1 to 50% power
-R.motors[1] = 50
+# set motor 1 to 20% power
+R.motors[1] = 20
 
-# set motor 2 to 100% power in the backwards direction
-R.motors[2] = -100
+# set motor 2 to 20% power in the backwards direction
+R.motors[2] = -20
 
 # turn both motors off
 R.motors[1] = 0

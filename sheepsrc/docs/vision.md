@@ -41,6 +41,23 @@ markers = R.see()
 |`marker.info.marker_type`|One of `MARKER_ARENA` or `MARKER_TOKEN`|
 |`marker.info.token_type`|One of `TOKEN_NONE`, `TOKEN_ORE`, `TOKEN_GOLD`, or `TOKEN_FOOLS_GOLD`|
 
+By default the camera takes pictures at a resolution of **640x480px**. You can change this by specifying a `res` parameter to `R.see()`. This can be helpful when trying to see things far away.
+
+```python
+markers = R.see(res=(1920, 1088))
+```
+
+You must use one of the following resolutions:
+- `(640, 480)` *(default)*
+- `(1296, 736)`
+- `(1296, 976)`
+- `(1920, 1088)`
+- `(1920, 1440)`
+
+:::warning
+Using a higher resolution will increase the amount of time it takes to process the image.
+:::
+
 Here's a more complete example:
 
 ```python

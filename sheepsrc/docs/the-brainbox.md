@@ -31,10 +31,37 @@ The specifications for the motor board can be found [here](/docs/CytronBoardDocs
 You can toggle the 12V which allows you to turn 12V devices on and off easily. However this will also cut power to the motor board.
 :::
 
-## Expanding functionality
+## GPIO
 
-If you feel constrained by the brain box we have designed it with expansion in mind. You may expand the functionality of the brain box over I2C, UART, or USB. All of these are attached to the Raspberry Pi.
+### GPIO - Out
 
-:::warning
-The I2C and UART operate at 5.1V not 3.3V, check your peripherals datasheet **before** plugging it in!
-:::
+All of the Brain boxes GPIO pins are connected in-series with a 1K Ohm resistor, to provide current limiting. This means that you can plug devices such as LED's straight into your brain box.
+
+Nominally they operate at 5V but depending on your load the true output will vary. You can calculate the voltage you will get across your load by measuring its resistance, then doing the sum:
+
+(5*Load_resistance)/(Load_resistance+1000)   
+
+### GPIO - In
+
+We advise against you using analogue inputs with an impedance (You can think of impedance as "effective resistance in an analogue circuit") of greater than 9K Ohm's as this will result in values which do not necessarily correspond to what you'd expect.
+
+### GPIO - Limits
+
+Do not try and sink or source more than 25mA into the brainbox's GPIO, it may damage some of the internal components.
+
+## PWM Pins
+
+PWM (Pulse Width Modulation) is a technique used for sending signals to a device for how much it should do a thing. This could be how fast to spin a motor, or the position to turn an RC Servo to. It does this by sending regular pulses, which vary in width. The length of the pulse tells the device how much to do the thing.  If you are interested you can find out more about using PWM for control [here](http://smartmicrocontroller.com/how-to-control-a-servo-using-pulse-width-modulation-pwm/).
+
+The PWM pins ranges:
+
+| Value | Pulse | 
+| - | - | 
+| 0 | 1.5ms |
+| 100 | 2ms |
+| -100 | 1ms |
+| 178 | 2.39ms |
+| -178 | 0.61ms |
+
+
+

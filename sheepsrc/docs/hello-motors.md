@@ -18,10 +18,10 @@ R = robot.Robot()
 
 ## Driving Around
 Now that everything is set up, it's time to set the motors. All the motors are stored in a list inside the Robot variable - to access the first motor, you can use `R.motors[1]`, the second motor is found with `R.motors[2]`.<br>
-Changing the speed of the motor is easy - just set the motor to a number from -100 to 100. Immediately setting the power to 100 can have unwanted side effects, so we'll start by setting them to half power:
+Changing the speed of the motor is easy - just set the motor to a number from -25 to 25. Immediately setting the power to 25 can have unwanted side effects, so we'll start by setting them to half power:
 ```python
-R.motors[1] = 50
-R.motors[2] = 50
+R.motors[1] = 12
+R.motors[2] = 12
 ```
 Running this program will make your robot move forwards. Unfortunately, it will never tell it to stop moving forwards, so hopefully you put it on the floor and it hasn't driven off the table.<br>
 Fixing this is fairly easy, just set the power of the motors to 0 after a couple seconds:
@@ -33,7 +33,7 @@ R.motors[2] = 0
 ```
 To turn the robot, you just need to set one motor going forwards and the second motor going backwards. The following program makes the robot do a little dance - try it out!
 ```python
-speed = 50
+speed = 25
 
 R.motors[1] = speed
 R.motors[2] = speed
