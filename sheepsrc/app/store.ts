@@ -39,6 +39,11 @@ interface Message {
   timeout?: any;
 }
 
+interface SidebarsHidden {
+  leftHidden: boolean;
+  rightHidden: boolean;
+}
+
 interface State {
   loaded: boolean;
   main: string;
@@ -54,6 +59,7 @@ interface State {
   messageCount: number;
   textLog: string;
   textLogOutputState: number;
+  sidebarsHidden: SidebarsHidden;
 }
 
 const MUTATION_SET_PROJECTS = "SET_PROJECTS";
@@ -71,6 +77,7 @@ const MUTATION_SHOW_MESSAGE = "SHOW_MESSAGE";
 export const MUTATION_DISMISS_MESSAGE = "DISMISS_MESSAGE";
 const MUTATION_SET_TEXT_LOG = "SET_TEXT_LOG";
 const MUTATION_RESET_TEXT_LOG_OUTPUT = "RESET_TEXT_LOG_OUTPUT";
+export const MUTATION_SET_SIDEBAR_HIDDEN = "SET_SIDEBAR_HIDDEN";
 
 export const ACTION_FETCH_PROJECTS = "FETCH_PROJECTS";
 export const ACTION_OPEN_PROJECT = "OPEN_PROJECT";
@@ -137,7 +144,11 @@ export default new Vuex.Store<State>({
     messages: [],
     messageCount: 0,
     textLog: "",
-    textLogOutputState: 0
+    textLogOutputState: 0,
+    sidebarsHidden: {
+      leftHidden: false,
+      rightHidden: false
+    }
   },
   mutations: {
     [MUTATION_SET_PROJECTS](state: State, res: ProjectsResponse) {
@@ -270,6 +281,16 @@ export default new Vuex.Store<State>({
     },
     [MUTATION_RESET_TEXT_LOG_OUTPUT](state: State) {
       state.textLogOutputState = 0;
+    },
+    [MUTATION_SET_SIDEBAR_HIDDEN](
+      state: State,
+      { right, hidden }: { right: boolean; hidden: boolean }
+    ) {
+      if (right) {
+        state.sidebarsHidden.rightHidden = hidden;
+      } else {
+        state.sidebarsHidden.leftHidden = hidden;
+      }
     }
   },
   actions: {

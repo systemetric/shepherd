@@ -21,7 +21,8 @@ import {
   faUpload,
   faDownload,
   faInfoCircle,
-  faExclamationCircle
+  faExclamationCircle,
+  faArrowAltFromRight
 } from "@fortawesome/pro-regular-svg-icons";
 
 library.add(
@@ -34,7 +35,8 @@ library.add(
   faExclamationTriangle,
   faExclamationCircle,
   faUpload,
-  faDownload
+  faDownload,
+  faArrowAltFromRight
 );
 
 import App from "./App.vue";

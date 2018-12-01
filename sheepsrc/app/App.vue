@@ -5,7 +5,7 @@
             <ProjectList @create="openCreate" @delete="showDelete" @download="download"/>
         </Sidebar>
         <Editor/>
-        <Sidebar>
+        <Sidebar :right="true">
             <Logs/>
         </Sidebar>
         <CreateProjectDialog @close="closeCreate" v-show="createOpen"/>
@@ -69,6 +69,7 @@ export default Vue.extend({
 
 #app {
   flex-direction: row;
+  overflow-x: hidden;
 }
 
 .empty-state {

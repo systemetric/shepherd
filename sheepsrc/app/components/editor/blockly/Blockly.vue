@@ -19,6 +19,7 @@ const Blockly = require("node-blockly/browser");
 import loadBlocks from "./blocks";
 import loadCustomBlocks from "./block-loader";
 import toolbox from "./toolbox.xml";
+import EventBus from "@/bus";
 
 interface Data {
   workspace?: any;
@@ -63,6 +64,9 @@ export default Vue.extend({
     });
     window.addEventListener("resize", this.onResize, false);
     this.onResize();
+
+    EventBus.$on("resize", this.onResize);
+
     // noinspection TypeScriptUnresolvedFunction
     Blockly.svgResize(this.workspace);
 

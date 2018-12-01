@@ -14,6 +14,7 @@ import {
   MUTATION_UPDATE_PROJECT,
   Project
 } from "../../../store";
+import EventBus from "@/bus";
 
 function init(
   monacoContainer: any,
@@ -28,6 +29,10 @@ function init(
     ),
     language: "javascript",
     theme: "vs-dark"
+  });
+
+  EventBus.$on("resize", () => {
+    monacoEditor.layout();
   });
 
   window.addEventListener("resize", function() {
