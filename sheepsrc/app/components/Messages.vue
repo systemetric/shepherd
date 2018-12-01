@@ -32,6 +32,7 @@ export default Vue.extend({
   bottom: 10px;
   right: 10px;
   width: 350px;
+  z-index: 2500;
 }
 
 .message {
