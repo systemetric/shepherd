@@ -175,16 +175,6 @@ def start():
             reap(reason="code is already dead")
             flash("Your code seems to have crashed, not starting it.", "error")
         else:
-            # right now we just check for output, but the fix-me below is probably better
-            time.sleep(1)
-            print("checking for output")
-            with open(OUTPUT_FILE_PATH, "r") as f:
-                line = f.readline().strip()
-                print("first output line \"%s\"" % line)
-                if line == "":
-                    reap(reason="code never output")
-                    flash("Your code doesn't seem to be doing anything, stopping it.", "error")
-                    return redirect(url_for(".index"))
             print("opening fifo")
             # FIXME: should be in own thread so that if the code just takes a long time to load shepherd still functions
             with open(USER_FIFO_PATH, "w") as f:
