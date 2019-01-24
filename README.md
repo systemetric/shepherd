@@ -21,4 +21,4 @@ Sheep is an implemenation of VS-Code in a browser with some
 modifications to make to make it more suitable for RoboCon. It features
 a scratch like editor based off [Google's Blockly Project]
 (https://developers.google.com/blockly/), which works with the robot 
-libarry.
+library.
