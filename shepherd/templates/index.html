@@ -3,11 +3,16 @@
 {{ super() }}
 
 <img src="/static/hello-world.png">
-<div style="text-align: center;">
-  <p><a href="/upload/"><img src="/static/upload.png"></a>, <a href="/run/"><img src="/static/run.png"></a></p>
+<div class="index-navigation">
+  <p>
+      <a href="/editor/"><img src="/static/editor.svg"><span>Editor</span></a>
+      <a href="/docs/"><img src="/static/docs.svg"><span>Docs</span></a>
+      <a href="/upload/"><img src="/static/upload.svg"><span>Upload</span></a>
+      <a href="/run/"><img src="/static/run.svg"><span>Run</span></a>
+  </p>
 </div>
 <p></p>
-<p><img src="/static/footer.png" style='height: 100%; width: 100%; object-fit: contain'></p>
+<p><img src="/static/footer.svg" style='height: 100%; width: 100%; object-fit: contain'></p>
 
 <p><a href="{{ url_for("about") }}">Copyright notices</a></p>
 {% endblock %}

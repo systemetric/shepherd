@@ -17,9 +17,8 @@ import time
 from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
-import smbus
 
-import sr.robot.thunderborg as thunderborg  # This *should* be safe, if nasty.
+import robot.reset as robot_reset  # This *should* be safe, if nasty.
 
 from shepherd.competition import ROUND_LENGTH
 
@@ -36,14 +35,15 @@ def init(app):
     # Factored into separate functions so we can call them separately in
     # `blueprints.upload` (tight coupling ftw!!1!)
 
-    _work_around_pic_servo_bug()
+    # _work_around_pic_servo_bug()
 
+    robot_reset.reset()
     _reset_state()
     _start_user_code(app)
     _set_reaper_at_exit()
 
-def _work_around_pic_servo_bug():
-    _set_servos(100)
+# def _work_around_pic_servo_bug():
+#     _set_servos(100)
 
 def _reset_state():
     global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file
@@ -63,6 +63,13 @@ def _reset_state():
     user_code = None  # A subprocess.Popen object representing the running user code.
     output_file = None  # The file to which output from the user code goes.
 
+def _user_code_wait():
+    global user_code
+    exit_code = user_code.wait()
+    # TODO: instead of checking for error code 1, check if the code isn't an expected code from SIGTERM or SIGKILL
+    if exit_code == 1:
+        round_end()
+
 def _start_user_code(app):
     global user_code, output_file
     output_file = open(OUTPUT_FILE_PATH, "w", 1)
@@ -78,6 +85,9 @@ def _start_user_code(app):
         bufsize=1,  # Line-buffered
         close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
     )
+    user_code_wait_thread = threading.Thread(target=_user_code_wait)
+    user_code_wait_thread.daemon = True
+    user_code_wait_thread.start()
 
 def _set_reaper_at_exit():
     atexit.register(reap)  # Attempt to kill the user code (might not work if we crash or get signalled to die).
@@ -166,6 +176,7 @@ def start():
             flash("Your code seems to have crashed, not starting it.", "error")
         else:
             print("opening fifo")
+            # FIXME: should be in own thread so that if the code just takes a long time to load shepherd still functions
             with open(USER_FIFO_PATH, "w") as f:
                 print("dumping json")
                 json.dump(
@@ -204,7 +215,7 @@ def stop():
             reaper_timer.cancel()
         except AttributeError:  # probably because reaper_timer is None
             pass
-        reap(reason="round stopped")
+        round_end()
         flash("Stopped the robot!")
     elif state == State.post_run:
         flash("Code already ran, can't stop it")
@@ -215,51 +226,52 @@ def stop():
 
 def round_end():
     reap(reason="end of round")
-    _kill_motors()
-    _set_servos(0)
+    # _kill_motors()
+    # _set_servos(0)
+    robot_reset.reset()
     time.sleep(0.5)
-    _kill_gpios()
+    # _kill_gpios()
 
 
-def _kill_motors():
-    """Turn off all the motors."""
-    bus = smbus.SMBus(1)
-    try:
-        for i, addr in enumerate([0x14, 0x15, 0x16, 0x17]):
-            try:
-                thunderborg.ThunderBorgBoard(addr).off()
-            except Exception:
-                pass
-    finally:
-        bus.close()
-
-
-def _kill_gpios():
-    """Set all the GPIOs to inputs."""
-    bus = smbus.SMBus(1)
-    try:
-        gpios = thunderborg.BlackJackBoardGPIO(bus)
-        for i in range(1, 5):
-            try:
-                gpios.pin_mode(i, thunderborg.INPUT)
-            except Exception:
-                pass
-    finally:
-        bus.close()
-
-
-def _set_servos(value):
-    assert -100 <= value <= 100
-    bus = smbus.SMBus(1)
-    try:
-        servos = thunderborg.BlackJackBoardPWM(bus)
-        for i in range(4):
-            try:
-                servos[i] = value
-            except Exception:
-                pass
-    finally:
-        bus.close()
+# def _kill_motors():
+#     """Turn off all the motors."""
+#     bus = smbus.SMBus(1)
+#     try:
+#         for i, addr in enumerate([0x14, 0x15, 0x16, 0x17]):
+#             try:
+#                 thunderborg.ThunderBorgBoard(addr).off()
+#             except Exception:
+#                 pass
+#     finally:
+#         bus.close()
+#
+#
+# def _kill_gpios():
+#     """Set all the GPIOs to inputs."""
+#     bus = smbus.SMBus(1)
+#     try:
+#         gpios = thunderborg.BlackJackBoardGPIO(bus)
+#         for i in range(1, 5):
+#             try:
+#                 gpios.pin_mode(i, thunderborg.INPUT)
+#             except Exception:
+#                 pass
+#     finally:
+#         bus.close()
+#
+#
+# def _set_servos(value):
+#     assert -100 <= value <= 100
+#     bus = smbus.SMBus(1)
+#     try:
+#         servos = thunderborg.BlackJackBoardPWM(bus)
+#         for i in range(4):
+#             try:
+#                 servos[i] = value
+#             except Exception:
+#                 pass
+#     finally:
+#         bus.close()
 
 
 def reap(reason=None):

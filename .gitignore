@@ -99,3 +99,18 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# sheep node_modules
+sheepsrc/node_modules
+
+# pycharm config
+.idea
+
+# fake pi packages
+RPi
+smbus
+robot
+usercode
+shepherd/static/image.jpg
+robotsrc
+sheepsrc/.idea
