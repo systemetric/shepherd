@@ -9,21 +9,21 @@ docs_path = path.join(__dirname, "docs")
 editor_path = path.join(__dirname, "editor")
 
 
-@blueprint.route("/docs/")
+@blueprint.route("docs/")
 def send_doc_index():
     return send_file(path.join(docs_path, "index.html"))
 
 
-@blueprint.route("/docs/<path:filename>")
+@blueprint.route("docs/<path:filename>")
 def send_doc_file(filename):
     return send_from_directory(docs_path, filename)
 
 
-@blueprint.route("/editor/")
+@blueprint.route("editor/")
 def send_editor_index():
     return send_file(path.join(editor_path, "index.html"))
 
 
-@blueprint.route("/editor/<path:filename>")
+@blueprint.route("editor/<path:filename>")
 def send_editor_file(filename):
     return send_from_directory(editor_path, filename)
