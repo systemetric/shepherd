@@ -31,7 +31,9 @@ Vue.use(Vuex);
  * to be passed around in the program types
  */
 
-//The user's code is stored in "projects" with the following properties
+/**Every file of the user's code is stored in "projects" with the following
+ * properties
+ */
 export interface Project {
   filename: string;
   name: string;
@@ -40,7 +42,13 @@ export interface Project {
   blocklyGenerated?: string;
 }
 
-// TODO work out what this is for
+/**This is for the projects retreived from the server initally to display the
+ * side bar:
+ * main: the file path of the "main" file used by monacos language server
+ * "/root/shepherd2/robosrc/main.py"
+ * The currently opened document is assumed to be at that location which allows
+ * the code completetion to work.
+ */
 interface ProjectsResponse {
   main: string;
   projects: Project[];
@@ -135,7 +143,8 @@ export function wait(time: number): Promise<number> {
 
 /** A function used for passing to a `.sort` function for sorting
  * a list of projects.
- * TODO work out why this has the exact behaviour that it does
+ * This is for when we supported custom blockly blocks defined using JSON
+ * These could then be moved to the top or the bottom of the list
  */
 function compareProjects(a: Project, b: Project): number {
   if (a.filename === b.filename) return 0;
@@ -190,10 +199,8 @@ export default new Vuex.Store<State>({
 
   // Mutations can change application state
   mutations: {
-    /**
-     * TODO work out what this does
-     * I think it is something along the lines of it finds the projects of a
-     * certain kind and sorting them?
+    /**Unpacks the projects response ignoring the custom blocks definition
+     * Sorts the projects using the compare function.
     */
     [MUTATION_SET_PROJECTS](state: State, res: ProjectsResponse) {
       state.loaded = true;
@@ -225,7 +232,8 @@ export default new Vuex.Store<State>({
     /**Finds a choosen project in the list of open projects
      * If the currently open project is the one to be removed then another
      * openProject is found and that is set as the currently open project.
-     * TODO I do not understand how this handles going from 1=>0 open projects
+     * NB there aren't index out of bounds errors in JS. Referencing an empty
+     * array therefore sets the current project to zero
      */
     [MUTATION_CLOSE_PROJECT](state: State, filename?: string) {
       let foundIndex = state.openProjects.findIndex(
@@ -247,8 +255,7 @@ export default new Vuex.Store<State>({
     },
 
     /**
-     * TODO TBH I have no idea what this does I think that it is something
-     * along the lines of compling the blockly to python?
+     * Updates the state once the blockly script is compiled
      */
     [MUTATION_UPDATE_PROJECT](
       state: State,
@@ -293,9 +300,7 @@ export default new Vuex.Store<State>({
       state.running = running;
     },
 
-    /**TODO I assume that this saves the currently open project but how this is
-      *working by incrementing a number and what's all the if stuff about?
-      * I think its about setting the currently working on saving icon?
+    /**This handles when multiple files start/stop saving at the same time.
       */
     [MUTATION_SET_SAVING](state: State, saving: boolean) {
       state.saving += saving ? 1 : -1;
@@ -325,11 +330,9 @@ export default new Vuex.Store<State>({
       state.createOpen = open;
     },
 
-    /**TODO work out how incrementing this shows the upload dialog
-     * is it just because that it changes the state?
-     * Is there any reason for this approach over having an
-     * upload_dialogue_open state?
-    */
+    /**I think this is just in case multiple files are uploaded at the same
+     * time
+     */
     [MUTATION_SHOW_UPLOAD_DIALOG](state: State) {
       state.uploadFileKeyPressId++;
     },
@@ -361,7 +364,12 @@ export default new Vuex.Store<State>({
       }
     },
 
-    //TODO I have no idea what this does, what is the signifance of the textLogOutputStates states?
+    /**Text log output state is used by ACTION_RUN_PROJECT to determine when
+     * the program has been run. By default it's 0, then if the log is empty
+     * (i.e. the program has just been started) it's set to 1, then when output
+     * is received and the script starts logging it's set to 2. This indicates
+     * that sheep can send the virtual start command to run the program.
+     */
     [MUTATION_SET_TEXT_LOG](state: State, log: string) {
       if (state.textLog !== log) {
         if (state.textLogOutputState == 0) {
@@ -373,7 +381,7 @@ export default new Vuex.Store<State>({
       state.textLog = log;
     },
 
-    //TODO I have no idea what this does
+    /**This just resets the log state for when a new program is to be run*/
     [MUTATION_RESET_TEXT_LOG_OUTPUT](state: State) {
       state.textLogOutputState = 0;
     },
@@ -599,8 +607,8 @@ export default new Vuex.Store<State>({
      * If a blockly project get the compiled code
      * Finds any other projects with .py file name and zips them all
      * POSTs the zip to shepherd
-     * TODO waits for the logs not to be in state 2 whatever state 2 is?
-     * TODO waits for more time?
+     * Shepherd should signal to sheep when the script is ready because
+     * shepherd knows but we just wait because this implementation was faster
      * POSTs to shephers run page to run the code
      * Moves to the running state
      */
