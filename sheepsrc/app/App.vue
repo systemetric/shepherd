@@ -2,14 +2,14 @@
     <div id="app">
         <template v-if="loaded">
             <Sidebar>
-            <ProjectList @create="openCreate" @delete="showDelete" @download="download"/>
-        </Sidebar>
-        <Editor/>
-        <Sidebar :right="true">
-            <Logs/>
-        </Sidebar>
-        <CreateProjectDialog @close="closeCreate" v-show="createOpen"/>
-        <DeleteProjectDialog :project="deleteProject" @close="deleteOpen = false" v-show="deleteOpen"/>
+              <ProjectList @create="openCreate" @delete="showDelete" @download="download"/>
+          </Sidebar>
+          <Editor/>
+          <Sidebar :right="true">
+              <Logs/>
+          </Sidebar>
+          <CreateProjectDialog @close="closeCreate" v-show="createOpen"/>
+          <DeleteProjectDialog :project="deleteProject" @close="deleteOpen = false" v-show="deleteOpen"/>
         </template>
         <div v-else class="empty-state">
             <FontAwesomeIcon :icon="['far', 'exclamation-triangle']" size="10x"/>
