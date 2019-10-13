@@ -35,7 +35,7 @@ Both can be used to program a winning robot for the competition and it is up to 
 
 Details on both these methods can be found in the programming section of the documentation.
 
-For our program, we will only have to use the `print` statement, as all we're doing is writing a line of text in the logs.
+If you are running into problems using the editor its functionality is documented [here](https://hr-robocon.org/docs/editor.html#the-editor-interface).
 
 1. In the editor window write:
 

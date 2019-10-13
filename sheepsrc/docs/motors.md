@@ -22,7 +22,7 @@ You can control motors using the `motors` property of the `Robot` object. To set
 R.motors[1] = 20
 ```
 :::warning
-Do not exceed a motor power of 25% otherwise they will burn out.
+If you are using the mini-bot or similar motors. Do not exceed a motor power of 25% otherwise they will burn out.
 :::
 
 To control the second motor instead, replace `motors[1]` with `motors[2]`.

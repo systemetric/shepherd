@@ -5,7 +5,7 @@ position: 6
 ---
 # Servos
 
-Servos are a bit like motors, except their position is fixed. This is useful for building an arm mechanism that grabs cubes, or anything else that has fixed states that it needs to be in.
+Servos are a bit like motors, except they move to a position rather than at a speed. This is useful for building an arm mechanism that grabs cubes, or anything else that has fixed states that it needs to be in.
 
 You can control servos in a similar way to motors:
 

@@ -17,7 +17,12 @@ R = robot.Robot()
 ```
 
 ## Driving Around
-Now that everything is set up, it's time to set the motors. All the motors are stored in a list inside the Robot variable - to access the first motor, you can use `R.motors[1]`, the second motor is found with `R.motors[2]`.<br>
+Now that everything is set up, it's time to set the motors. All the motors are stored in a list inside the Robot variable - to access the first motor, you can use `R.motors[1]`, the second motor is found with `R.motors[2]`.<br\>
+
+:::warning
+If you are using the mini-bot do not set the power above 25% as this may burn the motors out.
+:::
+
 Changing the speed of the motor is easy - just set the motor to a number from -25 to 25. Immediately setting the power to 25 can have unwanted side effects, so we'll start by setting them to half power:
 ```python
 R.motors[1] = 12

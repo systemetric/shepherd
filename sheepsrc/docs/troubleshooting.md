@@ -36,3 +36,25 @@ It is possible to enable/disable this power output from software. When the outpu
 ## I'm trying to read an analog value from GPIOs, but I'm getting strange values.
 
 Check  you're actually reading the pin you're trying to read. `R.gpio[1]` is Pin 1, `R.gpio[4]` is Pin 4, etc. If everything's connected correctly, try setting the other pins to output and writing `False` to them.
+
+## R.see() doesn't seem to work.
+
+When you call R.see() the camera preview in the top right should show you what the camera can see. If this looks blury contact us on the forum for a focusing ring. If this doesn't fix the issue try:
+```py
+
+print R.see()
+
+```
+If this prints out the markers then the issue is probably with your code, please see the [vision docs](https://hr-robocon.org/docs/vision.html)
+
+## Can you post a kit to or from Hills Road
+
+We can post kits from Hills Road however you will need to cover the costs of shipping
+
+## What is the patch and how do I install it?
+
+The patch is an update which improve your brain box, by adding more docs, more blocks to blocky, faster boot times and more! To patch your robot please follow the instructions [here](https://hr-robocon.org/docs/patching-the-robot.html).
+
+## Why is the time wrong
+
+The Raspberry Pi does not keep time when it is off and so has no way of knowing how much time has passed since it was turned off. 

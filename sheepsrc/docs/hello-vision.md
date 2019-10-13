@@ -18,6 +18,8 @@ R = robot.Robot()
 ```
 This creates a "Robot" object, and places it inside the variable "R". This allows us to use robot functions through the R variable, such as `R.See()`. If you are using Blockly, the robot is intialised automatically.
 
+[Here](https://www.makeuseof.com/tag/object-oriented-programming-explained/) is a basic introduction into what Object Oriented Programing is.
+
 ## Counting Markers
 
 To make the robot "see" what is in front of it we have to call the function `R.see()` and assign the result to a variable. This will set that variable to a list of every marker the robot can see:

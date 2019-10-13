@@ -1,12 +1,12 @@
 ---
-title: Expanding functionality
+title: Expanding Functionality
 category: Hardware
 position: 5
 ---
-# Expanding functionality
+# Expanding Functionality
 
 :::warning
-Although the I2C and UART are connected to the Raspberry Pi they operate at 5.1V not 3.3V check your devices are compatible first!
+Although the I2C and UART are connected to the Raspberry Pi, they operate at 5.1V not 3.3V. Check that your devices are compatible first!
 :::
 
 ## I2C
@@ -19,9 +19,11 @@ You should avoid address 0x08 (8) and 0x68 (104) because these are used by criti
 
 If you are interested in the I2C protocol there is a good guide to find out more about how it works [here](http://www.circuitbasics.com/basics-of-the-i2c-communication-protocol/). 
 
-## UART & USB
+## USB 
 
-You can use the USB using any of the standard methods you find online that work with a Raspbery Pi
+Make sure that you are running at least patch 2. If so then you can use usb devices using the [`serial`](https://pyserial.readthedocs.io/en/latest/shortintro.html) library. The connection will probably open on something similar to `dev/ttyUSB0`.  
+
+## UART
 
 UART is not enabled by default on the brain box and you will need to ask on the forums for us to provide a patch to enable it should you wish to use it.
 

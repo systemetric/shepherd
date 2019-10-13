@@ -5,9 +5,9 @@ position: 5
 ---
 # GPIO
 
-GPIO *(General Purpose Input Output)* allows you to turn on LEDs, react to button presses, or do just about anything.
+The GPIO _(General Purpose Input Output)_ allows you to turn on LEDs, react to button presses, or do just about anything.
 
-Our BrainBox has 4 GPIO pins that you can control. Before you do anything with a pin, you must first set it's mode.
+Our BrainBox has 4 GPIO pins that you can control. Before you do anything with a pin, you must first set its mode.
 
 There are 4 modes:
 |Mode|Python|Description|
@@ -68,9 +68,10 @@ R.gpio[3].digital = True
 ```
 
 ## Blockly
-GPIO blocks can be found in the **GPIO** section.
 
-## Pull-ups 
+The GPIO blocks can be found in the **GPIO** section.
+
+## Pull-ups
 
 The BrainBox possesses the ability to enable a built-in pull-up resistor on any input pin. This takes a small amount of explanation.
 
@@ -79,3 +80,5 @@ Normally, input pins are not connected to anything - known as “floating”. In
 Many pieces of off-the-shelf electronics that have some form of standard I/O output will connect this pin to 5V (high) and 0V (low) when required, so this is not a problem. However, for simple electronics, a microswitch for example, you would normally be required to connect a resistor between the input pin and 5V (a pull-up resistor), or between the input pin and 0V (a pull-down resistor) to keep the input in a known state until the switch overrides it by connecting directly to the opposite state.
 
 However, the built-in pull-up resistor alleviates this need. It essentially wires in a resistor connected to 5V, meaning that when this option is enabled, an input pin will “default” to being high. This means you can simply connect a switch between the input pin and a ground pin without any need of resistors - when the switch is open, the pin will read high; when closed, it will read low.
+
+![An example weak pull up](./images/capture.png)
