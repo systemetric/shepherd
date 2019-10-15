@@ -5,7 +5,7 @@ position: 2
 ---
 # Hello
 
-Welcome to the tutorials of Robocon 2019!<br>
+Welcome to the tutorials of Robocon 2020!<br>
 Following each of the tasks in this category will start you on your way to getting your robot doing stuff.
 
 Ready? Let's go!

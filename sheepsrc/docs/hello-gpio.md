@@ -13,7 +13,11 @@ On the side of your brainbox, there are 4 regular pins and a "+5v" and "-" pin. 
 
 ## LED Output
 
-If you want to put an LED on your robot, for testing or just for looks, you'll need to plug one side of the LED into the - pin, and the other side of the LED into any regular pin (such as 1). Then, use the following code to set up the pin in `OUTPUT` mode and turn the LED on:
+:::tip
+GPIO outputs are already protected by a 1k Ohm current limiting resistor, you can connect LEDs directly!
+:::
+
+If you want to put an LED on your robot, for testing or just for looks, you'll need to plug one side of the LED into the `-` (gound) pin, and the other side of the LED into any regular pin (such as 1). Then, use the following code to set up the pin in `OUTPUT` mode and turn the LED on:
 
 ```python
 import robot
@@ -28,7 +32,7 @@ Try using a loop to make the light turn on and off every 2 seconds. You'll need 
 
 ## Buttons
 
-While your robot hopefully won't be colliding with much, buttons are a good way for a robot to know if it's driven into something. Buttons should be plugged into the - pin and a regular pin (such as 1). Using the `INPUT` mode, you can detect when a button is pressed.
+While your robot hopefully won't be colliding with much, buttons are a good way for a robot to know if it's driven into something. Buttons should be plugged into the - pin and a regular pin (such as 1). Using the `INPUT_PULLUP` mode, you can detect when a button is pressed.
 
 ```python
 import robot
@@ -46,7 +50,7 @@ while True:
     time.sleep(0.1)
 ```
 
-Try making a light turn on or off depending on if a button is pressed.
+Try making a light turn on or off depending on if a button is pressed. An explaination of why it is needed to use `INPUT_PULLUP` can be found in the [GPIO documentation](/gpio.html#pull-ups).
 
 ## Potentiometers
 

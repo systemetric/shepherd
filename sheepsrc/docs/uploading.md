@@ -1,7 +1,7 @@
 ---
 title: Uploading and Running Code
 category: Tools
-position: 2
+position: 7
 ---
 
 # Uploading and Running code on the Robot
@@ -9,12 +9,17 @@ position: 2
 If you've already got some code you want to run on the robot, or you prefer to code in another application you'll need
 to follow these steps when uploading and running code on the robot. If not, we **strongly** recommend [using the editor](/editor.md).
 
+:::warning
+The methods outlined here have been depreciated infavour of the editor. The documentation here remains for development purposes only.
+:::
+
 ## Upload
 
-Assuming you've [connected to your robot](/connecting.md), head to <http://robot.go/upload> or click the blue
-upload button on the Shepherd homepage.
+:::warning
+Easy access to the upload page has been removed in favour of the editor. The instructions here remain for the purpose of developemental use. If you are looking to run code please see instruuctions for the editor
+:::
 
-![Upload Button](./images/shepherd-upload.png)
+Assuming you've [connected to your robot](/connecting.md), head to <http://robot.go/upload>
 
 You should now see the upload interface.
 
@@ -28,13 +33,13 @@ the archive. This should be the entry point for the program.
 Now click the **Upload** button to upload the selected file.
 
 :::warning
-Uploading code will stop the robot if it is currently running. 
+Uploading code will stop the robot if it is currently running.
 :::
 
 ## Run
 
 If you're on the **Upload** page, click the **run it from this page** link. Otherwise, you can access the run page at
-<http://robot.go/run> or by clicking the green run button on the Shepherd homepage.
+<http://robot.go/run> or by clicking the green run button on the Shepherd homepage (note upload button has been removed to simplify the UI).
 
 ![Run Button](./images/shepherd-run.png)
 

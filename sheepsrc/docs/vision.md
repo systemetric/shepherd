@@ -44,14 +44,14 @@ markers = R.see(res=(1920, 1088))
 
 You must use one of the following resolutions:
 
-* `(640, 480)` _(default)_
-* `(1296, 736)`
+* `(640, 480)`
+* `(1296, 736)` _(default)_
 * `(1296, 976)`
 * `(1920, 1088)`
 * `(1920, 1440)`
 
 :::warning
-Using a higher resolution will increase the amount of time it takes to process the image.
+Using a higher resolution will increase the amount of time it takes to process the image, but you may be able to see more. Using a smaller resolution will be faster, but markers further away may stop being visible.
 :::
 
 Here's a more complete example:

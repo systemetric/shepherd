@@ -5,11 +5,9 @@ position: 6
 ---
 # Servos
 
-Servos are a bit like motors, except they move to a position rather than at a speed. This is useful for building an arm mechanism that grabs cubes, or anything else that has fixed states that it needs to be in.
+Servos are a type of motor with internal feedback they can move to a set position, but they are limited in range. This is useful for building mechanisms to manipulate objects, or anything else that needs to move between multiple fixed positions.
 
 You can control servos in a similar way to motors:
-
-<!--TODO: MAYBE MAKE THIS A BIT MORE TUTORIALY-->
 
 ```python
 import robot
@@ -17,10 +15,11 @@ import time
 
 R = robot.Robot()
 
+# Input range -100 to 100
 while True:
     R.servos[1] = -50
-    
     time.sleep(2)
-    
+
     R.servos[1] = 50
+    time.sleep(2)
 ```

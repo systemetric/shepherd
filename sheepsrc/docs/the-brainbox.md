@@ -11,7 +11,7 @@ The brain box is the center of the kit, it controls power, provides you with use
 
 ## Power
 
-The distributes power to the robot from the battery. It provides both 12V and 5V power out. All power must go through the brain box and the fuse should never be replaced.
+The BrainBox distributes power to the robot from the battery. It provides both 12V and 5V power out. All power must go through the brain box and the fuse should never be replaced.
 
 The On|Off switch also plugs into the BrainBox as well as the Start button which is used to start your robot code running.
 
@@ -26,7 +26,7 @@ The specifications for the motor board can be found [here](/docs/CytronBoardDocs
 | Operating Voltage         | 12V           |
 
 :::tip
-You can toggle the 12V which allows you to turn 12V devices on and off easily. However this will also cut power to the motor board.
+You can toggle the 12V which allows you to turn 12V devices on and off easily. However, this will also cut power to the motor board.
 :::
 
 ## GPIO

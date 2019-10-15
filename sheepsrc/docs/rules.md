@@ -1,6 +1,12 @@
 # Rules
 
-You can download the official rules PDF [here](/docs/RoboCon2019RulebookRev10.pdf).
+You can download the official rules for 2020 [here](/docs/RoboCon2019RulebookRev10.pdf).
+
+:::tip
+
+If you are viewing this page on your brain box then please check the website for the lastest revision.
+
+:::
 
 ## Arena
 

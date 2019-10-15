@@ -9,7 +9,7 @@ Here are a few *common* issues you might have and some solutions to them. Studen
 
 ## I've connected a battery and the power switch to the black connector but never get any lights on The BrainBox.
 
-The BrainBox will not switch on when the voltage of the battery is low. Try swapping the battery for a fully charged one. If you have a fresh battery in your robot, it's possible that the switch has failed or become internally disconnected. For testing purposes, you can swap the power switch for a single piece of wire. NOTE: at the competition, you must have a red power switch to control your robot as per the rules.
+Unless the battery is really very low the front led will blink very briefly when the switch is first pressed. If this happens you need to charge the battery. The BrainBox will not switch on at all when the voltage of the battery is very low. If the battery is freshly charged, it's possible that the switch has failed or become internally disconnected. For testing purposes, you can swap the power switch for a single piece of wire. NOTE: at the competition, you must have a red power switch to control your robot as per the rules. Finally - in exceptional circumstances the fuse in the cable may have failed, if this has happened then there must have been some terminal problem internal to the brainbox - Contact us on robotics@hillsroad.ac.uk for instructions.
 
 ## The BrainBox appears to power up, but I can't connect to the website and the blue LED lights but never starts flashing.
 
@@ -57,4 +57,10 @@ The patch is an update which improve your brain box, by adding more docs, more b
 
 ## Why is the time wrong
 
-The Raspberry Pi does not keep time when it is off and so has no way of knowing how much time has passed since it was turned off. 
+The Raspberry Pi does not keep time when it is off and so has no way of knowing how much time has passed since it was turned off.
+
+## Can't fit the 12v socket because of the case design
+
+I can't fit in the 12v socket because of the case design
+
+Sorry about that, the studs are positioned and sized to take lego, you can slim down the offending stud using a hot blade or a Dremmel tool.
