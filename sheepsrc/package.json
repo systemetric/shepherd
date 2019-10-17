@@ -43,7 +43,7 @@
     "@types/file-saver": "^2.0.1",
     "@types/jszip": "^3.1.6",
     "@types/lodash": "^4.14.144",
-    "@types/node": "^10.14.21",
+    "@types/node": "^10.14.22",
     "@types/normalize-url": "^1.9.1",
     "@types/vue": "^2.0.0",
     "cpy-cli": "^2.0.0",
@@ -67,7 +67,7 @@
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
     "vuepress": "^0.14.11",
-    "webpack": "^4.41.1",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2"
   }
