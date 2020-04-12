@@ -36,7 +36,7 @@ except OSError as e:
     if e.errno == errno.EEXIST and os.path.isdir(app.config["SHEPHERD_USER_CODE_PATH"]):
         pass
     else:
-        raise
+        raise e
 
 
 # Avoid running the user code twice.

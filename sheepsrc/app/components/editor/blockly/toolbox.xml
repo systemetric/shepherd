@@ -400,17 +400,7 @@
       </value>
     </block>
     <block type="vision_marker_type_arena"></block>
-    <block type="vision_marker_type_token"></block>
-    <block type="vision_token_type">
-      <value name="MARKER">
-        <block type="variables_get">
-          <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">marker</field>
-        </block>
-      </value>
-    </block>
-    <block type="vision_token_type_ore"></block>
-    <block type="vision_token_type_gold"></block>
-    <block type="vision_token_type_fools_gold"></block>
+    <block type="vision_marker_type_basket"></block>
     <block type="controls_forEach">
       <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">i</field>
       <value name="LIST">

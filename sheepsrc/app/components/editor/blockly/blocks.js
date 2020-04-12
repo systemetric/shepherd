@@ -113,8 +113,7 @@ function loadMovementBlocks(Blockly) {
 
   Blockly.Blocks["zone"] = {
     init: function() {
-      this.appendDummyInput()
-          .appendField("Zone");
+      this.appendDummyInput().appendField("Zone");
       this.setOutput(true, null);
       this.setColour(0);
       this.setTooltip("");
@@ -359,19 +358,6 @@ function loadVisionBlocks(Blockly) {
     }
   };
 
-  Blockly.Blocks["vision_token_type"] = {
-    init: function() {
-      this.appendValueInput("MARKER")
-        .setCheck("Token")
-        .appendField("Token type of");
-      this.setInputsInline(false);
-      this.setOutput(true, "TokenType");
-      this.setColour(90);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
   Blockly.Blocks["vision_marker_type_arena"] = {
     init: function() {
       this.appendDummyInput().appendField("Arena");
@@ -382,40 +368,10 @@ function loadVisionBlocks(Blockly) {
     }
   };
 
-  Blockly.Blocks["vision_marker_type_token"] = {
+  Blockly.Blocks["vision_marker_type_basket"] = {
     init: function() {
-      this.appendDummyInput().appendField("Token");
+      this.appendDummyInput().appendField("Basket");
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks["vision_token_type_ore"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Ore");
-      this.setOutput(true, "TokenType");
-      this.setColour(90);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks["vision_token_type_gold"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Gold");
-      this.setOutput(true, "TokenType");
-      this.setColour(90);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks["vision_token_type_fools_gold"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Fools Gold");
-      this.setOutput(true, "TokenType");
       this.setColour(90);
       this.setTooltip("");
       this.setHelpUrl("");
@@ -458,38 +414,13 @@ function loadVisionBlocks(Blockly) {
     return [code, Blockly.Python.ORDER_NONE];
   };
 
-  Blockly.Python["vision_token_type"] = function(block) {
-    const value_marker = Blockly.Python.valueToCode(
-      block,
-      "MARKER",
-      Blockly.Python.ORDER_ATOMIC
-    );
-    const code = `${value_marker}.info.token_type`;
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-
   Blockly.Python["vision_marker_type_arena"] = function() {
-    const code = "MARKER_ARENA";
+    const code = "MARKER_TYPE_ARENA";
     return [code, Blockly.Python.ORDER_NONE];
   };
 
-  Blockly.Python["vision_marker_type_token"] = function() {
-    const code = "MARKER_TOKEN";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-
-  Blockly.Python["vision_token_type_ore"] = function() {
-    const code = "TOKEN_ORE";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-
-  Blockly.Python["vision_token_type_gold"] = function() {
-    const code = "TOKEN_GOLD";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-
-  Blockly.Python["vision_token_type_fools_gold"] = function() {
-    const code = "TOKEN_FOOLS_GOLD";
+  Blockly.Python["vision_marker_type_basket"] = function() {
+    const code = "MARKER_TYPE_BASKET";
     return [code, Blockly.Python.ORDER_NONE];
   };
 }
