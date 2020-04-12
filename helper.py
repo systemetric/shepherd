@@ -14,7 +14,7 @@ while True:
     if os.path.exists("/tmp/colimage.jpg"):
         stat_obj = os.stat("/tmp/colimage.jpg")
         if mod_time != stat_obj.st_mtime:
-            print "New image?"
+            print("New image?")
             try:
                 img = Image.open("/tmp/colimage.jpg")
                 width_i, height_i = img.size

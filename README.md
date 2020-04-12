@@ -1,6 +1,8 @@
 # Shepherd
 
-Shepherd is the code management system used on the RoboCon brains. For more infomation about how to use it see [here](https://hr-robocon.org/docs/connecting.html).
+Shepherd is the code management system used on the RoboCon brains. For more
+infomation about how to use it see
+[here](https://hr-robocon.org/docs/connecting.html).
 
 ## Shepherd itself
 
@@ -19,5 +21,6 @@ context of RoboCon, and thus Shepherd was created.
 
 Sheep is an implemenation of VS-Code in a browser with some
 modifications to make to make it more suitable for RoboCon. It features
-a scratch like editor based off [Google's Blockly Project](https://developers.google.com/blockly/), which works with the robot 
-library.
+a scratch like editor based off
+[Google's Blockly Project](https://developers.google.com/blockly/), which
+works with the robot library.
