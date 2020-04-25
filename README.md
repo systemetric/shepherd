@@ -4,7 +4,7 @@ Shepherd is the code management system used on the RoboCon brains. For more
 infomation about how to use it see
 [here](https://hr-robocon.org/docs/connecting.html). Eventually there will be
 technical documentation about how shepherd works
-[here](https://www.youtube.com/watch?v=se6vGhOt58g)
+[here](https://github.com/systemetric/shepherd/wiki)
 
 ## Shepherd itself
 
