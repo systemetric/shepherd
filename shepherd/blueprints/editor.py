@@ -1,3 +1,4 @@
+"""Methods for saving, reading and deleting sheep projects"""
 import json
 import os
 import os.path as path

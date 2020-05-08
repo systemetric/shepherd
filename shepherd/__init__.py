@@ -4,11 +4,21 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import errno
 import os
+import sys
 
 from flask import Flask, render_template, send_file
 from flask_sockets import Sockets
 from flask_cors import CORS
-import RPi.GPIO as GPIO
+
+# TODO remove or modularise for testing
+try:
+    import RPi.GPIO
+# Let Shepherd run on x86
+except (ImportError):
+    from fake_rpigpio import RPi
+    GPIO = RPi.GPIO
+
+
 
 from shepherd.blueprints import upload, run, pyls, editor, staticroutes
 

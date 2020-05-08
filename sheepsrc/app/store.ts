@@ -125,12 +125,13 @@ const MESSAGE_SAVED = "SAVED";
 const MESSAGE_JSON_ERROR = "JSON_ERROR";
 
 // A function which adds host and protocol to make a useable URL
+// Always expects shepherd to be servering on port 80
 export function makeFullUrl(route: string, protocol?: string): string {
   if (!protocol) protocol = "http";
   let host = window.location.host;
   if (window.location.port === "8080") {
     host = `${window.location.hostname}:80`;
-  }
+  };
   return `${protocol}://${host}${route}`;
 }
 

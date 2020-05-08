@@ -11,13 +11,18 @@ python-language-server = "*"
 flask-cors = "*"
 flask-sockets = "*"
 jsonrpc = "*"
-"RPi.GPIO" = "*"
-pykoki = {git = "git://github.com/systemetric/pykoki"}
+# TODO uncomment
+# "RPi.GPIO" = "*"
 "smbus2" = "*"
+json-rpc = "*"
+ujson = "*"
 
 [dev-packages]
 "flake8" = "*"
 "flake8-future-import" = "*"
+"fake-rpigpio" = "*"
+pylint = "<2.0.0"
+rope = "*"
 
 [requires]
 python_version = "2.7"

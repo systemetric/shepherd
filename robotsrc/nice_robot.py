@@ -10,14 +10,24 @@ speed = 0.2 * multiplier
 angleSpeed = 139.5 * multiplier
 
 R = robot.Robot()
+R.see()
 
 time.sleep(0.1)
+
+time.sleep(2)
+
+time.sleep
+
+Robot.angleSpeed(10)
 
 def move(distance):
     print("Moving", distance, "m")
     t = distance / (speed)
 
     R.motors[0].m0.power = -power
+
+    for i in range(10):
+        robot.
     R.motors[0].m1.power = -power
 
     time.sleep(t)
@@ -37,7 +47,6 @@ def turn(angle):
 
     R.motors[0].m0.power = 0
     R.motors[0].m1.power = 0
-
 
 def turn_to_cube():
     print("Finding cube...")

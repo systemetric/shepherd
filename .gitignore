@@ -103,8 +103,9 @@ ENV/
 # sheep node_modules
 sheepsrc/node_modules
 
-# pycharm config
+# editor config
 .idea
+.vscode
 
 # fake pi packages
 RPi
@@ -114,3 +115,8 @@ usercode
 shepherd/static/image.jpg
 robotsrc
 sheepsrc/.idea
+
+# logs
+shepherd/logs.txt
+
+
