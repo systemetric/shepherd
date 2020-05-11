@@ -1,22 +1,21 @@
 # encoding: utf-8
-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import atexit
-from datetime import datetime, timedelta
 import errno
-from functools import partial
 import json
 import os
 import subprocess
 import sys
-from tempfile import mktemp
 import threading
 import time
+import queue
 
+from tempfile import mktemp
 from enum import Enum
-from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
+from datetime import datetime, timedelta
+from functools import partial
+
+from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file, abort
 
 # import robot.reset as robot_reset  # This *should* be safe, if nasty.
 
@@ -28,14 +27,14 @@ blueprint = Blueprint("run", __name__, template_folder="templates")
 REAP_GRACE_TIME = 5  # Seconds before user code is forcefully killed
 OUTPUT_FILE_PATH = "logs.txt"  # TODO revert back to being the /media/RobotUSB/
 
+MAX_FRAME_QUEUE_SIZE = 5
+BROADCAST_FRAME_QUEUE = queue.Queue(MAX_FRAME_QUEUE_SIZE)
 
-# Since we can't access app.debug in a blueprint, this will be run
-# manually when the app is constructed.
 def init(app):
-    # Factored into separate functions so we can call them separately in
-    # `blueprints.upload` (tight coupling ftw!!1!)
-
-    # TODO fix this
+    """Run manually when the app is constructed.
+    Since can't access app.debug in a blueprint
+    """
+    # TODO fix this robot coupling?
     # robot_reset.reset()
     _reset_state()
     _start_user_code(app)
@@ -43,7 +42,6 @@ def init(app):
 
 def _reset_state():
     global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file
-    # Yes, it's (literally) global state. Deal with it.
 
     # tempfile.mktemp is deprecated, but there's no possibility of a race --
     # os.mkfifo raises if its path already exists.
@@ -74,7 +72,6 @@ def _start_user_code(app):
         [
             # python -u /path/to/the_code.py
             sys.executable, "-u", app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"],
-            # --startfifo /path/to/fifo
             "--startfifo", USER_FIFO_PATH,
         ],
         stdout=output_file, stderr=subprocess.STDOUT,
@@ -90,8 +87,9 @@ def _set_reaper_at_exit():
 
 
 class State(Enum):
-    # Once shepherd is up, we are by definition ready to run code, so
-    # there's no need for a "booting" state.
+    """Once shepherd is up, we are by definition ready to run code, so
+    there's no need for a "booting" state.
+    """
     ready = object()
     running = object()
     post_run = object()
@@ -153,11 +151,30 @@ def get_picture():
     return render_template("run/picture.html", state=state, states=State)
 
 
+# TODO remove?
 @blueprint.route("/toggle_auto_refresh", methods=["POST"])
 def toggle_auto_refresh():
     session["auto_refresh"] = not session.get("auto_refresh", True)
     return redirect(url_for(".index"))
 
+
+@blueprint.route("/upload_frame", methods=["POST"])
+def upload_frame():
+    """Places an image in the queue to be streamed to clients
+    Does not wait so shepherd does not hang
+    TODO validate we were given a JPEG
+    """
+    try:
+        frame = request.files["frame"]
+    except KeyError:
+        abort(400)  # Bad request
+
+    try:
+        BROADCAST_FRAME_QUEUE.put_nowait(frame)
+    except queue.Full:
+        abort(504)  # Gateway timeout
+
+    return 200
 
 @blueprint.route("/start", methods=["POST"])
 def start():

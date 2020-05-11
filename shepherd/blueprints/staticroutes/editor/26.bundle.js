@@ -1,1 +1,200 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[26],{579:function(e,t,p){"use strict";p.r(t),p.d(t,"conf",(function(){return n})),p.d(t,"language",(function(){return i}));var n={wordPattern:/(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,comments:{lineComment:"//",blockComment:["/*","*/"]},brackets:[["{","}"],["[","]"],["(",")"]],autoClosingPairs:[{open:"{",close:"}",notIn:["string"]},{open:"[",close:"]",notIn:["string"]},{open:"(",close:")",notIn:["string"]},{open:'"',close:'"',notIn:["string"]},{open:"'",close:"'",notIn:["string","comment"]}],folding:{markers:{start:new RegExp("^\\s*(#|//)region\\b"),end:new RegExp("^\\s*(#|//)endregion\\b")}}},i={defaultToken:"",tokenPostfix:"",tokenizer:{root:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.root"}],[/<!DOCTYPE/,"metatag.html","@doctype"],[/<!--/,"comment.html","@comment"],[/(<)(\w+)(\/>)/,["delimiter.html","tag.html","delimiter.html"]],[/(<)(script)/,["delimiter.html",{token:"tag.html",next:"@script"}]],[/(<)(style)/,["delimiter.html",{token:"tag.html",next:"@style"}]],[/(<)([:\w]+)/,["delimiter.html",{token:"tag.html",next:"@otherTag"}]],[/(<\/)(\w+)/,["delimiter.html",{token:"tag.html",next:"@otherTag"}]],[/</,"delimiter.html"],[/[^<]+/]],doctype:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.comment"}],[/[^>]+/,"metatag.content.html"],[/>/,"metatag.html","@pop"]],comment:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.comment"}],[/-->/,"comment.html","@pop"],[/[^-]+/,"comment.content.html"],[/./,"comment.content.html"]],otherTag:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.otherTag"}],[/\/?>/,"delimiter.html","@pop"],[/"([^"]*)"/,"attribute.value"],[/'([^']*)'/,"attribute.value"],[/[\w\-]+/,"attribute.name"],[/=/,"delimiter"],[/[ \t\r\n]+/]],script:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.script"}],[/type/,"attribute.name","@scriptAfterType"],[/"([^"]*)"/,"attribute.value"],[/'([^']*)'/,"attribute.value"],[/[\w\-]+/,"attribute.name"],[/=/,"delimiter"],[/>/,{token:"delimiter.html",next:"@scriptEmbedded.text/javascript",nextEmbedded:"text/javascript"}],[/[ \t\r\n]+/],[/(<\/)(script\s*)(>)/,["delimiter.html","tag.html",{token:"delimiter.html",next:"@pop"}]]],scriptAfterType:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.scriptAfterType"}],[/=/,"delimiter","@scriptAfterTypeEquals"],[/>/,{token:"delimiter.html",next:"@scriptEmbedded.text/javascript",nextEmbedded:"text/javascript"}],[/[ \t\r\n]+/],[/<\/script\s*>/,{token:"@rematch",next:"@pop"}]],scriptAfterTypeEquals:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.scriptAfterTypeEquals"}],[/"([^"]*)"/,{token:"attribute.value",switchTo:"@scriptWithCustomType.$1"}],[/'([^']*)'/,{token:"attribute.value",switchTo:"@scriptWithCustomType.$1"}],[/>/,{token:"delimiter.html",next:"@scriptEmbedded.text/javascript",nextEmbedded:"text/javascript"}],[/[ \t\r\n]+/],[/<\/script\s*>/,{token:"@rematch",next:"@pop"}]],scriptWithCustomType:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.scriptWithCustomType.$S2"}],[/>/,{token:"delimiter.html",next:"@scriptEmbedded.$S2",nextEmbedded:"$S2"}],[/"([^"]*)"/,"attribute.value"],[/'([^']*)'/,"attribute.value"],[/[\w\-]+/,"attribute.name"],[/=/,"delimiter"],[/[ \t\r\n]+/],[/<\/script\s*>/,{token:"@rematch",next:"@pop"}]],scriptEmbedded:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInEmbeddedState.scriptEmbedded.$S2",nextEmbedded:"@pop"}],[/<\/script/,{token:"@rematch",next:"@pop",nextEmbedded:"@pop"}]],style:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.style"}],[/type/,"attribute.name","@styleAfterType"],[/"([^"]*)"/,"attribute.value"],[/'([^']*)'/,"attribute.value"],[/[\w\-]+/,"attribute.name"],[/=/,"delimiter"],[/>/,{token:"delimiter.html",next:"@styleEmbedded.text/css",nextEmbedded:"text/css"}],[/[ \t\r\n]+/],[/(<\/)(style\s*)(>)/,["delimiter.html","tag.html",{token:"delimiter.html",next:"@pop"}]]],styleAfterType:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.styleAfterType"}],[/=/,"delimiter","@styleAfterTypeEquals"],[/>/,{token:"delimiter.html",next:"@styleEmbedded.text/css",nextEmbedded:"text/css"}],[/[ \t\r\n]+/],[/<\/style\s*>/,{token:"@rematch",next:"@pop"}]],styleAfterTypeEquals:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.styleAfterTypeEquals"}],[/"([^"]*)"/,{token:"attribute.value",switchTo:"@styleWithCustomType.$1"}],[/'([^']*)'/,{token:"attribute.value",switchTo:"@styleWithCustomType.$1"}],[/>/,{token:"delimiter.html",next:"@styleEmbedded.text/css",nextEmbedded:"text/css"}],[/[ \t\r\n]+/],[/<\/style\s*>/,{token:"@rematch",next:"@pop"}]],styleWithCustomType:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInSimpleState.styleWithCustomType.$S2"}],[/>/,{token:"delimiter.html",next:"@styleEmbedded.$S2",nextEmbedded:"$S2"}],[/"([^"]*)"/,"attribute.value"],[/'([^']*)'/,"attribute.value"],[/[\w\-]+/,"attribute.name"],[/=/,"delimiter"],[/[ \t\r\n]+/],[/<\/style\s*>/,{token:"@rematch",next:"@pop"}]],styleEmbedded:[[/<\?((php)|=)?/,{token:"@rematch",switchTo:"@phpInEmbeddedState.styleEmbedded.$S2",nextEmbedded:"@pop"}],[/<\/style/,{token:"@rematch",next:"@pop",nextEmbedded:"@pop"}]],phpInSimpleState:[[/<\?((php)|=)?/,"metatag.php"],[/\?>/,{token:"metatag.php",switchTo:"@$S2.$S3"}],{include:"phpRoot"}],phpInEmbeddedState:[[/<\?((php)|=)?/,"metatag.php"],[/\?>/,{token:"metatag.php",switchTo:"@$S2.$S3",nextEmbedded:"$S3"}],{include:"phpRoot"}],phpRoot:[[/[a-zA-Z_]\w*/,{cases:{"@phpKeywords":{token:"keyword.php"},"@phpCompileTimeConstants":{token:"constant.php"},"@default":"identifier.php"}}],[/[$a-zA-Z_]\w*/,{cases:{"@phpPreDefinedVariables":{token:"variable.predefined.php"},"@default":"variable.php"}}],[/[{}]/,"delimiter.bracket.php"],[/[\[\]]/,"delimiter.array.php"],[/[()]/,"delimiter.parenthesis.php"],[/[ \t\r\n]+/],[/#/,"comment.php","@phpLineComment"],[/\/\//,"comment.php","@phpLineComment"],[/\/\*/,"comment.php","@phpComment"],[/"/,"string.php","@phpDoubleQuoteString"],[/'/,"string.php","@phpSingleQuoteString"],[/[\+\-\*\%\&\|\^\~\!\=\<\>\/\?\;\:\.\,\@]/,"delimiter.php"],[/\d*\d+[eE]([\-+]?\d+)?/,"number.float.php"],[/\d*\.\d+([eE][\-+]?\d+)?/,"number.float.php"],[/0[xX][0-9a-fA-F']*[0-9a-fA-F]/,"number.hex.php"],[/0[0-7']*[0-7]/,"number.octal.php"],[/0[bB][0-1']*[0-1]/,"number.binary.php"],[/\d[\d']*/,"number.php"],[/\d/,"number.php"]],phpComment:[[/\*\//,"comment.php","@pop"],[/[^*]+/,"comment.php"],[/./,"comment.php"]],phpLineComment:[[/\?>/,{token:"@rematch",next:"@pop"}],[/.$/,"comment.php","@pop"],[/[^?]+$/,"comment.php","@pop"],[/[^?]+/,"comment.php"],[/./,"comment.php"]],phpDoubleQuoteString:[[/[^\\"]+/,"string.php"],[/@escapes/,"string.escape.php"],[/\\./,"string.escape.invalid.php"],[/"/,"string.php","@pop"]],phpSingleQuoteString:[[/[^\\']+/,"string.php"],[/@escapes/,"string.escape.php"],[/\\./,"string.escape.invalid.php"],[/'/,"string.php","@pop"]]},phpKeywords:["abstract","and","array","as","break","callable","case","catch","cfunction","class","clone","const","continue","declare","default","do","else","elseif","enddeclare","endfor","endforeach","endif","endswitch","endwhile","extends","false","final","for","foreach","function","global","goto","if","implements","interface","instanceof","insteadof","namespace","new","null","object","old_function","or","private","protected","public","resource","static","switch","throw","trait","try","true","use","var","while","xor","die","echo","empty","exit","eval","include","include_once","isset","list","require","require_once","return","print","unset","yield","__construct"],phpCompileTimeConstants:["__CLASS__","__DIR__","__FILE__","__LINE__","__NAMESPACE__","__METHOD__","__FUNCTION__","__TRAIT__"],phpPreDefinedVariables:["$GLOBALS","$_SERVER","$_GET","$_POST","$_FILES","$_REQUEST","$_SESSION","$_ENV","$_COOKIE","$php_errormsg","$HTTP_RAW_POST_DATA","$http_response_header","$argc","$argv"],escapes:/\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/}}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[26],{
+
+/***/ "./node_modules/monaco-editor/esm/vs/basic-languages/objective-c/objective-c.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/basic-languages/objective-c/objective-c.js ***!
+  \**************************************************************************************/
+/*! exports provided: conf, language */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "conf", function() { return conf; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "language", function() { return language; });
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+var conf = {
+    comments: {
+        lineComment: '//',
+        blockComment: ['/*', '*/'],
+    },
+    brackets: [
+        ['{', '}'],
+        ['[', ']'],
+        ['(', ')']
+    ],
+    autoClosingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"' },
+        { open: '\'', close: '\'' },
+    ],
+    surroundingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"' },
+        { open: '\'', close: '\'' },
+    ]
+};
+var language = {
+    defaultToken: '',
+    tokenPostfix: '.objective-c',
+    keywords: [
+        '#import',
+        '#include',
+        '#define',
+        '#else',
+        '#endif',
+        '#if',
+        '#ifdef',
+        '#ifndef',
+        '#ident',
+        '#undef',
+        '@class',
+        '@defs',
+        '@dynamic',
+        '@encode',
+        '@end',
+        '@implementation',
+        '@interface',
+        '@package',
+        '@private',
+        '@protected',
+        '@property',
+        '@protocol',
+        '@public',
+        '@selector',
+        '@synthesize',
+        '__declspec',
+        'assign',
+        'auto',
+        'BOOL',
+        'break',
+        'bycopy',
+        'byref',
+        'case',
+        'char',
+        'Class',
+        'const',
+        'copy',
+        'continue',
+        'default',
+        'do',
+        'double',
+        'else',
+        'enum',
+        'extern',
+        'FALSE',
+        'false',
+        'float',
+        'for',
+        'goto',
+        'if',
+        'in',
+        'int',
+        'id',
+        'inout',
+        'IMP',
+        'long',
+        'nil',
+        'nonatomic',
+        'NULL',
+        'oneway',
+        'out',
+        'private',
+        'public',
+        'protected',
+        'readwrite',
+        'readonly',
+        'register',
+        'return',
+        'SEL',
+        'self',
+        'short',
+        'signed',
+        'sizeof',
+        'static',
+        'struct',
+        'super',
+        'switch',
+        'typedef',
+        'TRUE',
+        'true',
+        'union',
+        'unsigned',
+        'volatile',
+        'void',
+        'while',
+    ],
+    decpart: /\d(_?\d)*/,
+    decimal: /0|@decpart/,
+    tokenizer: {
+        root: [
+            { include: '@comments' },
+            { include: '@whitespace' },
+            { include: '@numbers' },
+            { include: '@strings' },
+            [/[,:;]/, 'delimiter'],
+            [/[{}\[\]()<>]/, '@brackets'],
+            [/[a-zA-Z@#]\w*/, {
+                    cases: {
+                        '@keywords': 'keyword',
+                        '@default': 'identifier'
+                    }
+                }],
+            [/[<>=\\+\\-\\*\\/\\^\\|\\~,]|and\\b|or\\b|not\\b]/, 'operator'],
+        ],
+        whitespace: [
+            [/\s+/, 'white'],
+        ],
+        comments: [
+            ['\\/\\*', 'comment', '@comment'],
+            ['\\/\\/+.*', 'comment'],
+        ],
+        comment: [
+            ['\\*\\/', 'comment', '@pop'],
+            ['.', 'comment',],
+        ],
+        numbers: [
+            [/0[xX][0-9a-fA-F]*(_?[0-9a-fA-F])*/, 'number.hex'],
+            [/@decimal((\.@decpart)?([eE][\-+]?@decpart)?)[fF]*/, {
+                    cases: {
+                        '(\\d)*': 'number',
+                        '$0': 'number.float'
+                    }
+                }]
+        ],
+        // Recognize strings, including those broken across lines with \ (but not without)
+        strings: [
+            [/'$/, 'string.escape', '@popall'],
+            [/'/, 'string.escape', '@stringBody'],
+            [/"$/, 'string.escape', '@popall'],
+            [/"/, 'string.escape', '@dblStringBody']
+        ],
+        stringBody: [
+            [/\\./, 'string'],
+            [/'/, 'string.escape', '@popall'],
+            [/.(?=.*')/, 'string'],
+            [/.*\\$/, 'string'],
+            [/.*$/, 'string', '@popall']
+        ],
+        dblStringBody: [
+            [/\\./, 'string'],
+            [/"/, 'string.escape', '@popall'],
+            [/.(?=.*")/, 'string'],
+            [/.*\\$/, 'string'],
+            [/.*$/, 'string', '@popall']
+        ]
+    }
+};
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9ub2RlX21vZHVsZXMvbW9uYWNvLWVkaXRvci9lc20vdnMvYmFzaWMtbGFuZ3VhZ2VzL29iamVjdGl2ZS1jL29iamVjdGl2ZS1jLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNhO0FBQ047QUFDUDtBQUNBO0FBQ0E7QUFDQSxLQUFLO0FBQ0w7QUFDQSxXQUFXLEtBQUs7QUFDaEI7QUFDQTtBQUNBO0FBQ0E7QUFDQSxTQUFTLFNBQVMsWUFBWSxHQUFHO0FBQ2pDLFNBQVMsd0JBQXdCO0FBQ2pDLFNBQVMsd0JBQXdCO0FBQ2pDLFNBQVMsd0JBQXdCO0FBQ2pDLFNBQVMsMEJBQTBCO0FBQ25DO0FBQ0E7QUFDQSxTQUFTLFNBQVMsWUFBWSxHQUFHO0FBQ2pDLFNBQVMsd0JBQXdCO0FBQ2pDLFNBQVMsd0JBQXdCO0FBQ2pDLFNBQVMsd0JBQXdCO0FBQ2pDLFNBQVMsMEJBQTBCO0FBQ25DO0FBQ0E7QUFDTztBQUNQO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGFBQWEsdUJBQXVCO0FBQ3BDLGFBQWEseUJBQXlCO0FBQ3RDLGFBQWEsc0JBQXNCO0FBQ25DLGFBQWEsc0JBQXNCO0FBQ25DLGtCQUFrQjtBQUNsQixpQkFBaUI7QUFDakI7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGlCQUFpQjtBQUNqQjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsaUJBQWlCO0FBQ2pCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsImZpbGUiOiIyNi5idW5kbGUuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuICogIENvcHlyaWdodCAoYykgTWljcm9zb2Z0IENvcnBvcmF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLlxuICogIExpY2Vuc2VkIHVuZGVyIHRoZSBNSVQgTGljZW5zZS4gU2VlIExpY2Vuc2UudHh0IGluIHRoZSBwcm9qZWN0IHJvb3QgZm9yIGxpY2Vuc2UgaW5mb3JtYXRpb24uXG4gKi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKi9cbid1c2Ugc3RyaWN0JztcbmV4cG9ydCB2YXIgY29uZiA9IHtcbiAgICBjb21tZW50czoge1xuICAgICAgICBsaW5lQ29tbWVudDogJy8vJyxcbiAgICAgICAgYmxvY2tDb21tZW50OiBbJy8qJywgJyovJ10sXG4gICAgfSxcbiAgICBicmFja2V0czogW1xuICAgICAgICBbJ3snLCAnfSddLFxuICAgICAgICBbJ1snLCAnXSddLFxuICAgICAgICBbJygnLCAnKSddXG4gICAgXSxcbiAgICBhdXRvQ2xvc2luZ1BhaXJzOiBbXG4gICAgICAgIHsgb3BlbjogJ3snLCBjbG9zZTogJ30nIH0sXG4gICAgICAgIHsgb3BlbjogJ1snLCBjbG9zZTogJ10nIH0sXG4gICAgICAgIHsgb3BlbjogJygnLCBjbG9zZTogJyknIH0sXG4gICAgICAgIHsgb3BlbjogJ1wiJywgY2xvc2U6ICdcIicgfSxcbiAgICAgICAgeyBvcGVuOiAnXFwnJywgY2xvc2U6ICdcXCcnIH0sXG4gICAgXSxcbiAgICBzdXJyb3VuZGluZ1BhaXJzOiBbXG4gICAgICAgIHsgb3BlbjogJ3snLCBjbG9zZTogJ30nIH0sXG4gICAgICAgIHsgb3BlbjogJ1snLCBjbG9zZTogJ10nIH0sXG4gICAgICAgIHsgb3BlbjogJygnLCBjbG9zZTogJyknIH0sXG4gICAgICAgIHsgb3BlbjogJ1wiJywgY2xvc2U6ICdcIicgfSxcbiAgICAgICAgeyBvcGVuOiAnXFwnJywgY2xvc2U6ICdcXCcnIH0sXG4gICAgXVxufTtcbmV4cG9ydCB2YXIgbGFuZ3VhZ2UgPSB7XG4gICAgZGVmYXVsdFRva2VuOiAnJyxcbiAgICB0b2tlblBvc3RmaXg6ICcub2JqZWN0aXZlLWMnLFxuICAgIGtleXdvcmRzOiBbXG4gICAgICAgICcjaW1wb3J0JyxcbiAgICAgICAgJyNpbmNsdWRlJyxcbiAgICAgICAgJyNkZWZpbmUnLFxuICAgICAgICAnI2Vsc2UnLFxuICAgICAgICAnI2VuZGlmJyxcbiAgICAgICAgJyNpZicsXG4gICAgICAgICcjaWZkZWYnLFxuICAgICAgICAnI2lmbmRlZicsXG4gICAgICAgICcjaWRlbnQnLFxuICAgICAgICAnI3VuZGVmJyxcbiAgICAgICAgJ0BjbGFzcycsXG4gICAgICAgICdAZGVmcycsXG4gICAgICAgICdAZHluYW1pYycsXG4gICAgICAgICdAZW5jb2RlJyxcbiAgICAgICAgJ0BlbmQnLFxuICAgICAgICAnQGltcGxlbWVudGF0aW9uJyxcbiAgICAgICAgJ0BpbnRlcmZhY2UnLFxuICAgICAgICAnQHBhY2thZ2UnLFxuICAgICAgICAnQHByaXZhdGUnLFxuICAgICAgICAnQHByb3RlY3RlZCcsXG4gICAgICAgICdAcHJvcGVydHknLFxuICAgICAgICAnQHByb3RvY29sJyxcbiAgICAgICAgJ0BwdWJsaWMnLFxuICAgICAgICAnQHNlbGVjdG9yJyxcbiAgICAgICAgJ0BzeW50aGVzaXplJyxcbiAgICAgICAgJ19fZGVjbHNwZWMnLFxuICAgICAgICAnYXNzaWduJyxcbiAgICAgICAgJ2F1dG8nLFxuICAgICAgICAnQk9PTCcsXG4gICAgICAgICdicmVhaycsXG4gICAgICAgICdieWNvcHknLFxuICAgICAgICAnYnlyZWYnLFxuICAgICAgICAnY2FzZScsXG4gICAgICAgICdjaGFyJyxcbiAgICAgICAgJ0NsYXNzJyxcbiAgICAgICAgJ2NvbnN0JyxcbiAgICAgICAgJ2NvcHknLFxuICAgICAgICAnY29udGludWUnLFxuICAgICAgICAnZGVmYXVsdCcsXG4gICAgICAgICdkbycsXG4gICAgICAgICdkb3VibGUnLFxuICAgICAgICAnZWxzZScsXG4gICAgICAgICdlbnVtJyxcbiAgICAgICAgJ2V4dGVybicsXG4gICAgICAgICdGQUxTRScsXG4gICAgICAgICdmYWxzZScsXG4gICAgICAgICdmbG9hdCcsXG4gICAgICAgICdmb3InLFxuICAgICAgICAnZ290bycsXG4gICAgICAgICdpZicsXG4gICAgICAgICdpbicsXG4gICAgICAgICdpbnQnLFxuICAgICAgICAnaWQnLFxuICAgICAgICAnaW5vdXQnLFxuICAgICAgICAnSU1QJyxcbiAgICAgICAgJ2xvbmcnLFxuICAgICAgICAnbmlsJyxcbiAgICAgICAgJ25vbmF0b21pYycsXG4gICAgICAgICdOVUxMJyxcbiAgICAgICAgJ29uZXdheScsXG4gICAgICAgICdvdXQnLFxuICAgICAgICAncHJpdmF0ZScsXG4gICAgICAgICdwdWJsaWMnLFxuICAgICAgICAncHJvdGVjdGVkJyxcbiAgICAgICAgJ3JlYWR3cml0ZScsXG4gICAgICAgICdyZWFkb25seScsXG4gICAgICAgICdyZWdpc3RlcicsXG4gICAgICAgICdyZXR1cm4nLFxuICAgICAgICAnU0VMJyxcbiAgICAgICAgJ3NlbGYnLFxuICAgICAgICAnc2hvcnQnLFxuICAgICAgICAnc2lnbmVkJyxcbiAgICAgICAgJ3NpemVvZicsXG4gICAgICAgICdzdGF0aWMnLFxuICAgICAgICAnc3RydWN0JyxcbiAgICAgICAgJ3N1cGVyJyxcbiAgICAgICAgJ3N3aXRjaCcsXG4gICAgICAgICd0eXBlZGVmJyxcbiAgICAgICAgJ1RSVUUnLFxuICAgICAgICAndHJ1ZScsXG4gICAgICAgICd1bmlvbicsXG4gICAgICAgICd1bnNpZ25lZCcsXG4gICAgICAgICd2b2xhdGlsZScsXG4gICAgICAgICd2b2lkJyxcbiAgICAgICAgJ3doaWxlJyxcbiAgICBdLFxuICAgIGRlY3BhcnQ6IC9cXGQoXz9cXGQpKi8sXG4gICAgZGVjaW1hbDogLzB8QGRlY3BhcnQvLFxuICAgIHRva2VuaXplcjoge1xuICAgICAgICByb290OiBbXG4gICAgICAgICAgICB7IGluY2x1ZGU6ICdAY29tbWVudHMnIH0sXG4gICAgICAgICAgICB7IGluY2x1ZGU6ICdAd2hpdGVzcGFjZScgfSxcbiAgICAgICAgICAgIHsgaW5jbHVkZTogJ0BudW1iZXJzJyB9LFxuICAgICAgICAgICAgeyBpbmNsdWRlOiAnQHN0cmluZ3MnIH0sXG4gICAgICAgICAgICBbL1ssOjtdLywgJ2RlbGltaXRlciddLFxuICAgICAgICAgICAgWy9be31cXFtcXF0oKTw+XS8sICdAYnJhY2tldHMnXSxcbiAgICAgICAgICAgIFsvW2EtekEtWkAjXVxcdyovLCB7XG4gICAgICAgICAgICAgICAgICAgIGNhc2VzOiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAnQGtleXdvcmRzJzogJ2tleXdvcmQnLFxuICAgICAgICAgICAgICAgICAgICAgICAgJ0BkZWZhdWx0JzogJ2lkZW50aWZpZXInXG4gICAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICB9XSxcbiAgICAgICAgICAgIFsvWzw+PVxcXFwrXFxcXC1cXFxcKlxcXFwvXFxcXF5cXFxcfFxcXFx+LF18YW5kXFxcXGJ8b3JcXFxcYnxub3RcXFxcYl0vLCAnb3BlcmF0b3InXSxcbiAgICAgICAgXSxcbiAgICAgICAgd2hpdGVzcGFjZTogW1xuICAgICAgICAgICAgWy9cXHMrLywgJ3doaXRlJ10sXG4gICAgICAgIF0sXG4gICAgICAgIGNvbW1lbnRzOiBbXG4gICAgICAgICAgICBbJ1xcXFwvXFxcXConLCAnY29tbWVudCcsICdAY29tbWVudCddLFxuICAgICAgICAgICAgWydcXFxcL1xcXFwvKy4qJywgJ2NvbW1lbnQnXSxcbiAgICAgICAgXSxcbiAgICAgICAgY29tbWVudDogW1xuICAgICAgICAgICAgWydcXFxcKlxcXFwvJywgJ2NvbW1lbnQnLCAnQHBvcCddLFxuICAgICAgICAgICAgWycuJywgJ2NvbW1lbnQnLF0sXG4gICAgICAgIF0sXG4gICAgICAgIG51bWJlcnM6IFtcbiAgICAgICAgICAgIFsvMFt4WF1bMC05YS1mQS1GXSooXz9bMC05YS1mQS1GXSkqLywgJ251bWJlci5oZXgnXSxcbiAgICAgICAgICAgIFsvQGRlY2ltYWwoKFxcLkBkZWNwYXJ0KT8oW2VFXVtcXC0rXT9AZGVjcGFydCk/KVtmRl0qLywge1xuICAgICAgICAgICAgICAgICAgICBjYXNlczoge1xuICAgICAgICAgICAgICAgICAgICAgICAgJyhcXFxcZCkqJzogJ251bWJlcicsXG4gICAgICAgICAgICAgICAgICAgICAgICAnJDAnOiAnbnVtYmVyLmZsb2F0J1xuICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgfV1cbiAgICAgICAgXSxcbiAgICAgICAgLy8gUmVjb2duaXplIHN0cmluZ3MsIGluY2x1ZGluZyB0aG9zZSBicm9rZW4gYWNyb3NzIGxpbmVzIHdpdGggXFwgKGJ1dCBub3Qgd2l0aG91dClcbiAgICAgICAgc3RyaW5nczogW1xuICAgICAgICAgICAgWy8nJC8sICdzdHJpbmcuZXNjYXBlJywgJ0Bwb3BhbGwnXSxcbiAgICAgICAgICAgIFsvJy8sICdzdHJpbmcuZXNjYXBlJywgJ0BzdHJpbmdCb2R5J10sXG4gICAgICAgICAgICBbL1wiJC8sICdzdHJpbmcuZXNjYXBlJywgJ0Bwb3BhbGwnXSxcbiAgICAgICAgICAgIFsvXCIvLCAnc3RyaW5nLmVzY2FwZScsICdAZGJsU3RyaW5nQm9keSddXG4gICAgICAgIF0sXG4gICAgICAgIHN0cmluZ0JvZHk6IFtcbiAgICAgICAgICAgIFsvXFxcXC4vLCAnc3RyaW5nJ10sXG4gICAgICAgICAgICBbLycvLCAnc3RyaW5nLmVzY2FwZScsICdAcG9wYWxsJ10sXG4gICAgICAgICAgICBbLy4oPz0uKicpLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy8uKlxcXFwkLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy8uKiQvLCAnc3RyaW5nJywgJ0Bwb3BhbGwnXVxuICAgICAgICBdLFxuICAgICAgICBkYmxTdHJpbmdCb2R5OiBbXG4gICAgICAgICAgICBbL1xcXFwuLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy9cIi8sICdzdHJpbmcuZXNjYXBlJywgJ0Bwb3BhbGwnXSxcbiAgICAgICAgICAgIFsvLig/PS4qXCIpLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy8uKlxcXFwkLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy8uKiQvLCAnc3RyaW5nJywgJ0Bwb3BhbGwnXVxuICAgICAgICBdXG4gICAgfVxufTtcbiJdLCJzb3VyY2VSb290IjoiIn0=

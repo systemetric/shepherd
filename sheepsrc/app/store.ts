@@ -25,15 +25,12 @@ const _ = {
   snakeCase: require("lodash/snakeCase")
 };
 
+// The port that shepherd is on
+const SHEPHERD_PORT = "8080"
+
 Vue.use(Vuex);
 
-/** TypeScript supports objects with types. These interfaces define groups of
- * to be passed around in the program types
- */
-
-/**Every file of the user's code is stored in "projects" with the following
- * properties
- */
+/**Every file of the user's code is a "project" with the following*/
 export interface Project {
   filename: string;
   name: string;
@@ -44,7 +41,7 @@ export interface Project {
 
 /**This is for the projects retreived from the server initally to display the
  * side bar:
- * main: the file path of the "main" file used by monacos language server
+ * main: the file path of the "main" file used by Monacos language server
  * "/root/shepherd2/robosrc/main.py"
  * The currently opened document is assumed to be at that location which allows
  * the code completetion to work.
@@ -55,8 +52,7 @@ interface ProjectsResponse {
   blocks: BlocksConfiguration;
 }
 
-/** Notifications can be raised to the user. Here is the interface for all of
- * their settings */
+/** Notifications can be raised to the user. */
 interface Message {
   id: string | number;
   message: string;
@@ -64,13 +60,11 @@ interface Message {
   timeout?: any;
 }
 
-// The user may wish to hide the side bars to increase screen real estate
 interface SidebarsHidden {
   leftHidden: boolean;
   rightHidden: boolean;
 }
 
-// A "bucket" interface which holds all of the state of the program
 interface State {
   loaded: boolean;
   main: string;
@@ -89,25 +83,30 @@ interface State {
   sidebarsHidden: SidebarsHidden;
 }
 
-// Events which can cause the program to change state
+// == Mutations ==
+// Project
 const MUTATION_SET_PROJECTS = "SET_PROJECTS";
 const MUTATION_OPEN_PROJECT = "OPEN_PROJECT";
 const MUTATION_CLOSE_PROJECT = "CLOSE_PROJECT";
-export const MUTATION_UPDATE_PROJECT = "UPDATE_PROJECT";
 const MUTATION_CREATE_PROJECT = "CREATE_PROJECT";
 const MUTATION_DELETE_PROJECT = "DELETE_PROJECT";
+export const MUTATION_UPDATE_PROJECT = "UPDATE_PROJECT";
+
+// Code control
 const MUTATION_SET_RUNNING = "SET_RUNNING";
 const MUTATION_SET_SAVING = "SET_SAVING";
 const MUTATION_MARK_PROJECT_SAVED = "MARK_SAVED";
-export const MUTATION_SET_CREATE_OPEN = "SET_CREATE_OPEN";
-export const MUTATION_SHOW_UPLOAD_DIALOG = "SHOW_UPLOAD_DIALOG";
-const MUTATION_SHOW_MESSAGE = "SHOW_MESSAGE";
-export const MUTATION_DISMISS_MESSAGE = "DISMISS_MESSAGE";
 const MUTATION_SET_TEXT_LOG = "SET_TEXT_LOG";
 const MUTATION_RESET_TEXT_LOG_OUTPUT = "RESET_TEXT_LOG_OUTPUT";
+export const MUTATION_SET_CREATE_OPEN = "SET_CREATE_OPEN";
+
+// User interactions
+const MUTATION_SHOW_MESSAGE = "SHOW_MESSAGE";
+export const MUTATION_DISMISS_MESSAGE = "DISMISS_MESSAGE";
+export const MUTATION_SHOW_UPLOAD_DIALOG = "SHOW_UPLOAD_DIALOG";
 export const MUTATION_SET_SIDEBAR_HIDDEN = "SET_SIDEBAR_HIDDEN";
 
-// Actions which the user can take which cause mutations
+// == Actions ==
 export const ACTION_FETCH_PROJECTS = "FETCH_PROJECTS";
 export const ACTION_OPEN_PROJECT = "OPEN_PROJECT";
 export const ACTION_CLOSE_PROJECT = "CLOSE_PROJECT";
@@ -124,18 +123,14 @@ const MESSAGE_STOP = "STOP";
 const MESSAGE_SAVED = "SAVED";
 const MESSAGE_JSON_ERROR = "JSON_ERROR";
 
-// A function which adds host and protocol to make a useable URL
-// Always expects shepherd to be servering on port 80
-export function makeFullUrl(route: string, protocol?: string): string {
-  if (!protocol) protocol = "http";
-  let host = window.location.host;
-  if (window.location.port === "8080") {
-    host = `${window.location.hostname}:80`;
-  };
-  return `${protocol}://${host}${route}`;
+// Creates a url for the server app based on the url of the window.location
+// Always expects Shepherd to be servering on port SHEPHERD_PORT
+export function makeFullUrl(route: string, protocol: string = "http"): string {
+  let host = window.location.hostname;
+  return `${protocol}://${host}:${SHEPHERD_PORT}${route}`;
 }
 
-// Create a promise which resolves after a certain time
+// Create a promise garanteed to expire in a certain amount of time
 export function wait(time: number): Promise<number> {
   return new Promise<number>(resolve => {
     setTimeout(() => resolve(time), time);
@@ -154,29 +149,23 @@ function compareProjects(a: Project, b: Project): number {
   return a.filename < b.filename ? -1 : 1;
 }
 
-/**Saves a project.
- * Selects the correct mime type from the file extention so that it is
- * saved correctly then creates a blob which can be writen to disk using
- * the FileSaver object
- */
-export function saveProject(p: Project) {
-  const ext = p.filename.substring(p.filename.lastIndexOf(".") + 1);
-  const mime =
-    ext === "py"
-      ? "application/x-python"
-      : ext === "xml"
-        ? "application/xml"
-        : "text/plain";
-  const blob = new Blob([p.content], { type: `${mime};charset=utf-8` });
-  FileSaver.saveAs(blob, p.filename);
+// Downloads project to the users disk
+export function saveProject(project: Project) {
+  const mime_types = {
+    "py": "application/x-python",
+    "xml": "application/xml",
+  }
+  var fileExt = project.filename.split('.').pop();
+  const mime = mime_types[fileExt] || "text/plain";
+  const blob = new Blob([project.content], { type: `${mime};charset=utf-8` });
+  FileSaver.saveAs(blob, project.filename);
 }
 
 /**The Vuex Store
- * If you are unfamiliar with vuex this may seem a little weird
- * Link to documentation: https://vuex.vuejs.org
+ * Documentation: https://vuex.vuejs.org
  */
 export default new Vuex.Store<State>({
-  // The state of the program as defined in the "interface State"
+  // default
   state: {
     loaded: false,
     main: "",
@@ -214,9 +203,8 @@ export default new Vuex.Store<State>({
       state.blocksConfiguration = res.blocks;
     },
 
-    /**Checks if a project is already open.
-     * If not then adds the project to the list of currently open projects and
-     * sets it as the currently open project
+    /**If project isn't already open adds to list of currently open projects
+     * then sets it as the currently open project
      */
     [MUTATION_OPEN_PROJECT](state: State, filename?: string) {
       const findProject = (project: Project) => project.filename === filename;
@@ -224,59 +212,51 @@ export default new Vuex.Store<State>({
       let newProject = state.projects.find(findProject);
       if (!newProject) return;
 
-      if (!state.openProjects.find(findProject))
+      if (!state.openProjects.find(findProject)) {
         state.openProjects.push(newProject);
+      };
 
       state.currentProject = newProject;
     },
 
-    /**Finds a choosen project in the list of open projects
+    /**Finds a choosen project in the open projects
      * If the currently open project is the one to be removed then another
-     * openProject is found and that is set as the currently open project.
-     * NB there aren't index out of bounds errors in JS. Referencing an empty
-     * array therefore sets the current project to zero
+     * openProject is found and set as the openProject.
+     * If past the end of the array decrement
      */
-    [MUTATION_CLOSE_PROJECT](state: State, filename?: string) {
-      let foundIndex = state.openProjects.findIndex(
+    [MUTATION_CLOSE_PROJECT](state: State, filename: string) {
+      let projectIndex = state.openProjects.findIndex(
         project => project.filename === filename
       );
-      if (foundIndex >= 0) {
-        state.openProjects.splice(foundIndex, 1);
+      if (projectIndex >= 0) {
+        state.openProjects.splice(projectIndex, 1);
 
-        if (
-          state.currentProject
-          && state.currentProject.filename === filename
-        ) {
-          if (foundIndex == state.openProjects.length) {
-            foundIndex--;
+        if (state.currentProject.filename === filename) {
+          if (projectIndex == state.openProjects.length) {
+            projectIndex--;
           }
-          state.currentProject = state.openProjects[foundIndex];
+          state.currentProject = state.openProjects[projectIndex];
         }
       }
     },
 
-    /**
-     * Updates the state once the blockly script is compiled
-     */
+    /** Updates content and blocklyGenerated
+     *  If projectName is not specified then defaults to current project */
     [MUTATION_UPDATE_PROJECT](
       state: State,
       {
         content,
         blocklyGenerated,
-        filename
-      }: { content: string; blocklyGenerated?: string; filename?: string }
+        projectName
+      }: { content: string; blocklyGenerated?: string; projectName?: string }
     ) {
-      if (filename) {
-        state.projects = state.projects.map(v => {
-          if (v.filename === filename) {
-            v.content = content;
-            v.blocklyGenerated = blocklyGenerated;
-          }
-          return v;
-        });
-      } else if (state.currentProject) {
-        state.currentProject.content = content;
-        state.currentProject.blocklyGenerated = blocklyGenerated;
+      let desiredFilename = projectName || state.currentProject.filename;
+      let projectToUpdate = state.projects.find(
+        project => project.filename === desiredFilename
+      );
+      if (projectToUpdate) {
+        projectToUpdate.content = content;
+        projectToUpdate.blocklyGenerated = blocklyGenerated;
       }
     },
 
@@ -286,14 +266,10 @@ export default new Vuex.Store<State>({
       state.projects.sort(compareProjects);
     },
 
-    //Removes a project from the vuex store
+    //Removes a project from the store
     [MUTATION_DELETE_PROJECT](state: State, filename: string) {
-      const foundIndex = state.projects.findIndex(
-        project => project.filename === filename
-      );
-      if (foundIndex >= 0) {
-        state.projects.splice(foundIndex, 1);
-      }
+      state.projects = state.projects.filter(
+        project => project.filename !== filename);
     },
 
     //Change the state.running to running
@@ -301,39 +277,37 @@ export default new Vuex.Store<State>({
       state.running = running;
     },
 
-    /**This handles when multiple files start/stop saving at the same time.
-      */
+    // `state.saving` is the number of files which are currently being saved
     [MUTATION_SET_SAVING](state: State, saving: boolean) {
       state.saving += saving ? 1 : -1;
     },
 
-    /**Updates the "lastSaveContent" of all of the states to the currently
-     * projects. The calls to openProjects etc maybe need to let the
-     * reactively work depending on how vue handels pointers
+    /**Updates the "lastSaveContent"
+     * TODO I think that the projects in state.openProjects are pointers to
+     * projects in state.projects so we should be able to parse over
+     * state.projects?
      */
     [MUTATION_MARK_PROJECT_SAVED](state: State, filename: string) {
-      const markSaved = (v: Project) => {
-        if (v.filename === filename) {
-          v.lastSaveContent = v.content;
+      const markSaved = (projects: Project[]) => {
+        let project = projects.find(p => p.filename === filename);
+        if (project) {
+          project.lastSaveContent = project.content;
         }
-        return v;
       };
 
       if (state.currentProject && state.currentProject.filename) {
         state.currentProject.lastSaveContent = state.currentProject.content;
       }
-      state.projects = state.projects.map(markSaved);
-      state.openProjects = state.openProjects.map(markSaved);
+      markSaved(state.projects);
+      markSaved(state.openProjects);
     },
 
-    //Moves to the create new project dialogue
+    // Opens the create project dialogue
     [MUTATION_SET_CREATE_OPEN](state: State, open: boolean) {
       state.createOpen = open;
     },
 
-    /**I think this is just in case multiple files are uploaded at the same
-     * time
-     */
+    // 
     [MUTATION_SHOW_UPLOAD_DIALOG](state: State) {
       state.uploadFileKeyPressId++;
     },
@@ -504,6 +478,7 @@ export default new Vuex.Store<State>({
           }
         }
 
+
         commit(MUTATION_SET_SAVING, true);
         return fetch(makeFullUrl(`/files/save/${foundProject.filename}`), {
           method: "POST",
@@ -551,7 +526,7 @@ export default new Vuex.Store<State>({
       const foundProject = state.projects.find(
         project => project.filename === filename
       );
-      if (foundProject) {
+      if (!foundProject) {
         if (filename) {
           commit(MUTATION_CLOSE_PROJECT, filename);
           commit(MUTATION_UPDATE_PROJECT, {
@@ -614,6 +589,7 @@ export default new Vuex.Store<State>({
      * Moves to the running state
      */
     async [ACTION_RUN_PROJECT]({ state, commit, dispatch }, noSave: boolean) {
+      console.log("run project");
       if (state.running) return;
 
       if (state.currentProject) {

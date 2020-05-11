@@ -1,9 +1,6 @@
-exported = "exported!!!!!!!"
+fasdfas
+defasdfasdf
 
+sdfasdf
 
-def say_hi():
-    print "hi!"
-
-import robot
-
-asdfasdf
+sadfa

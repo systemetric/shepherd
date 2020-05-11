@@ -3,6 +3,7 @@ import json
 import os
 import os.path as path
 import re
+import logging
 
 from flask import Blueprint, request
 
@@ -57,13 +58,13 @@ def get_files():
     })
 
 
+# TODO raise an error to the user in sheep if this fails
 @blueprint.route("/save/<string:filename>", methods=["POST"])
 def save_file(filename):
-    dots = len(re.findall("\.", filename))
+    dots = len(re.findall(r"\.", filename))
     if dots == 1:
-        f = open(path.join(robotsrc_path, filename), 'w')
-        f.write(request.data)
-        f.close()
+        with open(path.join(robotsrc_path, filename), 'wb') as f:
+            f.write(request.data)
     return ""
 
 
@@ -71,7 +72,7 @@ def save_file(filename):
 def delete_file(filename):
     if filename == "blocks.json":
         return ""
-    dots = len(re.findall("\.", filename))
+    dots = len(re.findall(r"\.", filename))
     if dots == 1:
         os.unlink(path.join(robotsrc_path, filename))
     return ""
