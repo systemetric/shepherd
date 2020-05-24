@@ -18,8 +18,6 @@ except (ImportError):
     from fake_rpigpio import RPi
     GPIO = RPi.GPIO
 
-
-
 from shepherd.blueprints import upload, run, pyls, editor, staticroutes
 
 START_BUTTON_PIN = 5  # This is a BCM pin number (BCM0 corresponds to phys27).
@@ -62,12 +60,12 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
             zone = "2"
         elif os.path.exists("/media/ArenaUSB/zone3.txt"):
             zone = "3"
-        # this is the weirdest calling convention
-        ctx = app.test_request_context(data={
+
+        app_context = app.test_request_context(data={
             "zone": zone,
             "mode": "competition",
         })
-        with ctx:
+        with app_context:
             run.start()
     GPIO.add_event_detect(START_BUTTON_PIN, GPIO.FALLING, callback=_start, bouncetime=3000)
 

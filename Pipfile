@@ -7,7 +7,6 @@ name = "pypi"
 flask = "*"
 "enum34" = "*"
 pytz = "*"
-python-language-server = "*"
 flask-cors = "*"
 flask-sockets = "*"
 jsonrpc = "*"
@@ -15,14 +14,14 @@ jsonrpc = "*"
 # "RPi.GPIO" = "*"
 "smbus2" = "*"
 json-rpc = "*"
-ujson = "*"
-
-[dev-packages]
-"flake8" = "*"
-"flake8-future-import" = "*"
-"fake-rpigpio" = "*"
-pylint = "<2.0.0"
+python-language-server = {extras = ["pyflakes"],version = "*"}
+fake-rpigpio = "*"
 rope = "*"
 
+[dev-packages]
+pylint = "*"
+"flake8-future-import" = "*"
+"flake8" = "*"
+
 [requires]
-python_version = "2.7"
+python_version = "3.6.9"

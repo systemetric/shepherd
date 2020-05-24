@@ -8,6 +8,12 @@ Doc's of jsonrpc: https://json-rpc.readthedocs.io/en/latest/quickstart.html
 Doc's of pyls_jsonrpc: https://github.com/palantir/python-language-server
 
 TODO check that this is getting autocomplete for the robot libarry
+
+FIXME/TODO
+Crashes with the bellow upon the user closing the tab. This is expected behaviour
+but it would be nice to make the logs nicer
+INFO:root:Exiting pyls with the JSON object must be str, bytes or bytearray, not
+'NoneType'
 """
 import logging
 import json
@@ -21,7 +27,7 @@ from geventwebsocket import WebSocketError
 blueprint = flask.Blueprint("pyls", __name__)
 
 
-@blueprint.route('/pyls')
+@blueprint.route("/pyls")
 def pyls_socket(socket):
     """Handle messages between the client and a `pyls` process"""
     ls_process = subprocess.Popen(
@@ -48,10 +54,11 @@ def pyls_socket(socket):
     try:
         while not socket.closed:
             message = json.loads(socket.receive())
-            server_interface.write(message)
             logging.debug(message)
+            if not message is None:
+                server_interface.write(message)
     except (TypeError, WebSocketError) as err:
         # When the client exits these errors can be raised
-        logging.info("Exiting pyls with {}".format(err))
+        logging.info("Exiting pyls because {}".format(err))
     finally:
         ls_process.kill()

@@ -1,1 +1,237 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[35],{588:function(e,_,t){"use strict";t.r(_),t.d(_,"conf",(function(){return r})),t.d(_,"language",(function(){return i}));var r={comments:{lineComment:"--",blockComment:["/*","*/"]},brackets:[["{","}"],["[","]"],["(",")"]],autoClosingPairs:[{open:"{",close:"}"},{open:"[",close:"]"},{open:"(",close:")"},{open:'"',close:'"'},{open:"'",close:"'"}],surroundingPairs:[{open:"{",close:"}"},{open:"[",close:"]"},{open:"(",close:")"},{open:'"',close:'"'},{open:"'",close:"'"}]},i={defaultToken:"",tokenPostfix:".sql",ignoreCase:!0,brackets:[{open:"[",close:"]",token:"delimiter.square"},{open:"(",close:")",token:"delimiter.parenthesis"}],keywords:["AES128","AES256","ALL","ALLOWOVERWRITE","ANALYSE","ANALYZE","AND","ANY","ARRAY","AS","ASC","AUTHORIZATION","BACKUP","BETWEEN","BINARY","BLANKSASNULL","BOTH","BYTEDICT","BZIP2","CASE","CAST","CHECK","COLLATE","COLUMN","CONSTRAINT","CREATE","CREDENTIALS","CROSS","CURRENT_DATE","CURRENT_TIME","CURRENT_TIMESTAMP","CURRENT_USER","CURRENT_USER_ID","DEFAULT","DEFERRABLE","DEFLATE","DEFRAG","DELTA","DELTA32K","DESC","DISABLE","DISTINCT","DO","ELSE","EMPTYASNULL","ENABLE","ENCODE","ENCRYPT","ENCRYPTION","END","EXCEPT","EXPLICIT","FALSE","FOR","FOREIGN","FREEZE","FROM","FULL","GLOBALDICT256","GLOBALDICT64K","GRANT","GROUP","GZIP","HAVING","IDENTITY","IGNORE","ILIKE","IN","INITIALLY","INNER","INTERSECT","INTO","IS","ISNULL","JOIN","LEADING","LEFT","LIKE","LIMIT","LOCALTIME","LOCALTIMESTAMP","LUN","LUNS","LZO","LZOP","MINUS","MOSTLY13","MOSTLY32","MOSTLY8","NATURAL","NEW","NOT","NOTNULL","NULL","NULLS","OFF","OFFLINE","OFFSET","OID","OLD","ON","ONLY","OPEN","OR","ORDER","OUTER","OVERLAPS","PARALLEL","PARTITION","PERCENT","PERMISSIONS","PLACING","PRIMARY","RAW","READRATIO","RECOVER","REFERENCES","RESPECT","REJECTLOG","RESORT","RESTORE","RIGHT","SELECT","SESSION_USER","SIMILAR","SNAPSHOT","SOME","SYSDATE","SYSTEM","TABLE","TAG","TDES","TEXT255","TEXT32K","THEN","TIMESTAMP","TO","TOP","TRAILING","TRUE","TRUNCATECOLUMNS","UNION","UNIQUE","USER","USING","VERBOSE","WALLET","WHEN","WHERE","WITH","WITHOUT"],operators:["AND","BETWEEN","IN","LIKE","NOT","OR","IS","NULL","INTERSECT","UNION","INNER","JOIN","LEFT","OUTER","RIGHT"],builtinFunctions:["current_schema","current_schemas","has_database_privilege","has_schema_privilege","has_table_privilege","age","current_time","current_timestamp","localtime","isfinite","now","ascii","get_bit","get_byte","set_bit","set_byte","to_ascii","approximate percentile_disc","avg","count","listagg","max","median","min","percentile_cont","stddev_samp","stddev_pop","sum","var_samp","var_pop","bit_and","bit_or","bool_and","bool_or","cume_dist","first_value","lag","last_value","lead","nth_value","ratio_to_report","dense_rank","ntile","percent_rank","rank","row_number","case","coalesce","decode","greatest","least","nvl","nvl2","nullif","add_months","at time zone","convert_timezone","current_date","date_cmp","date_cmp_timestamp","date_cmp_timestamptz","date_part_year","dateadd","datediff","date_part","date_trunc","extract","getdate","interval_cmp","last_day","months_between","next_day","sysdate","timeofday","timestamp_cmp","timestamp_cmp_date","timestamp_cmp_timestamptz","timestamptz_cmp","timestamptz_cmp_date","timestamptz_cmp_timestamp","timezone","to_timestamp","trunc","abs","acos","asin","atan","atan2","cbrt","ceil","ceiling","checksum","cos","cot","degrees","dexp","dlog1","dlog10","exp","floor","ln","log","mod","pi","power","radians","random","round","sin","sign","sqrt","tan","to_hex","bpcharcmp","btrim","bttext_pattern_cmp","char_length","character_length","charindex","chr","concat","crc32","func_sha1","initcap","left and rights","len","length","lower","lpad and rpads","ltrim","md5","octet_length","position","quote_ident","quote_literal","regexp_count","regexp_instr","regexp_replace","regexp_substr","repeat","replace","replicate","reverse","rtrim","split_part","strpos","strtol","substring","textlen","translate","trim","upper","cast","convert","to_char","to_date","to_number","json_array_length","json_extract_array_element_text","json_extract_path_text","current_setting","pg_cancel_backend","pg_terminate_backend","set_config","current_database","current_user","current_user_id","pg_backend_pid","pg_last_copy_count","pg_last_copy_id","pg_last_query_id","pg_last_unload_count","session_user","slice_num","user","version","abbrev","acosd","any","area","array_agg","array_append","array_cat","array_dims","array_fill","array_length","array_lower","array_ndims","array_position","array_positions","array_prepend","array_remove","array_replace","array_to_json","array_to_string","array_to_tsvector","array_upper","asind","atan2d","atand","bit","bit_length","bound_box","box","brin_summarize_new_values","broadcast","cardinality","center","circle","clock_timestamp","col_description","concat_ws","convert_from","convert_to","corr","cosd","cotd","covar_pop","covar_samp","current_catalog","current_query","current_role","currval","cursor_to_xml","diameter","div","encode","enum_first","enum_last","enum_range","every","family","format","format_type","generate_series","generate_subscripts","get_current_ts_config","gin_clean_pending_list","grouping","has_any_column_privilege","has_column_privilege","has_foreign_data_wrapper_privilege","has_function_privilege","has_language_privilege","has_sequence_privilege","has_server_privilege","has_tablespace_privilege","has_type_privilege","height","host","hostmask","inet_client_addr","inet_client_port","inet_merge","inet_same_family","inet_server_addr","inet_server_port","isclosed","isempty","isopen","json_agg","json_object","json_object_agg","json_populate_record","json_populate_recordset","json_to_record","json_to_recordset","jsonb_agg","jsonb_object_agg","justify_days","justify_hours","justify_interval","lastval","left","line","localtimestamp","lower_inc","lower_inf","lpad","lseg","make_date","make_interval","make_time","make_timestamp","make_timestamptz","masklen","mode","netmask","network","nextval","npoints","num_nonnulls","num_nulls","numnode","obj_description","overlay","parse_ident","path","pclose","percentile_disc","pg_advisory_lock","pg_advisory_lock_shared","pg_advisory_unlock","pg_advisory_unlock_all","pg_advisory_unlock_shared","pg_advisory_xact_lock","pg_advisory_xact_lock_shared","pg_backup_start_time","pg_blocking_pids","pg_client_encoding","pg_collation_is_visible","pg_column_size","pg_conf_load_time","pg_control_checkpoint","pg_control_init","pg_control_recovery","pg_control_system","pg_conversion_is_visible","pg_create_logical_replication_slot","pg_create_physical_replication_slot","pg_create_restore_point","pg_current_xlog_flush_location","pg_current_xlog_insert_location","pg_current_xlog_location","pg_database_size","pg_describe_object","pg_drop_replication_slot","pg_export_snapshot","pg_filenode_relation","pg_function_is_visible","pg_get_constraintdef","pg_get_expr","pg_get_function_arguments","pg_get_function_identity_arguments","pg_get_function_result","pg_get_functiondef","pg_get_indexdef","pg_get_keywords","pg_get_object_address","pg_get_owned_sequence","pg_get_ruledef","pg_get_serial_sequence","pg_get_triggerdef","pg_get_userbyid","pg_get_viewdef","pg_has_role","pg_identify_object","pg_identify_object_as_address","pg_index_column_has_property","pg_index_has_property","pg_indexam_has_property","pg_indexes_size","pg_is_in_backup","pg_is_in_recovery","pg_is_other_temp_schema","pg_is_xlog_replay_paused","pg_last_committed_xact","pg_last_xact_replay_timestamp","pg_last_xlog_receive_location","pg_last_xlog_replay_location","pg_listening_channels","pg_logical_emit_message","pg_logical_slot_get_binary_changes","pg_logical_slot_get_changes","pg_logical_slot_peek_binary_changes","pg_logical_slot_peek_changes","pg_ls_dir","pg_my_temp_schema","pg_notification_queue_usage","pg_opclass_is_visible","pg_operator_is_visible","pg_opfamily_is_visible","pg_options_to_table","pg_postmaster_start_time","pg_read_binary_file","pg_read_file","pg_relation_filenode","pg_relation_filepath","pg_relation_size","pg_reload_conf","pg_replication_origin_create","pg_replication_origin_drop","pg_replication_origin_oid","pg_replication_origin_progress","pg_replication_origin_session_is_setup","pg_replication_origin_session_progress","pg_replication_origin_session_reset","pg_replication_origin_session_setup","pg_replication_origin_xact_reset","pg_replication_origin_xact_setup","pg_rotate_logfile","pg_size_bytes","pg_size_pretty","pg_sleep","pg_sleep_for","pg_sleep_until","pg_start_backup","pg_stat_file","pg_stop_backup","pg_switch_xlog","pg_table_is_visible","pg_table_size","pg_tablespace_databases","pg_tablespace_location","pg_tablespace_size","pg_total_relation_size","pg_trigger_depth","pg_try_advisory_lock","pg_try_advisory_lock_shared","pg_try_advisory_xact_lock","pg_try_advisory_xact_lock_shared","pg_ts_config_is_visible","pg_ts_dict_is_visible","pg_ts_parser_is_visible","pg_ts_template_is_visible","pg_type_is_visible","pg_typeof","pg_xact_commit_timestamp","pg_xlog_location_diff","pg_xlog_replay_pause","pg_xlog_replay_resume","pg_xlogfile_name","pg_xlogfile_name_offset","phraseto_tsquery","plainto_tsquery","point","polygon","popen","pqserverversion","query_to_xml","querytree","quote_nullable","radius","range_merge","regexp_matches","regexp_split_to_array","regexp_split_to_table","regr_avgx","regr_avgy","regr_count","regr_intercept","regr_r2","regr_slope","regr_sxx","regr_sxy","regr_syy","right","row_security_active","row_to_json","rpad","scale","set_masklen","setseed","setval","setweight","shobj_description","sind","sprintf","statement_timestamp","stddev","string_agg","string_to_array","strip","substr","table_to_xml","table_to_xml_and_xmlschema","tand","text","to_json","to_regclass","to_regnamespace","to_regoper","to_regoperator","to_regproc","to_regprocedure","to_regrole","to_regtype","to_tsquery","to_tsvector","transaction_timestamp","ts_debug","ts_delete","ts_filter","ts_headline","ts_lexize","ts_parse","ts_rank","ts_rank_cd","ts_rewrite","ts_stat","ts_token_type","tsquery_phrase","tsvector_to_array","tsvector_update_trigger","tsvector_update_trigger_column","txid_current","txid_current_snapshot","txid_snapshot_xip","txid_snapshot_xmax","txid_snapshot_xmin","txid_visible_in_snapshot","unnest","upper_inc","upper_inf","variance","width","width_bucket","xml_is_well_formed","xml_is_well_formed_content","xml_is_well_formed_document","xmlagg","xmlcomment","xmlconcat","xmlelement","xmlexists","xmlforest","xmlparse","xmlpi","xmlroot","xmlserialize","xpath","xpath_exists"],builtinVariables:[],pseudoColumns:[],tokenizer:{root:[{include:"@comments"},{include:"@whitespace"},{include:"@pseudoColumns"},{include:"@numbers"},{include:"@strings"},{include:"@complexIdentifiers"},{include:"@scopes"},[/[;,.]/,"delimiter"],[/[()]/,"@brackets"],[/[\w@#$]+/,{cases:{"@keywords":"keyword","@operators":"operator","@builtinVariables":"predefined","@builtinFunctions":"predefined","@default":"identifier"}}],[/[<>=!%&+\-*/|~^]/,"operator"]],whitespace:[[/\s+/,"white"]],comments:[[/--+.*/,"comment"],[/\/\*/,{token:"comment.quote",next:"@comment"}]],comment:[[/[^*/]+/,"comment"],[/\*\//,{token:"comment.quote",next:"@pop"}],[/./,"comment"]],pseudoColumns:[[/[$][A-Za-z_][\w@#$]*/,{cases:{"@pseudoColumns":"predefined","@default":"identifier"}}]],numbers:[[/0[xX][0-9a-fA-F]*/,"number"],[/[$][+-]*\d*(\.\d*)?/,"number"],[/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/,"number"]],strings:[[/'/,{token:"string",next:"@string"}]],string:[[/[^']+/,"string"],[/''/,"string"],[/'/,{token:"string",next:"@pop"}]],complexIdentifiers:[[/"/,{token:"identifier.quote",next:"@quotedIdentifier"}]],quotedIdentifier:[[/[^"]+/,"identifier"],[/""/,"identifier"],[/"/,{token:"identifier.quote",next:"@pop"}]],scopes:[]}}}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[35],{
+
+/***/ "./node_modules/monaco-editor/esm/vs/basic-languages/r/r.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/basic-languages/r/r.js ***!
+  \******************************************************************/
+/*! exports provided: conf, language */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "conf", function() { return conf; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "language", function() { return language; });
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+var conf = {
+    comments: {
+        lineComment: '#'
+    },
+    brackets: [
+        ['{', '}'],
+        ['[', ']'],
+        ['(', ')']
+    ],
+    autoClosingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"' },
+    ],
+    surroundingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"' },
+    ]
+};
+var language = {
+    defaultToken: '',
+    tokenPostfix: '.r',
+    roxygen: [
+        '@param',
+        '@return',
+        '@name',
+        '@rdname',
+        '@examples',
+        '@include',
+        '@docType',
+        '@S3method',
+        '@TODO',
+        '@aliases',
+        '@alias',
+        '@assignee',
+        '@author',
+        '@callGraphDepth',
+        '@callGraph',
+        '@callGraphPrimitives',
+        '@concept',
+        '@exportClass',
+        '@exportMethod',
+        '@exportPattern',
+        '@export',
+        '@formals',
+        '@format',
+        '@importClassesFrom',
+        '@importFrom',
+        '@importMethodsFrom',
+        '@import',
+        '@keywords',
+        '@method',
+        '@nord',
+        '@note',
+        '@references',
+        '@seealso',
+        '@setClass',
+        '@slot',
+        '@source',
+        '@title',
+        '@usage'
+    ],
+    constants: [
+        'NULL',
+        'FALSE',
+        'TRUE',
+        'NA',
+        'Inf',
+        'NaN ',
+        'NA_integer_',
+        'NA_real_',
+        'NA_complex_',
+        'NA_character_ ',
+        'T',
+        'F',
+        'LETTERS',
+        'letters',
+        'month.abb',
+        'month.name',
+        'pi',
+        'R.version.string'
+    ],
+    keywords: [
+        'break',
+        'next',
+        'return',
+        'if',
+        'else',
+        'for',
+        'in',
+        'repeat',
+        'while',
+        'array',
+        'category',
+        'character',
+        'complex',
+        'double',
+        'function',
+        'integer',
+        'list',
+        'logical',
+        'matrix',
+        'numeric',
+        'vector',
+        'data.frame',
+        'factor',
+        'library',
+        'require',
+        'attach',
+        'detach',
+        'source'
+    ],
+    special: [
+        '\\n',
+        '\\r',
+        '\\t',
+        '\\b',
+        '\\a',
+        '\\f',
+        '\\v',
+        '\\\'',
+        '\\"',
+        '\\\\'
+    ],
+    brackets: [
+        { open: '{', close: '}', token: 'delimiter.curly' },
+        { open: '[', close: ']', token: 'delimiter.bracket' },
+        { open: '(', close: ')', token: 'delimiter.parenthesis' }
+    ],
+    tokenizer: {
+        root: [
+            { include: '@numbers' },
+            { include: '@strings' },
+            [/[{}\[\]()]/, '@brackets'],
+            { include: '@operators' },
+            [/#'/, 'comment.doc', '@roxygen'],
+            [/(^#.*$)/, 'comment'],
+            [/\s+/, 'white'],
+            [/[,:;]/, 'delimiter'],
+            [/@[a-zA-Z]\w*/, 'tag'],
+            [/[a-zA-Z]\w*/, {
+                    cases: {
+                        '@keywords': 'keyword',
+                        '@constants': 'constant',
+                        '@default': 'identifier'
+                    }
+                }]
+        ],
+        // Recognize Roxygen comments
+        roxygen: [
+            [/@\w+/, {
+                    cases: {
+                        '@roxygen': 'tag',
+                        '@eos': { token: 'comment.doc', next: '@pop' },
+                        '@default': 'comment.doc'
+                    }
+                }],
+            [/\s+/, {
+                    cases: {
+                        '@eos': { token: 'comment.doc', next: '@pop' },
+                        '@default': 'comment.doc'
+                    }
+                }],
+            [/.*/, { token: 'comment.doc', next: '@pop' }]
+        ],
+        // Recognize positives, negatives, decimals, imaginaries, and scientific notation
+        numbers: [
+            [/0[xX][0-9a-fA-F]+/, 'number.hex'],
+            [/-?(\d*\.)?\d+([eE][+\-]?\d+)?/, 'number']
+        ],
+        // Recognize operators
+        operators: [
+            [/<{1,2}-/, 'operator'],
+            [/->{1,2}/, 'operator'],
+            [/%[^%\s]+%/, 'operator'],
+            [/\*\*/, 'operator'],
+            [/%%/, 'operator'],
+            [/&&/, 'operator'],
+            [/\|\|/, 'operator'],
+            [/<</, 'operator'],
+            [/>>/, 'operator'],
+            [/[-+=&|!<>^~*/:$]/, 'operator']
+        ],
+        // Recognize strings, including those broken across lines
+        strings: [
+            [/'/, 'string.escape', '@stringBody'],
+            [/"/, 'string.escape', '@dblStringBody']
+        ],
+        stringBody: [
+            [/\\./, {
+                    cases: {
+                        '@special': 'string',
+                        '@default': 'error-token'
+                    }
+                }],
+            [/'/, 'string.escape', '@popall'],
+            [/./, 'string'],
+        ],
+        dblStringBody: [
+            [/\\./, {
+                    cases: {
+                        '@special': 'string',
+                        '@default': 'error-token'
+                    }
+                }],
+            [/"/, 'string.escape', '@popall'],
+            [/./, 'string'],
+        ]
+    }
+};
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9ub2RlX21vZHVsZXMvbW9uYWNvLWVkaXRvci9lc20vdnMvYmFzaWMtbGFuZ3VhZ2VzL3Ivci5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDYTtBQUNOO0FBQ1A7QUFDQTtBQUNBLEtBQUs7QUFDTDtBQUNBLFdBQVcsS0FBSztBQUNoQjtBQUNBO0FBQ0E7QUFDQTtBQUNBLFNBQVMsU0FBUyxZQUFZLEdBQUc7QUFDakMsU0FBUyx3QkFBd0I7QUFDakMsU0FBUyx3QkFBd0I7QUFDakMsU0FBUyx3QkFBd0I7QUFDakM7QUFDQTtBQUNBLFNBQVMsU0FBUyxZQUFZLEdBQUc7QUFDakMsU0FBUyx3QkFBd0I7QUFDakMsU0FBUyx3QkFBd0I7QUFDakMsU0FBUyx3QkFBd0I7QUFDakM7QUFDQTtBQUNPO0FBQ1A7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsU0FBUyxTQUFTLFlBQVksNkJBQTZCO0FBQzNELFNBQVMsb0RBQW9EO0FBQzdELFNBQVM7QUFDVDtBQUNBO0FBQ0E7QUFDQSxhQUFhLHNCQUFzQjtBQUNuQyxhQUFhLHNCQUFzQjtBQUNuQyxpQkFBaUI7QUFDakIsYUFBYSx3QkFBd0I7QUFDckM7QUFDQTtBQUNBO0FBQ0Esa0JBQWtCO0FBQ2xCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsaUJBQWlCO0FBQ2pCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGlDQUFpQyxxQ0FBcUM7QUFDdEU7QUFDQTtBQUNBLGlCQUFpQjtBQUNqQjtBQUNBO0FBQ0EsaUNBQWlDLHFDQUFxQztBQUN0RTtBQUNBO0FBQ0EsaUJBQWlCO0FBQ2pCLG9CQUFvQixxQ0FBcUM7QUFDekQ7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGdCQUFnQixJQUFJO0FBQ3BCLGlCQUFpQixJQUFJO0FBQ3JCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSxpQkFBaUI7QUFDakI7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsaUJBQWlCO0FBQ2pCO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJmaWxlIjoiMzUuYnVuZGxlLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbiAqICBDb3B5cmlnaHQgKGMpIE1pY3Jvc29mdCBDb3Jwb3JhdGlvbi4gQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICBMaWNlbnNlZCB1bmRlciB0aGUgTUlUIExpY2Vuc2UuIFNlZSBMaWNlbnNlLnR4dCBpbiB0aGUgcHJvamVjdCByb290IGZvciBsaWNlbnNlIGluZm9ybWF0aW9uLlxuICotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSovXG4ndXNlIHN0cmljdCc7XG5leHBvcnQgdmFyIGNvbmYgPSB7XG4gICAgY29tbWVudHM6IHtcbiAgICAgICAgbGluZUNvbW1lbnQ6ICcjJ1xuICAgIH0sXG4gICAgYnJhY2tldHM6IFtcbiAgICAgICAgWyd7JywgJ30nXSxcbiAgICAgICAgWydbJywgJ10nXSxcbiAgICAgICAgWycoJywgJyknXVxuICAgIF0sXG4gICAgYXV0b0Nsb3NpbmdQYWlyczogW1xuICAgICAgICB7IG9wZW46ICd7JywgY2xvc2U6ICd9JyB9LFxuICAgICAgICB7IG9wZW46ICdbJywgY2xvc2U6ICddJyB9LFxuICAgICAgICB7IG9wZW46ICcoJywgY2xvc2U6ICcpJyB9LFxuICAgICAgICB7IG9wZW46ICdcIicsIGNsb3NlOiAnXCInIH0sXG4gICAgXSxcbiAgICBzdXJyb3VuZGluZ1BhaXJzOiBbXG4gICAgICAgIHsgb3BlbjogJ3snLCBjbG9zZTogJ30nIH0sXG4gICAgICAgIHsgb3BlbjogJ1snLCBjbG9zZTogJ10nIH0sXG4gICAgICAgIHsgb3BlbjogJygnLCBjbG9zZTogJyknIH0sXG4gICAgICAgIHsgb3BlbjogJ1wiJywgY2xvc2U6ICdcIicgfSxcbiAgICBdXG59O1xuZXhwb3J0IHZhciBsYW5ndWFnZSA9IHtcbiAgICBkZWZhdWx0VG9rZW46ICcnLFxuICAgIHRva2VuUG9zdGZpeDogJy5yJyxcbiAgICByb3h5Z2VuOiBbXG4gICAgICAgICdAcGFyYW0nLFxuICAgICAgICAnQHJldHVybicsXG4gICAgICAgICdAbmFtZScsXG4gICAgICAgICdAcmRuYW1lJyxcbiAgICAgICAgJ0BleGFtcGxlcycsXG4gICAgICAgICdAaW5jbHVkZScsXG4gICAgICAgICdAZG9jVHlwZScsXG4gICAgICAgICdAUzNtZXRob2QnLFxuICAgICAgICAnQFRPRE8nLFxuICAgICAgICAnQGFsaWFzZXMnLFxuICAgICAgICAnQGFsaWFzJyxcbiAgICAgICAgJ0Bhc3NpZ25lZScsXG4gICAgICAgICdAYXV0aG9yJyxcbiAgICAgICAgJ0BjYWxsR3JhcGhEZXB0aCcsXG4gICAgICAgICdAY2FsbEdyYXBoJyxcbiAgICAgICAgJ0BjYWxsR3JhcGhQcmltaXRpdmVzJyxcbiAgICAgICAgJ0Bjb25jZXB0JyxcbiAgICAgICAgJ0BleHBvcnRDbGFzcycsXG4gICAgICAgICdAZXhwb3J0TWV0aG9kJyxcbiAgICAgICAgJ0BleHBvcnRQYXR0ZXJuJyxcbiAgICAgICAgJ0BleHBvcnQnLFxuICAgICAgICAnQGZvcm1hbHMnLFxuICAgICAgICAnQGZvcm1hdCcsXG4gICAgICAgICdAaW1wb3J0Q2xhc3Nlc0Zyb20nLFxuICAgICAgICAnQGltcG9ydEZyb20nLFxuICAgICAgICAnQGltcG9ydE1ldGhvZHNGcm9tJyxcbiAgICAgICAgJ0BpbXBvcnQnLFxuICAgICAgICAnQGtleXdvcmRzJyxcbiAgICAgICAgJ0BtZXRob2QnLFxuICAgICAgICAnQG5vcmQnLFxuICAgICAgICAnQG5vdGUnLFxuICAgICAgICAnQHJlZmVyZW5jZXMnLFxuICAgICAgICAnQHNlZWFsc28nLFxuICAgICAgICAnQHNldENsYXNzJyxcbiAgICAgICAgJ0BzbG90JyxcbiAgICAgICAgJ0Bzb3VyY2UnLFxuICAgICAgICAnQHRpdGxlJyxcbiAgICAgICAgJ0B1c2FnZSdcbiAgICBdLFxuICAgIGNvbnN0YW50czogW1xuICAgICAgICAnTlVMTCcsXG4gICAgICAgICdGQUxTRScsXG4gICAgICAgICdUUlVFJyxcbiAgICAgICAgJ05BJyxcbiAgICAgICAgJ0luZicsXG4gICAgICAgICdOYU4gJyxcbiAgICAgICAgJ05BX2ludGVnZXJfJyxcbiAgICAgICAgJ05BX3JlYWxfJyxcbiAgICAgICAgJ05BX2NvbXBsZXhfJyxcbiAgICAgICAgJ05BX2NoYXJhY3Rlcl8gJyxcbiAgICAgICAgJ1QnLFxuICAgICAgICAnRicsXG4gICAgICAgICdMRVRURVJTJyxcbiAgICAgICAgJ2xldHRlcnMnLFxuICAgICAgICAnbW9udGguYWJiJyxcbiAgICAgICAgJ21vbnRoLm5hbWUnLFxuICAgICAgICAncGknLFxuICAgICAgICAnUi52ZXJzaW9uLnN0cmluZydcbiAgICBdLFxuICAgIGtleXdvcmRzOiBbXG4gICAgICAgICdicmVhaycsXG4gICAgICAgICduZXh0JyxcbiAgICAgICAgJ3JldHVybicsXG4gICAgICAgICdpZicsXG4gICAgICAgICdlbHNlJyxcbiAgICAgICAgJ2ZvcicsXG4gICAgICAgICdpbicsXG4gICAgICAgICdyZXBlYXQnLFxuICAgICAgICAnd2hpbGUnLFxuICAgICAgICAnYXJyYXknLFxuICAgICAgICAnY2F0ZWdvcnknLFxuICAgICAgICAnY2hhcmFjdGVyJyxcbiAgICAgICAgJ2NvbXBsZXgnLFxuICAgICAgICAnZG91YmxlJyxcbiAgICAgICAgJ2Z1bmN0aW9uJyxcbiAgICAgICAgJ2ludGVnZXInLFxuICAgICAgICAnbGlzdCcsXG4gICAgICAgICdsb2dpY2FsJyxcbiAgICAgICAgJ21hdHJpeCcsXG4gICAgICAgICdudW1lcmljJyxcbiAgICAgICAgJ3ZlY3RvcicsXG4gICAgICAgICdkYXRhLmZyYW1lJyxcbiAgICAgICAgJ2ZhY3RvcicsXG4gICAgICAgICdsaWJyYXJ5JyxcbiAgICAgICAgJ3JlcXVpcmUnLFxuICAgICAgICAnYXR0YWNoJyxcbiAgICAgICAgJ2RldGFjaCcsXG4gICAgICAgICdzb3VyY2UnXG4gICAgXSxcbiAgICBzcGVjaWFsOiBbXG4gICAgICAgICdcXFxcbicsXG4gICAgICAgICdcXFxccicsXG4gICAgICAgICdcXFxcdCcsXG4gICAgICAgICdcXFxcYicsXG4gICAgICAgICdcXFxcYScsXG4gICAgICAgICdcXFxcZicsXG4gICAgICAgICdcXFxcdicsXG4gICAgICAgICdcXFxcXFwnJyxcbiAgICAgICAgJ1xcXFxcIicsXG4gICAgICAgICdcXFxcXFxcXCdcbiAgICBdLFxuICAgIGJyYWNrZXRzOiBbXG4gICAgICAgIHsgb3BlbjogJ3snLCBjbG9zZTogJ30nLCB0b2tlbjogJ2RlbGltaXRlci5jdXJseScgfSxcbiAgICAgICAgeyBvcGVuOiAnWycsIGNsb3NlOiAnXScsIHRva2VuOiAnZGVsaW1pdGVyLmJyYWNrZXQnIH0sXG4gICAgICAgIHsgb3BlbjogJygnLCBjbG9zZTogJyknLCB0b2tlbjogJ2RlbGltaXRlci5wYXJlbnRoZXNpcycgfVxuICAgIF0sXG4gICAgdG9rZW5pemVyOiB7XG4gICAgICAgIHJvb3Q6IFtcbiAgICAgICAgICAgIHsgaW5jbHVkZTogJ0BudW1iZXJzJyB9LFxuICAgICAgICAgICAgeyBpbmNsdWRlOiAnQHN0cmluZ3MnIH0sXG4gICAgICAgICAgICBbL1t7fVxcW1xcXSgpXS8sICdAYnJhY2tldHMnXSxcbiAgICAgICAgICAgIHsgaW5jbHVkZTogJ0BvcGVyYXRvcnMnIH0sXG4gICAgICAgICAgICBbLyMnLywgJ2NvbW1lbnQuZG9jJywgJ0Byb3h5Z2VuJ10sXG4gICAgICAgICAgICBbLyheIy4qJCkvLCAnY29tbWVudCddLFxuICAgICAgICAgICAgWy9cXHMrLywgJ3doaXRlJ10sXG4gICAgICAgICAgICBbL1ssOjtdLywgJ2RlbGltaXRlciddLFxuICAgICAgICAgICAgWy9AW2EtekEtWl1cXHcqLywgJ3RhZyddLFxuICAgICAgICAgICAgWy9bYS16QS1aXVxcdyovLCB7XG4gICAgICAgICAgICAgICAgICAgIGNhc2VzOiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAnQGtleXdvcmRzJzogJ2tleXdvcmQnLFxuICAgICAgICAgICAgICAgICAgICAgICAgJ0Bjb25zdGFudHMnOiAnY29uc3RhbnQnLFxuICAgICAgICAgICAgICAgICAgICAgICAgJ0BkZWZhdWx0JzogJ2lkZW50aWZpZXInXG4gICAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICB9XVxuICAgICAgICBdLFxuICAgICAgICAvLyBSZWNvZ25pemUgUm94eWdlbiBjb21tZW50c1xuICAgICAgICByb3h5Z2VuOiBbXG4gICAgICAgICAgICBbL0BcXHcrLywge1xuICAgICAgICAgICAgICAgICAgICBjYXNlczoge1xuICAgICAgICAgICAgICAgICAgICAgICAgJ0Byb3h5Z2VuJzogJ3RhZycsXG4gICAgICAgICAgICAgICAgICAgICAgICAnQGVvcyc6IHsgdG9rZW46ICdjb21tZW50LmRvYycsIG5leHQ6ICdAcG9wJyB9LFxuICAgICAgICAgICAgICAgICAgICAgICAgJ0BkZWZhdWx0JzogJ2NvbW1lbnQuZG9jJ1xuICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgfV0sXG4gICAgICAgICAgICBbL1xccysvLCB7XG4gICAgICAgICAgICAgICAgICAgIGNhc2VzOiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAnQGVvcyc6IHsgdG9rZW46ICdjb21tZW50LmRvYycsIG5leHQ6ICdAcG9wJyB9LFxuICAgICAgICAgICAgICAgICAgICAgICAgJ0BkZWZhdWx0JzogJ2NvbW1lbnQuZG9jJ1xuICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgfV0sXG4gICAgICAgICAgICBbLy4qLywgeyB0b2tlbjogJ2NvbW1lbnQuZG9jJywgbmV4dDogJ0Bwb3AnIH1dXG4gICAgICAgIF0sXG4gICAgICAgIC8vIFJlY29nbml6ZSBwb3NpdGl2ZXMsIG5lZ2F0aXZlcywgZGVjaW1hbHMsIGltYWdpbmFyaWVzLCBhbmQgc2NpZW50aWZpYyBub3RhdGlvblxuICAgICAgICBudW1iZXJzOiBbXG4gICAgICAgICAgICBbLzBbeFhdWzAtOWEtZkEtRl0rLywgJ251bWJlci5oZXgnXSxcbiAgICAgICAgICAgIFsvLT8oXFxkKlxcLik/XFxkKyhbZUVdWytcXC1dP1xcZCspPy8sICdudW1iZXInXVxuICAgICAgICBdLFxuICAgICAgICAvLyBSZWNvZ25pemUgb3BlcmF0b3JzXG4gICAgICAgIG9wZXJhdG9yczogW1xuICAgICAgICAgICAgWy88ezEsMn0tLywgJ29wZXJhdG9yJ10sXG4gICAgICAgICAgICBbLy0+ezEsMn0vLCAnb3BlcmF0b3InXSxcbiAgICAgICAgICAgIFsvJVteJVxcc10rJS8sICdvcGVyYXRvciddLFxuICAgICAgICAgICAgWy9cXCpcXCovLCAnb3BlcmF0b3InXSxcbiAgICAgICAgICAgIFsvJSUvLCAnb3BlcmF0b3InXSxcbiAgICAgICAgICAgIFsvJiYvLCAnb3BlcmF0b3InXSxcbiAgICAgICAgICAgIFsvXFx8XFx8LywgJ29wZXJhdG9yJ10sXG4gICAgICAgICAgICBbLzw8LywgJ29wZXJhdG9yJ10sXG4gICAgICAgICAgICBbLz4+LywgJ29wZXJhdG9yJ10sXG4gICAgICAgICAgICBbL1stKz0mfCE8Pl5+Ki86JF0vLCAnb3BlcmF0b3InXVxuICAgICAgICBdLFxuICAgICAgICAvLyBSZWNvZ25pemUgc3RyaW5ncywgaW5jbHVkaW5nIHRob3NlIGJyb2tlbiBhY3Jvc3MgbGluZXNcbiAgICAgICAgc3RyaW5nczogW1xuICAgICAgICAgICAgWy8nLywgJ3N0cmluZy5lc2NhcGUnLCAnQHN0cmluZ0JvZHknXSxcbiAgICAgICAgICAgIFsvXCIvLCAnc3RyaW5nLmVzY2FwZScsICdAZGJsU3RyaW5nQm9keSddXG4gICAgICAgIF0sXG4gICAgICAgIHN0cmluZ0JvZHk6IFtcbiAgICAgICAgICAgIFsvXFxcXC4vLCB7XG4gICAgICAgICAgICAgICAgICAgIGNhc2VzOiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAnQHNwZWNpYWwnOiAnc3RyaW5nJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICdAZGVmYXVsdCc6ICdlcnJvci10b2tlbidcbiAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgIH1dLFxuICAgICAgICAgICAgWy8nLywgJ3N0cmluZy5lc2NhcGUnLCAnQHBvcGFsbCddLFxuICAgICAgICAgICAgWy8uLywgJ3N0cmluZyddLFxuICAgICAgICBdLFxuICAgICAgICBkYmxTdHJpbmdCb2R5OiBbXG4gICAgICAgICAgICBbL1xcXFwuLywge1xuICAgICAgICAgICAgICAgICAgICBjYXNlczoge1xuICAgICAgICAgICAgICAgICAgICAgICAgJ0BzcGVjaWFsJzogJ3N0cmluZycsXG4gICAgICAgICAgICAgICAgICAgICAgICAnQGRlZmF1bHQnOiAnZXJyb3ItdG9rZW4nXG4gICAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICB9XSxcbiAgICAgICAgICAgIFsvXCIvLCAnc3RyaW5nLmVzY2FwZScsICdAcG9wYWxsJ10sXG4gICAgICAgICAgICBbLy4vLCAnc3RyaW5nJ10sXG4gICAgICAgIF1cbiAgICB9XG59O1xuIl0sInNvdXJjZVJvb3QiOiIifQ==

@@ -26,14 +26,38 @@
 
 # Shepherd
 
- - Properly packaged, so that we can work around a stupid bug import bug in the
-   python language server where sematic analysis will fail due to it testing
+ - Properly packaged, so that we can work around an import bug in the python
+   language server where sematic analysis will fail due to it testing
    for `ImportError` from optional dependancies and one of them raises
    `DependancyNotFound` because it couldn't find `ujson`.
+ - Moved to port 8080
+   * For development purposes the `webpack-dev-server` is now on 8081. (used for
+     hot reload so you don't have to compile `sheep` everytime you make a
+     change)
+ - Updated to `python3.6.7` couldn't get later versions to work but this is
+   probally some weirdness with my install of `python 3.8.3` not shepherd.
+ - Fixed bug causing autocompletion to fail in sheep, caused by unexpectedly
+   passing `None` to a function expecting `JSON` data.
+ - Added import checking for `RPi.GPIO` stubs so you don't have to run shepherd
+   on a brain if you are just doing dev work.
+
+# Sheep
 
 ## TODO
-- Update to python3
-- Fix the autocomplete failing bug
 - Socketed image update
 - Refactor of `store.ts`
 - Removed commented out code
+- Update docs
+- rewrite `MUTATION_CLOSE_PROJECT` using filter and set the next open project to
+  the most recently opened project 
+- Fix bug with creating a new file with the same name as an existing file
+  causing original file to be overwritten
+- Depricate competition mode
+- Validate that shepherd was given a JPEG
+- File locking or some other way of preventing people for overwritting each
+  others changes
+
+# Notes
+ 
+ - This needs to be heavily tested, I have already found many bugs with the port
+   to python3 which fail at run time silently.

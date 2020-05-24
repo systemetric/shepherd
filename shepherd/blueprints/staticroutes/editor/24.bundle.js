@@ -1,1 +1,187 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[24],{603:function(e,t,n){"use strict";n.r(t),n.d(t,"conf",(function(){return s})),n.d(t,"language",(function(){return r}));var s={comments:{lineComment:"#"},brackets:[["{","}"],["[","]"],["(",")"]],autoClosingPairs:[{open:"{",close:"}"},{open:"[",close:"]"},{open:"(",close:")"},{open:'"',close:'"'},{open:"'",close:"'"},{open:"`",close:"`"}],surroundingPairs:[{open:"{",close:"}"},{open:"[",close:"]"},{open:"(",close:")"},{open:'"',close:'"'},{open:"'",close:"'"},{open:"`",close:"`"}]},r={defaultToken:"",tokenPostfix:".perl",brackets:[{token:"delimiter.bracket",open:"{",close:"}"},{token:"delimiter.parenthesis",open:"(",close:")"},{token:"delimiter.square",open:"[",close:"]"}],keywords:["__DATA__","else","lock","qw","__END__","elsif","lt","qx","__FILE__","eq","m","s","__LINE__","exp","ne","sub","__PACKAGE__","for","no","tr","and","foreach","or","unless","cmp","ge","package","until","continue","gt","q","while","CORE","if","qq","xor","do","le","qr","y","__DIE__","__WARN__"],builtinFunctions:["-A","END","length","setpgrp","-B","endgrent","link","setpriority","-b","endhostent","listen","setprotoent","-C","endnetent","local","setpwent","-c","endprotoent","localtime","setservent","-d","endpwent","log","setsockopt","-e","endservent","lstat","shift","-f","eof","map","shmctl","-g","eval","mkdir","shmget","-k","exec","msgctl","shmread","-l","exists","msgget","shmwrite","-M","exit","msgrcv","shutdown","-O","fcntl","msgsnd","sin","-o","fileno","my","sleep","-p","flock","next","socket","-r","fork","not","socketpair","-R","format","oct","sort","-S","formline","open","splice","-s","getc","opendir","split","-T","getgrent","ord","sprintf","-t","getgrgid","our","sqrt","-u","getgrnam","pack","srand","-w","gethostbyaddr","pipe","stat","-W","gethostbyname","pop","state","-X","gethostent","pos","study","-x","getlogin","print","substr","-z","getnetbyaddr","printf","symlink","abs","getnetbyname","prototype","syscall","accept","getnetent","push","sysopen","alarm","getpeername","quotemeta","sysread","atan2","getpgrp","rand","sysseek","AUTOLOAD","getppid","read","system","BEGIN","getpriority","readdir","syswrite","bind","getprotobyname","readline","tell","binmode","getprotobynumber","readlink","telldir","bless","getprotoent","readpipe","tie","break","getpwent","recv","tied","caller","getpwnam","redo","time","chdir","getpwuid","ref","times","CHECK","getservbyname","rename","truncate","chmod","getservbyport","require","uc","chomp","getservent","reset","ucfirst","chop","getsockname","return","umask","chown","getsockopt","reverse","undef","chr","glob","rewinddir","UNITCHECK","chroot","gmtime","rindex","unlink","close","goto","rmdir","unpack","closedir","grep","say","unshift","connect","hex","scalar","untie","cos","index","seek","use","crypt","INIT","seekdir","utime","dbmclose","int","select","values","dbmopen","ioctl","semctl","vec","defined","join","semget","wait","delete","keys","semop","waitpid","DESTROY","kill","send","wantarray","die","last","setgrent","warn","dump","lc","sethostent","write","each","lcfirst","setnetent"],builtinFileHandlers:["ARGV","STDERR","STDOUT","ARGVOUT","STDIN","ENV"],builtinVariables:["$!","$^RE_TRIE_MAXBUF","$LAST_REGEXP_CODE_RESULT",'$"',"$^S","$LIST_SEPARATOR","$#","$^T","$MATCH","$$","$^TAINT","$MULTILINE_MATCHING","$%","$^UNICODE","$NR","$&","$^UTF8LOCALE","$OFMT","$'","$^V","$OFS","$(","$^W","$ORS","$)","$^WARNING_BITS","$OS_ERROR","$*","$^WIDE_SYSTEM_CALLS","$OSNAME","$+","$^X","$OUTPUT_AUTO_FLUSH","$,","$_","$OUTPUT_FIELD_SEPARATOR","$-","$`","$OUTPUT_RECORD_SEPARATOR","$.","$a","$PERL_VERSION","$/","$ACCUMULATOR","$PERLDB","$0","$ARG","$PID","$:","$ARGV","$POSTMATCH","$;","$b","$PREMATCH","$<","$BASETIME","$PROCESS_ID","$=","$CHILD_ERROR","$PROGRAM_NAME","$>","$COMPILING","$REAL_GROUP_ID","$?","$DEBUGGING","$REAL_USER_ID","$@","$EFFECTIVE_GROUP_ID","$RS","$[","$EFFECTIVE_USER_ID","$SUBSCRIPT_SEPARATOR","$\\","$EGID","$SUBSEP","$]","$ERRNO","$SYSTEM_FD_MAX","$^","$EUID","$UID","$^A","$EVAL_ERROR","$WARNING","$^C","$EXCEPTIONS_BEING_CAUGHT","$|","$^CHILD_ERROR_NATIVE","$EXECUTABLE_NAME","$~","$^D","$EXTENDED_OS_ERROR","%!","$^E","$FORMAT_FORMFEED","%^H","$^ENCODING","$FORMAT_LINE_BREAK_CHARACTERS","%ENV","$^F","$FORMAT_LINES_LEFT","%INC","$^H","$FORMAT_LINES_PER_PAGE","%OVERLOAD","$^I","$FORMAT_NAME","%SIG","$^L","$FORMAT_PAGE_NUMBER","@+","$^M","$FORMAT_TOP_NAME","@-","$^N","$GID","@_","$^O","$INPLACE_EDIT","@ARGV","$^OPEN","$INPUT_LINE_NUMBER","@INC","$^P","$INPUT_RECORD_SEPARATOR","@LAST_MATCH_START","$^R","$LAST_MATCH_END","$^RE_DEBUG_FLAGS","$LAST_PAREN_MATCH"],symbols:/[:+\-\^*$&%@=<>!?|\/~\.]/,escapes:/\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,tokenizer:{root:[{include:"@whitespace"},[/[a-zA-Z\-_][\w\-_]+/,{cases:{"@keywords":"keyword","@builtinFunctions":"type.identifier","@builtinFileHandlers":"variable.predefined","@default":""}}],[/[\$@%][*@#?\+\-\$!\w\\\^><~:;\.]+/,{cases:{"@builtinVariables":"variable.predefined","@default":"variable"}}],{include:"@strings"},{include:"@dblStrings"},{include:"@perldoc"},{include:"@heredoc"},[/[{}\[\]()]/,"@brackets"],[/[goseximacplud]*[\/](?:(?:\[(?:\\]|[^\]])+\])|(?:\\\/|[^\]\/]))*[\/]\w*\s*(?=[).,;]|$)/,"regexp"],[/@symbols/,"operators"],{include:"@numbers"},[/[,;]/,"delimiter"]],whitespace:[[/\s+/,"white"],[/(^#!.*$)/,"metatag"],[/(^#.*$)/,"comment"]],numbers:[[/\d*\.\d+([eE][\-+]?\d+)?/,"number.float"],[/0[xX][0-9a-fA-F_]*[0-9a-fA-F]/,"number.hex"],[/\d+/,"number"]],strings:[[/'/,"string","@stringBody"]],stringBody:[[/'/,"string","@popall"],[/\\'/,"string.escape"],[/./,"string"]],dblStrings:[[/"/,"string","@dblStringBody"]],dblStringBody:[[/"/,"string","@popall"],[/@escapes/,"string.escape"],[/\\./,"string.escape.invalid"],{include:"@variables"},[/./,"string"]],heredoc:[[/<<\s*['"`]?([\w\-]+)['"`]?/,{token:"string.heredoc.delimiter",next:"@heredocBody.$1"}]],heredocBody:[[/^([\w\-]+)$/,{cases:{"$1==$S2":[{token:"string.heredoc.delimiter",next:"@popall"}],"@default":"string.heredoc"}}],[/./,"string.heredoc"]],perldoc:[[/^=\w/,"comment.doc","@perldocBody"]],perldocBody:[[/^=cut\b/,"type.identifier","@popall"],[/./,"comment.doc"]],variables:[[/\$\w+/,"variable"],[/@\w+/,"variable"],[/%\w+/,"variable"]]}}}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[24],{
+
+/***/ "./node_modules/monaco-editor/esm/vs/basic-languages/msdax/msdax.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/basic-languages/msdax/msdax.js ***!
+  \**************************************************************************/
+/*! exports provided: conf, language */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "conf", function() { return conf; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "language", function() { return language; });
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+var conf = {
+    comments: {
+        lineComment: '//',
+        blockComment: ['/*', '*/'],
+    },
+    brackets: [['[', ']'], ['(', ')'], ['{', '}']],
+    autoClosingPairs: [
+        { open: '"', close: '"', notIn: ['string', 'comment'] },
+        { open: '\'', close: '\'', notIn: ['string', 'comment'] },
+        { open: '[', close: ']', notIn: ['string', 'comment'] },
+        { open: '(', close: ')', notIn: ['string', 'comment'] },
+        { open: '{', close: '}', notIn: ['string', 'comment'] },
+    ]
+};
+var language = {
+    defaultToken: '',
+    tokenPostfix: '.msdax',
+    ignoreCase: true,
+    brackets: [
+        { open: '[', close: ']', token: 'delimiter.square' },
+        { open: '{', close: '}', token: 'delimiter.brackets' },
+        { open: '(', close: ')', token: 'delimiter.parenthesis' }
+    ],
+    keywords: [
+        // Query keywords
+        'VAR',
+        'RETURN',
+        'NOT',
+        'EVALUATE',
+        'DATATABLE',
+        'ORDER',
+        'BY',
+        'START',
+        'AT',
+        'DEFINE',
+        'MEASURE',
+        'ASC',
+        'DESC',
+        'IN',
+        // Datatable types
+        'BOOLEAN',
+        'DOUBLE',
+        'INTEGER',
+        'DATETIME',
+        'CURRENCY',
+        'STRING'
+    ],
+    functions: [
+        // Relational
+        'CLOSINGBALANCEMONTH', 'CLOSINGBALANCEQUARTER', 'CLOSINGBALANCEYEAR', 'DATEADD', 'DATESBETWEEN',
+        'DATESINPERIOD', 'DATESMTD', 'DATESQTD', 'DATESYTD', 'ENDOFMONTH',
+        'ENDOFQUARTER', 'ENDOFYEAR', 'FIRSTDATE', 'FIRSTNONBLANK', 'LASTDATE',
+        'LASTNONBLANK', 'NEXTDAY', 'NEXTMONTH', 'NEXTQUARTER', 'NEXTYEAR',
+        'OPENINGBALANCEMONTH', 'OPENINGBALANCEQUARTER', 'OPENINGBALANCEYEAR', 'PARALLELPERIOD', 'PREVIOUSDAY',
+        'PREVIOUSMONTH', 'PREVIOUSQUARTER', 'PREVIOUSYEAR', 'SAMEPERIODLASTYEAR', 'STARTOFMONTH',
+        'STARTOFQUARTER', 'STARTOFYEAR', 'TOTALMTD', 'TOTALQTD', 'TOTALYTD',
+        'ADDCOLUMNS', 'ADDMISSINGITEMS', 'ALL', 'ALLEXCEPT', 'ALLNOBLANKROW',
+        'ALLSELECTED', 'CALCULATE', 'CALCULATETABLE', 'CALENDAR', 'CALENDARAUTO',
+        'CROSSFILTER', 'CROSSJOIN', 'CURRENTGROUP', 'DATATABLE', 'DETAILROWS',
+        'DISTINCT', 'EARLIER', 'EARLIEST', 'EXCEPT', 'FILTER',
+        'FILTERS', 'GENERATE', 'GENERATEALL', 'GROUPBY', 'IGNORE',
+        'INTERSECT', 'ISONORAFTER', 'KEEPFILTERS', 'LOOKUPVALUE', 'NATURALINNERJOIN',
+        'NATURALLEFTOUTERJOIN', 'RELATED', 'RELATEDTABLE', 'ROLLUP', 'ROLLUPADDISSUBTOTAL',
+        'ROLLUPGROUP', 'ROLLUPISSUBTOTAL', 'ROW', 'SAMPLE', 'SELECTCOLUMNS',
+        'SUBSTITUTEWITHINDEX', 'SUMMARIZE', 'SUMMARIZECOLUMNS', 'TOPN', 'TREATAS',
+        'UNION', 'USERELATIONSHIP', 'VALUES', 'SUM', 'SUMX',
+        'PATH', 'PATHCONTAINS', 'PATHITEM', 'PATHITEMREVERSE', 'PATHLENGTH',
+        'AVERAGE', 'AVERAGEA', 'AVERAGEX', 'COUNT', 'COUNTA',
+        'COUNTAX', 'COUNTBLANK', 'COUNTROWS', 'COUNTX', 'DISTINCTCOUNT',
+        'DIVIDE', 'GEOMEAN', 'GEOMEANX', 'MAX', 'MAXA',
+        'MAXX', 'MEDIAN', 'MEDIANX', 'MIN', 'MINA',
+        'MINX', 'PERCENTILE.EXC', 'PERCENTILE.INC', 'PERCENTILEX.EXC', 'PERCENTILEX.INC',
+        'PRODUCT', 'PRODUCTX', 'RANK.EQ', 'RANKX', 'STDEV.P',
+        'STDEV.S', 'STDEVX.P', 'STDEVX.S', 'VAR.P', 'VAR.S',
+        'VARX.P', 'VARX.S', 'XIRR', 'XNPV',
+        // Scalar
+        'DATE', 'DATEDIFF', 'DATEVALUE', 'DAY', 'EDATE',
+        'EOMONTH', 'HOUR', 'MINUTE', 'MONTH', 'NOW',
+        'SECOND', 'TIME', 'TIMEVALUE', 'TODAY', 'WEEKDAY',
+        'WEEKNUM', 'YEAR', 'YEARFRAC', 'CONTAINS', 'CONTAINSROW',
+        'CUSTOMDATA', 'ERROR', 'HASONEFILTER', 'HASONEVALUE', 'ISBLANK',
+        'ISCROSSFILTERED', 'ISEMPTY', 'ISERROR', 'ISEVEN', 'ISFILTERED',
+        'ISLOGICAL', 'ISNONTEXT', 'ISNUMBER', 'ISODD', 'ISSUBTOTAL',
+        'ISTEXT', 'USERNAME', 'USERPRINCIPALNAME', 'AND', 'FALSE',
+        'IF', 'IFERROR', 'NOT', 'OR', 'SWITCH',
+        'TRUE', 'ABS', 'ACOS', 'ACOSH', 'ACOT',
+        'ACOTH', 'ASIN', 'ASINH', 'ATAN', 'ATANH',
+        'BETA.DIST', 'BETA.INV', 'CEILING', 'CHISQ.DIST', 'CHISQ.DIST.RT',
+        'CHISQ.INV', 'CHISQ.INV.RT', 'COMBIN', 'COMBINA', 'CONFIDENCE.NORM',
+        'CONFIDENCE.T', 'COS', 'COSH', 'COT', 'COTH',
+        'CURRENCY', 'DEGREES', 'EVEN', 'EXP', 'EXPON.DIST',
+        'FACT', 'FLOOR', 'GCD', 'INT', 'ISO.CEILING',
+        'LCM', 'LN', 'LOG', 'LOG10', 'MOD',
+        'MROUND', 'ODD', 'PERMUT', 'PI', 'POISSON.DIST',
+        'POWER', 'QUOTIENT', 'RADIANS', 'RAND', 'RANDBETWEEN',
+        'ROUND', 'ROUNDDOWN', 'ROUNDUP', 'SIGN', 'SIN',
+        'SINH', 'SQRT', 'SQRTPI', 'TAN', 'TANH',
+        'TRUNC', 'BLANK', 'CONCATENATE', 'CONCATENATEX', 'EXACT',
+        'FIND', 'FIXED', 'FORMAT', 'LEFT', 'LEN',
+        'LOWER', 'MID', 'REPLACE', 'REPT', 'RIGHT',
+        'SEARCH', 'SUBSTITUTE', 'TRIM', 'UNICHAR', 'UNICODE',
+        'UPPER', 'VALUE'
+    ],
+    tokenizer: {
+        root: [
+            { include: '@comments' },
+            { include: '@whitespace' },
+            { include: '@numbers' },
+            { include: '@strings' },
+            { include: '@complexIdentifiers' },
+            [/[;,.]/, 'delimiter'],
+            [/[({})]/, '@brackets'],
+            [/[a-z_][a-zA-Z0-9_]*/, {
+                    cases: {
+                        '@keywords': 'keyword',
+                        '@functions': 'keyword',
+                        '@default': 'identifier'
+                    }
+                }],
+            [/[<>=!%&+\-*/|~^]/, 'operator'],
+        ],
+        whitespace: [
+            [/\s+/, 'white']
+        ],
+        comments: [
+            [/\/\/+.*/, 'comment'],
+            [/\/\*/, { token: 'comment.quote', next: '@comment' }]
+        ],
+        comment: [
+            [/[^*/]+/, 'comment'],
+            [/\*\//, { token: 'comment.quote', next: '@pop' }],
+            [/./, 'comment']
+        ],
+        numbers: [
+            [/0[xX][0-9a-fA-F]*/, 'number'],
+            [/[$][+-]*\d*(\.\d*)?/, 'number'],
+            [/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/, 'number']
+        ],
+        strings: [
+            [/N"/, { token: 'string', next: '@string' }],
+            [/"/, { token: 'string', next: '@string' }]
+        ],
+        string: [
+            [/[^"]+/, 'string'],
+            [/""/, 'string'],
+            [/"/, { token: 'string', next: '@pop' }]
+        ],
+        complexIdentifiers: [
+            [/\[/, { token: 'identifier.quote', next: '@bracketedIdentifier' }],
+            [/'/, { token: 'identifier.quote', next: '@quotedIdentifier' }]
+        ],
+        bracketedIdentifier: [
+            [/[^\]]+/, 'identifier'],
+            [/]]/, 'identifier'],
+            [/]/, { token: 'identifier.quote', next: '@pop' }]
+        ],
+        quotedIdentifier: [
+            [/[^']+/, 'identifier'],
+            [/''/, 'identifier'],
+            [/'/, { token: 'identifier.quote', next: '@pop' }]
+        ]
+    }
+};
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9ub2RlX21vZHVsZXMvbW9uYWNvLWVkaXRvci9lc20vdnMvYmFzaWMtbGFuZ3VhZ2VzL21zZGF4L21zZGF4LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNhO0FBQ047QUFDUDtBQUNBO0FBQ0E7QUFDQSxLQUFLO0FBQ0wsMENBQTBDLEtBQUs7QUFDL0M7QUFDQSxTQUFTLHNEQUFzRDtBQUMvRCxTQUFTLHdEQUF3RDtBQUNqRSxTQUFTLHNEQUFzRDtBQUMvRCxTQUFTLHNEQUFzRDtBQUMvRCxTQUFTLFNBQVMsWUFBWSxpQ0FBaUM7QUFDL0Q7QUFDQTtBQUNPO0FBQ1A7QUFDQTtBQUNBO0FBQ0E7QUFDQSxTQUFTLG1EQUFtRDtBQUM1RCxTQUFTLFNBQVMsWUFBWSxnQ0FBZ0M7QUFDOUQsU0FBUztBQUNUO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSxhQUFhLHVCQUF1QjtBQUNwQyxhQUFhLHlCQUF5QjtBQUN0QyxhQUFhLHNCQUFzQjtBQUNuQyxhQUFhLHNCQUFzQjtBQUNuQyxhQUFhLGlDQUFpQztBQUM5QyxnQkFBZ0I7QUFDaEIsa0JBQWtCO0FBQ2xCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGlCQUFpQjtBQUNqQjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLHNCQUFzQiwyQ0FBMkM7QUFDakU7QUFDQTtBQUNBO0FBQ0Esc0JBQXNCLHVDQUF1QztBQUM3RDtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0Esb0JBQW9CLG1DQUFtQztBQUN2RCxtQkFBbUIsbUNBQW1DO0FBQ3REO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsbUJBQW1CLGdDQUFnQztBQUNuRDtBQUNBO0FBQ0Esb0JBQW9CLDBEQUEwRDtBQUM5RSxtQkFBbUIsdURBQXVEO0FBQzFFO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsbUJBQW1CLDBDQUEwQztBQUM3RDtBQUNBO0FBQ0E7QUFDQTtBQUNBLG1CQUFtQiwwQ0FBMEM7QUFDN0Q7QUFDQTtBQUNBIiwiZmlsZSI6IjI0LmJ1bmRsZS5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4gKiAgQ29weXJpZ2h0IChjKSBNaWNyb3NvZnQgQ29ycG9yYXRpb24uIEFsbCByaWdodHMgcmVzZXJ2ZWQuXG4gKiAgTGljZW5zZWQgdW5kZXIgdGhlIE1JVCBMaWNlbnNlLiBTZWUgTGljZW5zZS50eHQgaW4gdGhlIHByb2plY3Qgcm9vdCBmb3IgbGljZW5zZSBpbmZvcm1hdGlvbi5cbiAqLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0qL1xuJ3VzZSBzdHJpY3QnO1xuZXhwb3J0IHZhciBjb25mID0ge1xuICAgIGNvbW1lbnRzOiB7XG4gICAgICAgIGxpbmVDb21tZW50OiAnLy8nLFxuICAgICAgICBibG9ja0NvbW1lbnQ6IFsnLyonLCAnKi8nXSxcbiAgICB9LFxuICAgIGJyYWNrZXRzOiBbWydbJywgJ10nXSwgWycoJywgJyknXSwgWyd7JywgJ30nXV0sXG4gICAgYXV0b0Nsb3NpbmdQYWlyczogW1xuICAgICAgICB7IG9wZW46ICdcIicsIGNsb3NlOiAnXCInLCBub3RJbjogWydzdHJpbmcnLCAnY29tbWVudCddIH0sXG4gICAgICAgIHsgb3BlbjogJ1xcJycsIGNsb3NlOiAnXFwnJywgbm90SW46IFsnc3RyaW5nJywgJ2NvbW1lbnQnXSB9LFxuICAgICAgICB7IG9wZW46ICdbJywgY2xvc2U6ICddJywgbm90SW46IFsnc3RyaW5nJywgJ2NvbW1lbnQnXSB9LFxuICAgICAgICB7IG9wZW46ICcoJywgY2xvc2U6ICcpJywgbm90SW46IFsnc3RyaW5nJywgJ2NvbW1lbnQnXSB9LFxuICAgICAgICB7IG9wZW46ICd7JywgY2xvc2U6ICd9Jywgbm90SW46IFsnc3RyaW5nJywgJ2NvbW1lbnQnXSB9LFxuICAgIF1cbn07XG5leHBvcnQgdmFyIGxhbmd1YWdlID0ge1xuICAgIGRlZmF1bHRUb2tlbjogJycsXG4gICAgdG9rZW5Qb3N0Zml4OiAnLm1zZGF4JyxcbiAgICBpZ25vcmVDYXNlOiB0cnVlLFxuICAgIGJyYWNrZXRzOiBbXG4gICAgICAgIHsgb3BlbjogJ1snLCBjbG9zZTogJ10nLCB0b2tlbjogJ2RlbGltaXRlci5zcXVhcmUnIH0sXG4gICAgICAgIHsgb3BlbjogJ3snLCBjbG9zZTogJ30nLCB0b2tlbjogJ2RlbGltaXRlci5icmFja2V0cycgfSxcbiAgICAgICAgeyBvcGVuOiAnKCcsIGNsb3NlOiAnKScsIHRva2VuOiAnZGVsaW1pdGVyLnBhcmVudGhlc2lzJyB9XG4gICAgXSxcbiAgICBrZXl3b3JkczogW1xuICAgICAgICAvLyBRdWVyeSBrZXl3b3Jkc1xuICAgICAgICAnVkFSJyxcbiAgICAgICAgJ1JFVFVSTicsXG4gICAgICAgICdOT1QnLFxuICAgICAgICAnRVZBTFVBVEUnLFxuICAgICAgICAnREFUQVRBQkxFJyxcbiAgICAgICAgJ09SREVSJyxcbiAgICAgICAgJ0JZJyxcbiAgICAgICAgJ1NUQVJUJyxcbiAgICAgICAgJ0FUJyxcbiAgICAgICAgJ0RFRklORScsXG4gICAgICAgICdNRUFTVVJFJyxcbiAgICAgICAgJ0FTQycsXG4gICAgICAgICdERVNDJyxcbiAgICAgICAgJ0lOJyxcbiAgICAgICAgLy8gRGF0YXRhYmxlIHR5cGVzXG4gICAgICAgICdCT09MRUFOJyxcbiAgICAgICAgJ0RPVUJMRScsXG4gICAgICAgICdJTlRFR0VSJyxcbiAgICAgICAgJ0RBVEVUSU1FJyxcbiAgICAgICAgJ0NVUlJFTkNZJyxcbiAgICAgICAgJ1NUUklORydcbiAgICBdLFxuICAgIGZ1bmN0aW9uczogW1xuICAgICAgICAvLyBSZWxhdGlvbmFsXG4gICAgICAgICdDTE9TSU5HQkFMQU5DRU1PTlRIJywgJ0NMT1NJTkdCQUxBTkNFUVVBUlRFUicsICdDTE9TSU5HQkFMQU5DRVlFQVInLCAnREFURUFERCcsICdEQVRFU0JFVFdFRU4nLFxuICAgICAgICAnREFURVNJTlBFUklPRCcsICdEQVRFU01URCcsICdEQVRFU1FURCcsICdEQVRFU1lURCcsICdFTkRPRk1PTlRIJyxcbiAgICAgICAgJ0VORE9GUVVBUlRFUicsICdFTkRPRllFQVInLCAnRklSU1REQVRFJywgJ0ZJUlNUTk9OQkxBTksnLCAnTEFTVERBVEUnLFxuICAgICAgICAnTEFTVE5PTkJMQU5LJywgJ05FWFREQVknLCAnTkVYVE1PTlRIJywgJ05FWFRRVUFSVEVSJywgJ05FWFRZRUFSJyxcbiAgICAgICAgJ09QRU5JTkdCQUxBTkNFTU9OVEgnLCAnT1BFTklOR0JBTEFOQ0VRVUFSVEVSJywgJ09QRU5JTkdCQUxBTkNFWUVBUicsICdQQVJBTExFTFBFUklPRCcsICdQUkVWSU9VU0RBWScsXG4gICAgICAgICdQUkVWSU9VU01PTlRIJywgJ1BSRVZJT1VTUVVBUlRFUicsICdQUkVWSU9VU1lFQVInLCAnU0FNRVBFUklPRExBU1RZRUFSJywgJ1NUQVJUT0ZNT05USCcsXG4gICAgICAgICdTVEFSVE9GUVVBUlRFUicsICdTVEFSVE9GWUVBUicsICdUT1RBTE1URCcsICdUT1RBTFFURCcsICdUT1RBTFlURCcsXG4gICAgICAgICdBRERDT0xVTU5TJywgJ0FERE1JU1NJTkdJVEVNUycsICdBTEwnLCAnQUxMRVhDRVBUJywgJ0FMTE5PQkxBTktST1cnLFxuICAgICAgICAnQUxMU0VMRUNURUQnLCAnQ0FMQ1VMQVRFJywgJ0NBTENVTEFURVRBQkxFJywgJ0NBTEVOREFSJywgJ0NBTEVOREFSQVVUTycsXG4gICAgICAgICdDUk9TU0ZJTFRFUicsICdDUk9TU0pPSU4nLCAnQ1VSUkVOVEdST1VQJywgJ0RBVEFUQUJMRScsICdERVRBSUxST1dTJyxcbiAgICAgICAgJ0RJU1RJTkNUJywgJ0VBUkxJRVInLCAnRUFSTElFU1QnLCAnRVhDRVBUJywgJ0ZJTFRFUicsXG4gICAgICAgICdGSUxURVJTJywgJ0dFTkVSQVRFJywgJ0dFTkVSQVRFQUxMJywgJ0dST1VQQlknLCAnSUdOT1JFJyxcbiAgICAgICAgJ0lOVEVSU0VDVCcsICdJU09OT1JBRlRFUicsICdLRUVQRklMVEVSUycsICdMT09LVVBWQUxVRScsICdOQVRVUkFMSU5ORVJKT0lOJyxcbiAgICAgICAgJ05BVFVSQUxMRUZUT1VURVJKT0lOJywgJ1JFTEFURUQnLCAnUkVMQVRFRFRBQkxFJywgJ1JPTExVUCcsICdST0xMVVBBRERJU1NVQlRPVEFMJyxcbiAgICAgICAgJ1JPTExVUEdST1VQJywgJ1JPTExVUElTU1VCVE9UQUwnLCAnUk9XJywgJ1NBTVBMRScsICdTRUxFQ1RDT0xVTU5TJyxcbiAgICAgICAgJ1NVQlNUSVRVVEVXSVRISU5ERVgnLCAnU1VNTUFSSVpFJywgJ1NVTU1BUklaRUNPTFVNTlMnLCAnVE9QTicsICdUUkVBVEFTJyxcbiAgICAgICAgJ1VOSU9OJywgJ1VTRVJFTEFUSU9OU0hJUCcsICdWQUxVRVMnLCAnU1VNJywgJ1NVTVgnLFxuICAgICAgICAnUEFUSCcsICdQQVRIQ09OVEFJTlMnLCAnUEFUSElURU0nLCAnUEFUSElURU1SRVZFUlNFJywgJ1BBVEhMRU5HVEgnLFxuICAgICAgICAnQVZFUkFHRScsICdBVkVSQUdFQScsICdBVkVSQUdFWCcsICdDT1VOVCcsICdDT1VOVEEnLFxuICAgICAgICAnQ09VTlRBWCcsICdDT1VOVEJMQU5LJywgJ0NPVU5UUk9XUycsICdDT1VOVFgnLCAnRElTVElOQ1RDT1VOVCcsXG4gICAgICAgICdESVZJREUnLCAnR0VPTUVBTicsICdHRU9NRUFOWCcsICdNQVgnLCAnTUFYQScsXG4gICAgICAgICdNQVhYJywgJ01FRElBTicsICdNRURJQU5YJywgJ01JTicsICdNSU5BJyxcbiAgICAgICAgJ01JTlgnLCAnUEVSQ0VOVElMRS5FWEMnLCAnUEVSQ0VOVElMRS5JTkMnLCAnUEVSQ0VOVElMRVguRVhDJywgJ1BFUkNFTlRJTEVYLklOQycsXG4gICAgICAgICdQUk9EVUNUJywgJ1BST0RVQ1RYJywgJ1JBTksuRVEnLCAnUkFOS1gnLCAnU1RERVYuUCcsXG4gICAgICAgICdTVERFVi5TJywgJ1NUREVWWC5QJywgJ1NUREVWWC5TJywgJ1ZBUi5QJywgJ1ZBUi5TJyxcbiAgICAgICAgJ1ZBUlguUCcsICdWQVJYLlMnLCAnWElSUicsICdYTlBWJyxcbiAgICAgICAgLy8gU2NhbGFyXG4gICAgICAgICdEQVRFJywgJ0RBVEVESUZGJywgJ0RBVEVWQUxVRScsICdEQVknLCAnRURBVEUnLFxuICAgICAgICAnRU9NT05USCcsICdIT1VSJywgJ01JTlVURScsICdNT05USCcsICdOT1cnLFxuICAgICAgICAnU0VDT05EJywgJ1RJTUUnLCAnVElNRVZBTFVFJywgJ1RPREFZJywgJ1dFRUtEQVknLFxuICAgICAgICAnV0VFS05VTScsICdZRUFSJywgJ1lFQVJGUkFDJywgJ0NPTlRBSU5TJywgJ0NPTlRBSU5TUk9XJyxcbiAgICAgICAgJ0NVU1RPTURBVEEnLCAnRVJST1InLCAnSEFTT05FRklMVEVSJywgJ0hBU09ORVZBTFVFJywgJ0lTQkxBTksnLFxuICAgICAgICAnSVNDUk9TU0ZJTFRFUkVEJywgJ0lTRU1QVFknLCAnSVNFUlJPUicsICdJU0VWRU4nLCAnSVNGSUxURVJFRCcsXG4gICAgICAgICdJU0xPR0lDQUwnLCAnSVNOT05URVhUJywgJ0lTTlVNQkVSJywgJ0lTT0REJywgJ0lTU1VCVE9UQUwnLFxuICAgICAgICAnSVNURVhUJywgJ1VTRVJOQU1FJywgJ1VTRVJQUklOQ0lQQUxOQU1FJywgJ0FORCcsICdGQUxTRScsXG4gICAgICAgICdJRicsICdJRkVSUk9SJywgJ05PVCcsICdPUicsICdTV0lUQ0gnLFxuICAgICAgICAnVFJVRScsICdBQlMnLCAnQUNPUycsICdBQ09TSCcsICdBQ09UJyxcbiAgICAgICAgJ0FDT1RIJywgJ0FTSU4nLCAnQVNJTkgnLCAnQVRBTicsICdBVEFOSCcsXG4gICAgICAgICdCRVRBLkRJU1QnLCAnQkVUQS5JTlYnLCAnQ0VJTElORycsICdDSElTUS5ESVNUJywgJ0NISVNRLkRJU1QuUlQnLFxuICAgICAgICAnQ0hJU1EuSU5WJywgJ0NISVNRLklOVi5SVCcsICdDT01CSU4nLCAnQ09NQklOQScsICdDT05GSURFTkNFLk5PUk0nLFxuICAgICAgICAnQ09ORklERU5DRS5UJywgJ0NPUycsICdDT1NIJywgJ0NPVCcsICdDT1RIJyxcbiAgICAgICAgJ0NVUlJFTkNZJywgJ0RFR1JFRVMnLCAnRVZFTicsICdFWFAnLCAnRVhQT04uRElTVCcsXG4gICAgICAgICdGQUNUJywgJ0ZMT09SJywgJ0dDRCcsICdJTlQnLCAnSVNPLkNFSUxJTkcnLFxuICAgICAgICAnTENNJywgJ0xOJywgJ0xPRycsICdMT0cxMCcsICdNT0QnLFxuICAgICAgICAnTVJPVU5EJywgJ09ERCcsICdQRVJNVVQnLCAnUEknLCAnUE9JU1NPTi5ESVNUJyxcbiAgICAgICAgJ1BPV0VSJywgJ1FVT1RJRU5UJywgJ1JBRElBTlMnLCAnUkFORCcsICdSQU5EQkVUV0VFTicsXG4gICAgICAgICdST1VORCcsICdST1VORERPV04nLCAnUk9VTkRVUCcsICdTSUdOJywgJ1NJTicsXG4gICAgICAgICdTSU5IJywgJ1NRUlQnLCAnU1FSVFBJJywgJ1RBTicsICdUQU5IJyxcbiAgICAgICAgJ1RSVU5DJywgJ0JMQU5LJywgJ0NPTkNBVEVOQVRFJywgJ0NPTkNBVEVOQVRFWCcsICdFWEFDVCcsXG4gICAgICAgICdGSU5EJywgJ0ZJWEVEJywgJ0ZPUk1BVCcsICdMRUZUJywgJ0xFTicsXG4gICAgICAgICdMT1dFUicsICdNSUQnLCAnUkVQTEFDRScsICdSRVBUJywgJ1JJR0hUJyxcbiAgICAgICAgJ1NFQVJDSCcsICdTVUJTVElUVVRFJywgJ1RSSU0nLCAnVU5JQ0hBUicsICdVTklDT0RFJyxcbiAgICAgICAgJ1VQUEVSJywgJ1ZBTFVFJ1xuICAgIF0sXG4gICAgdG9rZW5pemVyOiB7XG4gICAgICAgIHJvb3Q6IFtcbiAgICAgICAgICAgIHsgaW5jbHVkZTogJ0Bjb21tZW50cycgfSxcbiAgICAgICAgICAgIHsgaW5jbHVkZTogJ0B3aGl0ZXNwYWNlJyB9LFxuICAgICAgICAgICAgeyBpbmNsdWRlOiAnQG51bWJlcnMnIH0sXG4gICAgICAgICAgICB7IGluY2x1ZGU6ICdAc3RyaW5ncycgfSxcbiAgICAgICAgICAgIHsgaW5jbHVkZTogJ0Bjb21wbGV4SWRlbnRpZmllcnMnIH0sXG4gICAgICAgICAgICBbL1s7LC5dLywgJ2RlbGltaXRlciddLFxuICAgICAgICAgICAgWy9bKHt9KV0vLCAnQGJyYWNrZXRzJ10sXG4gICAgICAgICAgICBbL1thLXpfXVthLXpBLVowLTlfXSovLCB7XG4gICAgICAgICAgICAgICAgICAgIGNhc2VzOiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAnQGtleXdvcmRzJzogJ2tleXdvcmQnLFxuICAgICAgICAgICAgICAgICAgICAgICAgJ0BmdW5jdGlvbnMnOiAna2V5d29yZCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAnQGRlZmF1bHQnOiAnaWRlbnRpZmllcidcbiAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgIH1dLFxuICAgICAgICAgICAgWy9bPD49ISUmK1xcLSovfH5eXS8sICdvcGVyYXRvciddLFxuICAgICAgICBdLFxuICAgICAgICB3aGl0ZXNwYWNlOiBbXG4gICAgICAgICAgICBbL1xccysvLCAnd2hpdGUnXVxuICAgICAgICBdLFxuICAgICAgICBjb21tZW50czogW1xuICAgICAgICAgICAgWy9cXC9cXC8rLiovLCAnY29tbWVudCddLFxuICAgICAgICAgICAgWy9cXC9cXCovLCB7IHRva2VuOiAnY29tbWVudC5xdW90ZScsIG5leHQ6ICdAY29tbWVudCcgfV1cbiAgICAgICAgXSxcbiAgICAgICAgY29tbWVudDogW1xuICAgICAgICAgICAgWy9bXiovXSsvLCAnY29tbWVudCddLFxuICAgICAgICAgICAgWy9cXCpcXC8vLCB7IHRva2VuOiAnY29tbWVudC5xdW90ZScsIG5leHQ6ICdAcG9wJyB9XSxcbiAgICAgICAgICAgIFsvLi8sICdjb21tZW50J11cbiAgICAgICAgXSxcbiAgICAgICAgbnVtYmVyczogW1xuICAgICAgICAgICAgWy8wW3hYXVswLTlhLWZBLUZdKi8sICdudW1iZXInXSxcbiAgICAgICAgICAgIFsvWyRdWystXSpcXGQqKFxcLlxcZCopPy8sICdudW1iZXInXSxcbiAgICAgICAgICAgIFsvKChcXGQrKFxcLlxcZCopPyl8KFxcLlxcZCspKShbZUVdW1xcLStdP1xcZCspPy8sICdudW1iZXInXVxuICAgICAgICBdLFxuICAgICAgICBzdHJpbmdzOiBbXG4gICAgICAgICAgICBbL05cIi8sIHsgdG9rZW46ICdzdHJpbmcnLCBuZXh0OiAnQHN0cmluZycgfV0sXG4gICAgICAgICAgICBbL1wiLywgeyB0b2tlbjogJ3N0cmluZycsIG5leHQ6ICdAc3RyaW5nJyB9XVxuICAgICAgICBdLFxuICAgICAgICBzdHJpbmc6IFtcbiAgICAgICAgICAgIFsvW15cIl0rLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy9cIlwiLywgJ3N0cmluZyddLFxuICAgICAgICAgICAgWy9cIi8sIHsgdG9rZW46ICdzdHJpbmcnLCBuZXh0OiAnQHBvcCcgfV1cbiAgICAgICAgXSxcbiAgICAgICAgY29tcGxleElkZW50aWZpZXJzOiBbXG4gICAgICAgICAgICBbL1xcWy8sIHsgdG9rZW46ICdpZGVudGlmaWVyLnF1b3RlJywgbmV4dDogJ0BicmFja2V0ZWRJZGVudGlmaWVyJyB9XSxcbiAgICAgICAgICAgIFsvJy8sIHsgdG9rZW46ICdpZGVudGlmaWVyLnF1b3RlJywgbmV4dDogJ0BxdW90ZWRJZGVudGlmaWVyJyB9XVxuICAgICAgICBdLFxuICAgICAgICBicmFja2V0ZWRJZGVudGlmaWVyOiBbXG4gICAgICAgICAgICBbL1teXFxdXSsvLCAnaWRlbnRpZmllciddLFxuICAgICAgICAgICAgWy9dXS8sICdpZGVudGlmaWVyJ10sXG4gICAgICAgICAgICBbL10vLCB7IHRva2VuOiAnaWRlbnRpZmllci5xdW90ZScsIG5leHQ6ICdAcG9wJyB9XVxuICAgICAgICBdLFxuICAgICAgICBxdW90ZWRJZGVudGlmaWVyOiBbXG4gICAgICAgICAgICBbL1teJ10rLywgJ2lkZW50aWZpZXInXSxcbiAgICAgICAgICAgIFsvJycvLCAnaWRlbnRpZmllciddLFxuICAgICAgICAgICAgWy8nLywgeyB0b2tlbjogJ2lkZW50aWZpZXIucXVvdGUnLCBuZXh0OiAnQHBvcCcgfV1cbiAgICAgICAgXVxuICAgIH1cbn07XG4iXSwic291cmNlUm9vdCI6IiJ9
