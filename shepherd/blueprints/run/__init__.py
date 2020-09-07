@@ -18,6 +18,8 @@ from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
 
+sys.path.insert(0, "/home/pi/robot")   # TODO put in top level __init__.py or something
+
 import robot.reset as robot_reset  # This *should* be safe, if nasty.
 
 from shepherd.competition import ROUND_LENGTH
