@@ -36,8 +36,9 @@ export default {
 
 <style lang="scss">
 @import "../../../variables";
-noinspection CssOptimizeSimilarProperties
-#camera-preview {
+
+//noinspection CssOptimizeSimilarProperties
+#camera {
   width: 100%;
   height: $sidebar-width * 0.5625;
   background-size: contain;

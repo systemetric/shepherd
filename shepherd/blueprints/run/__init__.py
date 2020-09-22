@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 
 import atexit
 from datetime import datetime, timedelta
@@ -18,11 +18,14 @@ from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
 
-from shepherd import ROBOT_LIB_LOCATION
 from shepherd.competition import ROUND_LENGTH
 
 # This *should* be safe, if nasty
 # Would be nicer to use classmethods
+ROBOT_LIB_LOCATION = "/home/pi/robot"
+if not os.path.exists(ROBOT_LIB_LOCATION):
+    raise ImportError(f"Could not find robot lib at {ROBOT_LIB_LOCATION}")
+
 sys.path.insert(0, ROBOT_LIB_LOCATION)
 import robot.reset as robot_reset
 

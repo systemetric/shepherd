@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 
 import errno
 import os
@@ -21,10 +21,6 @@ sockets = Sockets(app)
 # Allow resources to be fetched from cross origin
 CORS(app, resources=r'/*')
 app.secret_key = os.urandom(32)
-
-ROBOT_LIB_LOCATION = "/home/pi/robot"
-if not os.path.exists(ROBOT_LIB_LOCATION):
-    raise ImportError(f"Could not find robot lib at {ROBOT_LIB_LOCATION}")
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MiB

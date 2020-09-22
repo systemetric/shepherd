@@ -60,9 +60,8 @@ def get_files():
 def save_file(filename):
     dots = len(re.findall("\.", filename))
     if dots == 1:
-        f = open(path.join(robotsrc_path, filename), 'w')
-        f.write(request.data)
-        f.close()
+        with open(path.join(robotsrc_path, filename), 'w') as f:
+            f.write(request.data.decode('utf-8'))
     return ""
 
 
