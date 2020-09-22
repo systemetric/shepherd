@@ -18,7 +18,7 @@ export default {
       cacheKey: +new Date(),
     }
   },
-  
+
   created () {
     this.inverval = setInterval(function(){
       this.cacheKey = +new Date();
@@ -35,13 +35,13 @@ export default {
 </script>
 
 <style lang="scss">
-// @import "../../../variables";
-//noinspection CssOptimizeSimilarProperties
-// #camera-preview {
-//   width: 100%;
-//   height: $sidebar-width * 0.5625;
-//   background-size: contain;
-//   background-repeat: no-repeat;
-//   background-position: center;
-// }
+@import "../../../variables";
+noinspection CssOptimizeSimilarProperties
+#camera-preview {
+  width: 100%;
+  height: $sidebar-width * 0.5625;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 </style>

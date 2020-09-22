@@ -18,11 +18,13 @@ START_BUTTON_PIN = 5  # This is a BCM pin number (BCM0 corresponds to phys27).
 app = Flask(__name__, template_folder="templates")
 sockets = Sockets(app)
 
+# Allow resources to be fetched from cross origin
 CORS(app, resources=r'/*')
-
-
 app.secret_key = os.urandom(32)
 
+ROBOT_LIB_LOCATION = "/home/pi/robot"
+if not os.path.exists(ROBOT_LIB_LOCATION):
+    raise ImportError(f"Could not find robot lib at {ROBOT_LIB_LOCATION}")
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MiB
@@ -30,6 +32,7 @@ app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MiB
 app.config["SHEPHERD_USER_CODE_PATH"] = os.path.join(os.getcwd(), "usercode")
 app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"] = "main.py"
 app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"] = os.path.join(app.config["SHEPHERD_USER_CODE_PATH"], app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"])
+
 try:
     os.mkdir(app.config["SHEPHERD_USER_CODE_PATH"])
 except OSError as e:
