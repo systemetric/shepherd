@@ -1,52 +1,47 @@
 <template>
-    <div id="camera" ref="camera"></div>
+  <div class="camera-preview">
+      <img :src="url + '?rnd=' + cacheKey">
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { makeFullUrl } from "../../../store";
 
-interface Data {
-  loadTimeout: number;
+
+export default {
+
+  name: 'Images',
+  data () {
+    return {
+      url: makeFullUrl("/static/image.jpg"),
+      cacheKey: +new Date(),
+    }
+  },
+  
+  created () {
+    this.inverval = setInterval(function(){
+      this.cacheKey = +new Date();
+    }, 1000);
+
+  },
+
+  destroyed() {
+    clearInterval(this.interval);
+  },
+
 }
 
-export default Vue.extend({
-  name: "camera",
-  data(): Data {
-    return {
-      loadTimeout: -1
-    };
-  },
-  mounted() {
-    this.loadImage();
-  },
-  methods: {
-    loadImage() {
-      const img = new Image();
-      const url = makeFullUrl(`/static/image.jpg?nocache=${Date.now()}`);
-
-      img.src = url;
-      img.onload = () => {
-        (this.$refs.camera as HTMLElement).style.backgroundImage = `url("${url}")`;
-        this.loadTimeout = setTimeout(() => this.loadImage(), 1000);
-      };
-      img.onerror = () => {
-        this.loadTimeout = setTimeout(() => this.loadImage(), 1000);
-      }
-    }
-  }
-});
 </script>
 
 <style lang="scss">
-@import "../../../variables";
-
+// @import "../../../variables";
 //noinspection CssOptimizeSimilarProperties
-#camera {
-  width: 100%;
-  height: $sidebar-width * 0.5625;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
+// #camera-preview {
+//   width: 100%;
+//   height: $sidebar-width * 0.5625;
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   background-position: center;
+// }
 </style>
