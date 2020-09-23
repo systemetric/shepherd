@@ -8,7 +8,8 @@ import store, {
   ACTION_SAVE_PROJECT,
   ACTION_STOP_PROJECT,
   MUTATION_SET_CREATE_OPEN,
-  MUTATION_SHOW_UPLOAD_DIALOG
+  MUTATION_SHOW_UPLOAD_DIALOG,
+  makeFullUrl
 } from "./store";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -24,6 +25,9 @@ import {
   faExclamationCircle,
   faArrowAltFromRight
 } from "@fortawesome/pro-regular-svg-icons";
+
+import VueSocketIO from 'vue-socket.io'
+import SocketIO from 'socket.io-client'
 
 library.add(
   faPlay,
@@ -61,6 +65,12 @@ import DeleteProjectDialog from "./components/dialog/DeleteProjectDialog.vue";
 import Prism from "vue-prism-component";
 // @ts-ignore
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+// Enable socketio to be used
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: SocketIO(makeFullUrl("", "http", "1234")),
+}));
 
 Vue.component("IconButton", IconButton);
 Vue.component("Messages", Messages);
