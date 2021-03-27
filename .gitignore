@@ -114,3 +114,6 @@ usercode
 shepherd/static/image.jpg
 robotsrc
 sheepsrc/.idea
+
+# vscode dev folder
+.vscode
