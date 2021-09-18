@@ -27,10 +27,6 @@ const _ = {
 
 Vue.use(Vuex);
 
-/** TypeScript supports objects with types. These interfaces define groups of
- * to be passed around in the program types
- */
-
 /**Every file of the user's code is stored in "projects" with the following
  * properties
  */
