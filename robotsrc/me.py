@@ -1,5 +1,6 @@
-exported = "exported!!!!!!!"
+import robot
 
+R = robot.Robot()
 
-def say_hi():
-    print "hi!"
+while True:
+    R.see()
