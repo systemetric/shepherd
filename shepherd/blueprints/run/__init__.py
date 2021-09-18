@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import atexit
 from datetime import datetime, timedelta
@@ -18,9 +17,16 @@ from enum import Enum
 from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app, session, send_file
 from pytz import utc
 
-import robot.reset as robot_reset  # This *should* be safe, if nasty.
-
 from shepherd.competition import ROUND_LENGTH
+
+# This *should* be safe, if nasty
+# Would be nicer to use classmethods
+ROBOT_LIB_LOCATION = "/home/pi/robot"
+if not os.path.exists(ROBOT_LIB_LOCATION):
+    raise ImportError(f"Could not find robot lib at {ROBOT_LIB_LOCATION}")
+
+sys.path.insert(0, ROBOT_LIB_LOCATION)
+import robot.reset as robot_reset
 
 
 blueprint = Blueprint("run", __name__, template_folder="templates")
@@ -34,16 +40,11 @@ OUTPUT_FILE_PATH = "/media/RobotUSB/logs.txt"
 def init(app):
     # Factored into separate functions so we can call them separately in
     # `blueprints.upload` (tight coupling ftw!!1!)
-
-    # _work_around_pic_servo_bug()
-
     robot_reset.reset()
     _reset_state()
     _start_user_code(app)
     _set_reaper_at_exit()
 
-# def _work_around_pic_servo_bug():
-#     _set_servos(100)
 
 def _reset_state():
     global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file
@@ -73,6 +74,8 @@ def _user_code_wait():
 def _start_user_code(app):
     global user_code, output_file
     output_file = open(OUTPUT_FILE_PATH, "w", 1)
+    environment = dict(os.environ)
+    environment["PYTHONPATH"] = ROBOT_LIB_LOCATION
     # Start the user code.
     user_code = subprocess.Popen(
         [
@@ -84,6 +87,7 @@ def _start_user_code(app):
         stdout=output_file, stderr=subprocess.STDOUT,
         bufsize=1,  # Line-buffered
         close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
+        env=environment,
     )
     user_code_wait_thread = threading.Thread(target=_user_code_wait)
     user_code_wait_thread.daemon = True
@@ -231,47 +235,6 @@ def round_end():
     robot_reset.reset()
     time.sleep(0.5)
     # _kill_gpios()
-
-
-# def _kill_motors():
-#     """Turn off all the motors."""
-#     bus = smbus.SMBus(1)
-#     try:
-#         for i, addr in enumerate([0x14, 0x15, 0x16, 0x17]):
-#             try:
-#                 thunderborg.ThunderBorgBoard(addr).off()
-#             except Exception:
-#                 pass
-#     finally:
-#         bus.close()
-#
-#
-# def _kill_gpios():
-#     """Set all the GPIOs to inputs."""
-#     bus = smbus.SMBus(1)
-#     try:
-#         gpios = thunderborg.BlackJackBoardGPIO(bus)
-#         for i in range(1, 5):
-#             try:
-#                 gpios.pin_mode(i, thunderborg.INPUT)
-#             except Exception:
-#                 pass
-#     finally:
-#         bus.close()
-#
-#
-# def _set_servos(value):
-#     assert -100 <= value <= 100
-#     bus = smbus.SMBus(1)
-#     try:
-#         servos = thunderborg.BlackJackBoardPWM(bus)
-#         for i in range(4):
-#             try:
-#                 servos[i] = value
-#             except Exception:
-#                 pass
-#     finally:
-#         bus.close()
 
 
 def reap(reason=None):
