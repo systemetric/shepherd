@@ -26,7 +26,7 @@ You should now see the upload interface.
 ![Upload Interface](./images/upload.png)
 
 Click on the **Choose file** button and select either:
-- A single Python 2 source file
+- A single Python 3 source file
 - A zip file containing one or more Python 2 source files. The file must contain a file named `main.py` in the root of
 the archive. This should be the entry point for the program.
 

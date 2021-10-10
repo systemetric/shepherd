@@ -21,4 +21,4 @@ These links won't work when you're connected to your Robot.
 * [The Official Tutorial](http://docs.python.org/tutorial/) – the good stuff starts at chapter 3, but you should at least skim the stuff before it; there is a lot there and it may be a little overwhelming.
 * A number of tutorials for beginners are linked to from [here](http://wiki.python.org/moin/BeginnersGuide/NonProgrammers).
 * [Learn X in Y minutes](https://learnxinyminutes.com/docs/python/) – quite nice if you've programmed before in another language and just want to learn the syntax.
-* [The Official Docs](https://docs.python.org/2.7/), for the version of python on the BrainBox.
+* [The Official Docs](https://docs.python.org/)

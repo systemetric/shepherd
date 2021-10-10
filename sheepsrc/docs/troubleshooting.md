@@ -29,7 +29,7 @@ Some modern browsers default to a web search if they do not understand the web a
 
 ## I've connected to the web interface and can run code, but my motors never turn on.
 
-The BrainBox will automatically cut power to the 12V socket and the motor outputs if it every detects a current surge exceeding 20A. When this happens, the LED viewable next to where the battery lead enters the brain box will appear red rather than primarily green. If the LED is not green, first disconnect the motors and power cycle The BrainBox to see if this resolves the problem. If it does, then your motors are probably too large. 
+The BrainBox will automatically cut power to the 12V socket and the motor outputs if it every detects a current surge exceeding 20A. When this happens, the LED viewable next to where the battery lead enters the brain box will appear red rather than primarily green. If the LED is not green, first disconnect the motors and power cycle The BrainBox to see if this resolves the problem. If it does, then your motors are probably too large.
 
 It is possible to enable/disable this power output from software. When the output is disabled, there will be no light at all visible through this hole. If you can see no light through the hole when the robot is running code check that you have not disabled the motor output by uploading a [simple file](/docs/simple.py).
 
@@ -42,7 +42,7 @@ Check  you're actually reading the pin you're trying to read. `R.gpio[1]` is Pin
 When you call R.see() the camera preview in the top right should show you what the camera can see. If this looks blury contact us on the forum for a focusing ring. If this doesn't fix the issue try:
 ```py
 
-print R.see()
+print(R.see())
 
 ```
 If this prints out the markers then the issue is probably with your code, please see the [vision docs](https://hr-robocon.org/docs/vision.html)

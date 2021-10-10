@@ -15,9 +15,9 @@ Here's an example:
 
 ```python
 if R.zone == 3:
-    print "Do something!"
+    print("Do something!")
 else:
-    print "Do something else!"
+    print("Do something else!")
 ```
 
 ## Blockly

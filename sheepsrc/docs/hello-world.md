@@ -40,7 +40,7 @@ If you are running into problems using the editor its functionality is documente
 1. In the editor window write:
 
 ```python
-print "Hello world!"
+print("Hello world!")
 ```
 
 ## Running the code

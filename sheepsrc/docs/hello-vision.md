@@ -30,7 +30,7 @@ markers = R.see()
 Every item in the list contains information about the type of the marker, the distance/angle to the marker, and more! For now all we want to do is to find the number of markers the robot can see, so we just need to print the length of the list:
 
 ```python
-print len(markers) 
+print(len(markers))
 ```
 
 If we run this code as it is, it will output the number of markers it can see once and then stop. To make it continue looking we need to put it in a `while True` loop, so it will repeat our program forever (or until we turn it off).
@@ -43,7 +43,7 @@ R = robot.Robot()
 
 while True:
     markers = R.see()
-    print len(markers)
+    print(len(markers))
 ```
 
 ## Running the code
