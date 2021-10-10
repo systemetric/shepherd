@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "shepherd"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.7, <3.10"
+Flask = "1.1.4"
+Flask-Sockets = "^0.2.1"
+Flask-Cors = "^3.0.10"
+enum34 = "^1.1.10"
+pytz = "^2021.3"
+python-language-server = "^0.36.2"
+jsonrpc = "^3.0.1"
+smbus2 = "^0.4.1"
+opencv-python = "^4.5.3"
+scipy = "^1.7.1"
+
+
+[tool.poetry.dev-dependencies]
+fake-rpi = "^0.7.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
