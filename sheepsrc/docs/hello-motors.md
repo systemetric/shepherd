@@ -53,7 +53,7 @@ To turn the robot, you just need to set one motor going forwards and the second 
 speed = 50
 
 R.motors[1] = speed
-R.motors[2] = spaeed
+R.motors[2] = speed
 
 time.sleep(2)
 
