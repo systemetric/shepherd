@@ -28,13 +28,13 @@ Optionally:
 
 # Update the docs for the BrainBox
 
-From systemetric/robocon-website:master: 
+From systemetric/robocon-website:master *(recommended)*: 
 * `cd shepherd/sheepsrc/`
 * `shepherd/sheepsrc> npm install`
 * `shepherd/sheepsrc> npm run vuepress:update`
 * `shepherd/sheepsrc> npm run vuepress:build`
 
-From a local clone of the robocon-website:
+From a local clone of the robocon-website *(only for testing local changes)*:
 * Start from a dir containing both robocon-website and shepherd
 * `cd shepherd/sheepsrc/`
 * `shepherd/sheepsrc> npm install`
