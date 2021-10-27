@@ -26,17 +26,21 @@ Optionally:
     * `git clone https://github.com/systemetric/robocon-website`
     * `git clone https://github.com/systemetric/shepherd` (note must have an account which is a member of systemetric organsiation and has access to the shepherd). 
 
-# Update the docs
+# Update the docs for the BrainBox
 
-* Update shepherd with the lastest docs: 
-     * `cp robocon-website/docs/ shepherd/sheepsrc/docs/ -r`
-* Compile the docs:
-    * `cd shepherd/sheepsrc/`
-    * `shepherd/sheepsrc> npm install`
-    * `shepherd/sheepsrc> npm run vuepress:update`
-    * `shepherd/sheepsrc> npm run vuepress:build`
+From systemetric/robocon-website:master: 
+* `cd shepherd/sheepsrc/`
+* `shepherd/sheepsrc> npm install`
+* `shepherd/sheepsrc> npm run vuepress:update`
+* `shepherd/sheepsrc> npm run vuepress:build`
 
-This should create a built version of the docs in `shepherd/blueprints/staticroutes/docs`.
+From a local clone of the robocon-website:
+* Start from a dir containing both robocon-website and shepherd
+* `cd shepherd/sheepsrc/`
+* `shepherd/sheepsrc> npm install`
+* `shepher/sheepsrc> npm run vuepress:updatebuild-local`
+
+This should create a built version of the docs in `shepherd/shepherd/blueprints/staticroutes/docs`.
 
 # Update sheep with new code changes
 
