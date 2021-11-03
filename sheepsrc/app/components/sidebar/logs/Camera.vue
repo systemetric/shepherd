@@ -1,5 +1,5 @@
 <template>
-  <div class="camera-preview">
+  <div id="camera-preview">
       <img :src="url + '?rnd=' + cacheKey">
   </div>
 </template>
@@ -19,11 +19,14 @@ export default {
     }
   },
 
-  created () {
-    this.inverval = setInterval(function(){
-      this.cacheKey = +new Date();
-    }, 1000);
-
+  mounted: function () {
+    window.setInterval(() => {
+      try {
+        this.cacheKey = +new Date();
+      } catch(e) {
+        console.log(e);
+      }
+    }, 1000)
   },
 
   destroyed() {
@@ -38,7 +41,7 @@ export default {
 @import "../../../variables";
 
 //noinspection CssOptimizeSimilarProperties
-#camera {
+#camera-preview {
   width: 100%;
   height: $sidebar-width * 0.5625;
   background-size: contain;
