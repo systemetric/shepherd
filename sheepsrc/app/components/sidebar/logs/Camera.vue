@@ -20,7 +20,7 @@ export default {
   },
 
   mounted: function () {
-    window.setInterval(() => {
+    this.interval = window.setInterval(() => {
       try {
         this.cacheKey = +new Date();
       } catch(e) {
