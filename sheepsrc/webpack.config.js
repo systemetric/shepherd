@@ -23,7 +23,7 @@ module.exports = {
     filename: "bundle.js"
   },
   optimization: {
-    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin({})]
+   minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin({})]
   },
   module: {
     rules: [
@@ -81,6 +81,12 @@ module.exports = {
     fs: "empty",
     child_process: "empty",
     net: "empty",
-    crypto: "empty"
+    crypto: "empty",
+    global: true,
+    tls: "empty",
+    process: true,
+    module: false,
+    clearImmediate: false,
+    setImmediate: true
   }
 };
