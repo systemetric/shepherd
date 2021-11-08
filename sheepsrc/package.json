@@ -15,11 +15,6 @@
     "updatebuild": "npm run vuepress:update && npm run vuepress:build && npm run build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-pro": "^5.11.2",
-    "@fortawesome/fontawesome-svg-core": "^1.2.25",
-    "@fortawesome/pro-regular-svg-icons": "^5.11.2",
-    "@fortawesome/pro-solid-svg-icons": "^5.11.2",
-    "@fortawesome/vue-fontawesome": "^0.1.7",
     "ajv": "^6.10.2",
     "fast-deep-equal": "^2.0.1",
     "file-saver": "^2.0.2",
@@ -55,7 +50,7 @@
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.5",
     "monaco-editor-webpack-plugin": "^1.7.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^1.18.2",
     "rimraf": "^2.7.1",
