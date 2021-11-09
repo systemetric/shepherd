@@ -12,32 +12,6 @@ import store, {
 } from "./store";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlay, faStop } from "@fortawesome/pro-solid-svg-icons";
-import {
-  faPlus,
-  faTrash,
-  faSyncAlt,
-  faExclamationTriangle,
-  faUpload,
-  faDownload,
-  faInfoCircle,
-  faExclamationCircle,
-  faArrowAltFromRight
-} from "@fortawesome/pro-regular-svg-icons";
-
-library.add(
-  faPlay,
-  faStop,
-  faPlus,
-  faTrash,
-  faSyncAlt,
-  faInfoCircle,
-  faExclamationTriangle,
-  faExclamationCircle,
-  faUpload,
-  faDownload,
-  faArrowAltFromRight
-);
 
 import App from "./App.vue";
 

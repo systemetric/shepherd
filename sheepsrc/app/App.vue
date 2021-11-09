@@ -12,7 +12,7 @@
           <DeleteProjectDialog :project="deleteProject" @close="deleteOpen = false" v-show="deleteOpen"/>
         </template>
         <div v-else class="empty-state">
-            <FontAwesomeIcon :icon="['far', 'exclamation-triangle']" size="10x"/>
+            <FontAwesomeIcon :icon="['fas', 'exclamation-triangle']" size="10x"/>
             <h2>Unable to connect to Shepherd!</h2>
         </div>
         <Messages/>

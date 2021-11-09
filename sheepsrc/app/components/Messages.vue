@@ -2,7 +2,7 @@
     <div class="messages">
         <transition-group name="message">
             <div class="message" v-for="message in messages" :key="message.id">
-                <FontAwesomeIcon :icon="['far', message.icon]" fixed-width></FontAwesomeIcon>
+                <FontAwesomeIcon :icon="['fas', message.icon]" fixed-width></FontAwesomeIcon>
                 <p>{{message.message}}</p>
                 <a title="Dismiss" class="close" @click="dismiss(message.id)"></a>
             </div>

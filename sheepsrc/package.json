@@ -15,6 +15,8 @@
     "updatebuild": "npm run vuepress:update && npm run vuepress:build && npm run build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/vue-fontawesome": "^2.0.6",
     "ajv": "^6.10.2",
     "fast-deep-equal": "^2.0.1",
     "file-saver": "^2.0.2",
