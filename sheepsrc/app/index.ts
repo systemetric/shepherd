@@ -13,6 +13,34 @@ import store, {
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 
+import {
+  faPlus,
+  faTrash,
+  faSyncAlt,
+  faExclamationTriangle,
+  faUpload,
+  faDownload,
+  faInfoCircle,
+  faExclamationCircle,
+  faChevronLeft,
+  faPlay,
+  faStop,
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(
+  faPlus,
+  faTrash,
+  faSyncAlt,
+  faExclamationTriangle,
+  faUpload,
+  faDownload,
+  faInfoCircle,
+  faExclamationCircle,
+  faChevronLeft,
+  faPlay,
+  faStop
+)
+
 import App from "./App.vue";
 
 import IconButton from "./components/IconButton.vue";
