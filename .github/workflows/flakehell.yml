@@ -29,5 +29,5 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run Flakehell
-        run: flakehell --lint
+        run: flakehell lint
         
