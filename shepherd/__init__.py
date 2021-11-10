@@ -51,7 +51,7 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
     # Teamname should be set on a per brain basis before shipping
     # Its purpose is to allow the setting of specific graphics for help identifing teams in the arena.
     # Graphics are loaded from the ArenaUSB stick if available, or standard graphics from the stick are used.
-    # this used to be in rc.local, but the looks of shame and dissapointment got the better of me 
+    # this used to be in rc.local, but the looks of shame and dissapointment got the better of me
 
     game_control_path = Path('/media/ArenaUSB')
 
@@ -61,7 +61,7 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
     else:
         teamname_jpg = 'none'
 
-    # Pick a start imapge in order of preference : 
+    # Pick a start imapge in order of preference :
     #     1) We have a team corner image on the USB
     #     2) The team have uploaded their own image to the robot
     #     3) We have a generic corner image on the USB
@@ -87,7 +87,7 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
         zone = "0"
         if (game_control_path / 'zone1.txt').exists():
             zone = "1"
-        elif (game_control_path / 'zone2.txt').exists():
+        elif (game_control_path / 'zone2.txt').exists()
             zone = "2"
         elif (game_control_path / 'zone3.txt').exists():
             zone = "3"
