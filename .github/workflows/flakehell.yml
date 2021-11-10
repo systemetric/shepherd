@@ -25,4 +25,4 @@ jobs:
       - name: Install FlakeHell
         run: python -m install flakehell
       - name: Run FlakeHell
-        run: poetry run flakehell lint
+        run: flakehell lint
