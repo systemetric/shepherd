@@ -87,7 +87,7 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
         zone = "0"
         if (game_control_path / 'zone1.txt').exists():
             zone = "1"
-        elif (game_control_path / 'zone2.txt').exists()
+        elif (game_control_path / 'zone2.txt').exists():
             zone = "2"
         elif (game_control_path / 'zone3.txt').exists():
             zone = "3"
