@@ -26,8 +26,9 @@ jobs:
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: 1.1.11
+      - name: Disable vitual envs
+        run: poetry config virtualenvs.create false
       - name: Install dependencies
         run: poetry install
-      - name: Run Flakehell
-        run: flakehell --lint
-        
+      - name: Run FlakeHell
+        run: flakehell lint
