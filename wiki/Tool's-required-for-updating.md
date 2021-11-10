@@ -28,6 +28,21 @@ Optionally:
 
 # Update the docs for the BrainBox
 
+The contents of large files from the shepherd repo(like images and PDFs) are stored by Netlify's Large Media (LM) servers. <br>
+
+Install [git lfs](https://git-lfs.github.com/). 
+
+Install the netlify CLI tool and set it up for the repo:
+* `npm i -g netlify-cli`
+* `cd shepherd`
+* `netlify lm:install`
+* `netlify link`
+    * Select the option to enter the site ID
+    * Enter the URL: `hr-robocon.org`
+    * This requires you to be part of the Systemetric team on Netlify
+
+This configures the repository to use Netlify LM as the LFS server. From now on you should be able to use git and git lfs tools as normal for handling large assets. This step is important - if it's not followed for the one-time setup, the following steps for generating docs for the brains will not include large assets. 
+
 From systemetric/robocon-website:master *(recommended)*: 
 * `cd shepherd/sheepsrc/`
 * `shepherd/sheepsrc> npm install`
