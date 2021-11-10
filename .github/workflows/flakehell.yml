@@ -22,11 +22,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
-        uses: abatilo/actions-poetry@v2.0.0
-        with:
-          poetry-version: 1.1.11
-      - name: Install dependencies
-        run: poetry install
+      - name: Install FlakeHell
+        run: python -m install flakehell
       - name: Run FlakeHell
         run: poetry run flakehell lint
