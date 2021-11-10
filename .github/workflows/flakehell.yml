@@ -27,7 +27,7 @@ jobs:
         with:
           poetry-version: 1.1.11
       - name: Disable vitual envs
-        run: poetry config settings.virtualenvs.create false
+        run: poetry config virtualenvs.create false
       - name: Install dependencies
         run: poetry install
       - name: Run FlakeHell
