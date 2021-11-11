@@ -451,7 +451,7 @@ function loadVisionBlocks(Blockly) {
       "MARKER",
       Blockly.Python.ORDER_ATOMIC
     );
-    const code = `${value_marker}.rot_y`;
+    const code = `${value_marker}.bearing.y`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 
@@ -461,7 +461,7 @@ function loadVisionBlocks(Blockly) {
       "MARKER",
       Blockly.Python.ORDER_ATOMIC
     );
-    const code = `${value_marker}.info.marker_type`;
+    const code = `${value_marker}.info.type`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 

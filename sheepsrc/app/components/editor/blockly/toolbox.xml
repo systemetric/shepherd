@@ -392,7 +392,7 @@
         </block>
       </value>
     </block>
-       <block type="vision_marker_type">
+    <block type="vision_marker_type">
       <value name="MARKER">
         <block type="variables_get">
           <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">marker</field>
