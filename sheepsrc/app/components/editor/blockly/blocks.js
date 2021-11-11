@@ -296,6 +296,77 @@ function loadGPIOBlocks(Blockly) {
   };
 }
 
+function loadVisionMarkerBlocks(Blockly) {
+  /* Year dependent marker blocks (2022) */
+
+  Blockly.Blocks["vision_marker_type_arena"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Arena");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Blocks["vision_marker_type_winkie"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Winkie");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Blocks["vision_marker_type_gillikin"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Gillikin");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Blocks["vision_marker_type_quadling"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Quadling");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Blocks["vision_marker_type_munchkin"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Munchkin");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Python["vision_marker_type_arena"] = function() {
+    const code = "MARKER_ARENA";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+  Blockly.Python["vision_marker_type_winkie"] = function() {
+    const code = "MARKER_CUBE_WINKIE";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+  Blockly.Python["vision_marker_type_gillikin"] = function() {
+    const code = "MARKER_CUBE_GILLIKIN";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+  Blockly.Python["vision_marker_type_quadling"] = function() {
+    const code = "MARKER_CUBE_QUADLING";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+  Blockly.Python["vision_marker_type_munchkin"] = function() {
+    const code = "MARKER_CUBE_MUNCHKIN";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+}
+
 function loadVisionBlocks(Blockly) {
   Blockly.Blocks["vision_see"] = {
     init: function() {
@@ -358,26 +429,6 @@ function loadVisionBlocks(Blockly) {
     }
   };
 
-  Blockly.Blocks["vision_marker_type_arena"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Arena");
-      this.setOutput(true, "MarkerType");
-      this.setColour(90);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks["vision_marker_type_basket"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Basket");
-      this.setOutput(true, "MarkerType");
-      this.setColour(90);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
   Blockly.Python["vision_see"] = function(block) {
     const dropdown_vision_resolution = block.getFieldValue("VISION_RESOLUTION");
     const code = `R.see(res=${dropdown_vision_resolution})`;
@@ -414,15 +465,7 @@ function loadVisionBlocks(Blockly) {
     return [code, Blockly.Python.ORDER_NONE];
   };
 
-  Blockly.Python["vision_marker_type_arena"] = function() {
-    const code = "MARKER_TYPE_ARENA";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-
-  Blockly.Python["vision_marker_type_basket"] = function() {
-    const code = "MARKER_TYPE_BASKET";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
+  loadVisionMarkerBlocks(Blockly);
 }
 
 export default function loadBlocks(Blockly) {
