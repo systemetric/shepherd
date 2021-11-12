@@ -1,3 +1,10 @@
+
+// Block colours use HSL. setColor takes the hue value (0 to 255). 
+const movementHue = 0;
+const gpioHue = 210;
+const visionHue = 90;
+const markerTypeHue = 70;
+
 function loadMovementBlocks(Blockly) {
   Blockly.Blocks["motors_set_power"] = {
     init: function() {
@@ -11,7 +18,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(0);
+      this.setColour(movementHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -38,7 +45,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(0);
+      this.setColour(movementHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -65,7 +72,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(0);
+      this.setColour(movementHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -76,7 +83,7 @@ function loadMovementBlocks(Blockly) {
       this.appendDummyInput().appendField("Stop both motors");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(0);
+      this.setColour(movementHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -105,7 +112,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(0);
+      this.setColour(movementHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -115,7 +122,7 @@ function loadMovementBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Zone");
       this.setOutput(true, null);
-      this.setColour(0);
+      this.setColour(movementHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -221,7 +228,7 @@ function loadGPIOBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(210);
+      this.setColour(gpioHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -237,7 +244,7 @@ function loadGPIOBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(210);
+      this.setColour(gpioHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -249,7 +256,7 @@ function loadGPIOBlocks(Blockly) {
         .appendField("Digital value of GPIO")
         .appendField(new Blockly.FieldNumber(1, 1, 4, 1), "GPIO_INDEX");
       this.setOutput(true, "Boolean");
-      this.setColour(210);
+      this.setColour(gpioHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -261,7 +268,7 @@ function loadGPIOBlocks(Blockly) {
         .appendField("Analog value of GPIO")
         .appendField(new Blockly.FieldNumber(1, 1, 4, 1), "GPIO_INDEX");
       this.setOutput(true, "Number");
-      this.setColour(210);
+      this.setColour(gpioHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -303,7 +310,7 @@ function loadVisionMarkerBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Arena");
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
+      this.setColour(markerTypeHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -312,7 +319,7 @@ function loadVisionMarkerBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Winkie");
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
+      this.setColour(markerTypeHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -321,7 +328,7 @@ function loadVisionMarkerBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Gillikin");
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
+      this.setColour(markerTypeHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -330,7 +337,7 @@ function loadVisionMarkerBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Quadling");
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
+      this.setColour(markerTypeHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -339,7 +346,7 @@ function loadVisionMarkerBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Munchkin");
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
+      this.setColour(markerTypeHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -368,12 +375,15 @@ function loadVisionMarkerBlocks(Blockly) {
 }
 
 function loadVisionBlocks(Blockly) {
+  /* Loads blocks for vision code that are not dependent on the current year's game.
+   * Marker blocks (year depentent) are loaded in loadVisionMarkerBlocks. */
+
   Blockly.Blocks["vision_see"] = {
     init: function() {
       this.appendDummyInput()
         .appendField("Visible markers")
       this.setOutput(true, "Array");
-      this.setColour(90);
+      this.setColour(visionHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -408,7 +418,7 @@ function loadVisionBlocks(Blockly) {
         .appendField("Distance to");
       this.setInputsInline(false);
       this.setOutput(true, "Number");
-      this.setColour(90);
+      this.setColour(visionHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -421,7 +431,7 @@ function loadVisionBlocks(Blockly) {
         .appendField("Angle to");
       this.setInputsInline(false);
       this.setOutput(true, "Number");
-      this.setColour(90);
+      this.setColour(visionHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -434,7 +444,7 @@ function loadVisionBlocks(Blockly) {
         .appendField("Marker type of");
       this.setInputsInline(false);
       this.setOutput(true, "MarkerType");
-      this.setColour(90);
+      this.setColour(markerTypeHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -481,6 +491,7 @@ function loadVisionBlocks(Blockly) {
     return [code, Blockly.Python.ORDER_NONE];
   };
 
+  // Load marker blocks. These may change for different competitions. 
   loadVisionMarkerBlocks(Blockly);
 }
 
