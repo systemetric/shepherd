@@ -378,6 +378,7 @@
   </category>
   <category name="Vision" colour="#80a55b">
     <block type="vision_see"></block>
+    <block type="vision_camera_res"></block>
     <block type="vision_distance_to">
       <value name="MARKER">
         <block type="variables_get">

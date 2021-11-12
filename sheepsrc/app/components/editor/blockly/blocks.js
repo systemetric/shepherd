@@ -371,7 +371,18 @@ function loadVisionBlocks(Blockly) {
   Blockly.Blocks["vision_see"] = {
     init: function() {
       this.appendDummyInput()
-        .appendField("Visible markers at")
+        .appendField("Visible markers")
+      this.setOutput(true, "Array");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks["vision_camera_res"] = {
+    init: function() {
+      this.appendDummyInput()
+        .appendField("Set camera resolution to")
         .appendField(
           new Blockly.FieldDropdown([
             ["640x480", "(640, 480)"],
@@ -430,10 +441,15 @@ function loadVisionBlocks(Blockly) {
   };
 
   Blockly.Python["vision_see"] = function(block) {
-    const dropdown_vision_resolution = block.getFieldValue("VISION_RESOLUTION");
-    const code = `R.see(res=${dropdown_vision_resolution})`;
+    const code = `R.see()`;
     return [code, Blockly.Python.ORDER_NONE];
   };
+
+  Blockly.Python["vision_camera_res"] = function(block) {
+    const dropdown_vision_resolution = block.getFieldValue("VISION_RESOLUTION");
+    const code = `R.camera.res = ${dropdown_vision_resolution}`;
+    return [code, Blockly.Python.ORDER_NONE]
+  }
 
   Blockly.Python["vision_distance_to"] = function(block) {
     const value_marker = Blockly.Python.valueToCode(
