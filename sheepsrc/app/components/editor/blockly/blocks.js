@@ -1,10 +1,3 @@
-
-// Block colours use HSL. setColor takes the hue value (0 to 255). 
-const movementHue = 0;
-const gpioHue = 210;
-const visionHue = 90;
-const markerTypeHue = 70;
-
 function loadMovementBlocks(Blockly) {
   Blockly.Blocks["motors_set_power"] = {
     init: function() {
@@ -18,7 +11,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(movementHue);
+      this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -45,7 +38,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(movementHue);
+      this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -72,7 +65,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(movementHue);
+      this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -83,7 +76,7 @@ function loadMovementBlocks(Blockly) {
       this.appendDummyInput().appendField("Stop both motors");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(movementHue);
+      this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -112,7 +105,7 @@ function loadMovementBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(movementHue);
+      this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -122,7 +115,7 @@ function loadMovementBlocks(Blockly) {
     init: function() {
       this.appendDummyInput().appendField("Zone");
       this.setOutput(true, null);
-      this.setColour(movementHue);
+      this.setColour(0);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -228,7 +221,7 @@ function loadGPIOBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(gpioHue);
+      this.setColour(210);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -244,7 +237,7 @@ function loadGPIOBlocks(Blockly) {
       this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(gpioHue);
+      this.setColour(210);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -256,7 +249,7 @@ function loadGPIOBlocks(Blockly) {
         .appendField("Digital value of GPIO")
         .appendField(new Blockly.FieldNumber(1, 1, 4, 1), "GPIO_INDEX");
       this.setOutput(true, "Boolean");
-      this.setColour(gpioHue);
+      this.setColour(210);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -268,7 +261,7 @@ function loadGPIOBlocks(Blockly) {
         .appendField("Analog value of GPIO")
         .appendField(new Blockly.FieldNumber(1, 1, 4, 1), "GPIO_INDEX");
       this.setOutput(true, "Number");
-      this.setColour(gpioHue);
+      this.setColour(210);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -303,109 +296,24 @@ function loadGPIOBlocks(Blockly) {
   };
 }
 
-function loadVisionMarkerBlocks(Blockly) {
-  /* Year dependent marker blocks (2022) */
-
-  Blockly.Blocks["vision_marker_type_arena"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Arena");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-  Blockly.Blocks["vision_marker_type_winkie"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Winkie");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-  Blockly.Blocks["vision_marker_type_gillikin"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Gillikin");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-  Blockly.Blocks["vision_marker_type_quadling"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Quadling");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-  Blockly.Blocks["vision_marker_type_munchkin"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Munchkin");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Python["vision_marker_type_arena"] = function() {
-    const code = "MARKER_ARENA";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-  Blockly.Python["vision_marker_type_winkie"] = function() {
-    const code = "MARKER_CUBE_WINKIE";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-  Blockly.Python["vision_marker_type_gillikin"] = function() {
-    const code = "MARKER_CUBE_GILLIKIN";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-  Blockly.Python["vision_marker_type_quadling"] = function() {
-    const code = "MARKER_CUBE_QUADLING";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-  Blockly.Python["vision_marker_type_munchkin"] = function() {
-    const code = "MARKER_CUBE_MUNCHKIN";
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-}
-
 function loadVisionBlocks(Blockly) {
-  /* Loads blocks for vision code that are not dependent on the current year's game.
-   * Marker blocks (year depentent) are loaded in loadVisionMarkerBlocks. */
-
   Blockly.Blocks["vision_see"] = {
     init: function() {
       this.appendDummyInput()
-        .appendField("Visible markers")
+        .appendField("Visible markers at")
+        .appendField(
+          new Blockly.FieldDropdown([
+            ["640x480", "(640, 480)"],
+            ["1296x736", "(1296, 736)"],
+            ["1296x976", "(1296, 976)"],
+            ["1920x1088", "(1920, 1088)"],
+            ["1920x1440", "(1920, 1440)"]
+          ]),
+          "VISION_RESOLUTION"
+        )
+        .appendField("px");
       this.setOutput(true, "Array");
-      this.setColour(visionHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks["vision_camera_res"] = {
-    init: function() {
-      this.appendDummyInput()
-      .appendField("Set camera resolution to")
-      .appendField(
-        new Blockly.FieldDropdown([
-          ["640x480", "(640, 480)"],
-          ["1296x736", "(1296, 736)"],
-          ["1296x976", "(1296, 976)"],
-          ["1920x1088", "(1920, 1088)"],
-          ["1920x1440", "(1920, 1440)"]
-        ]),
-        "VISION_RESOLUTION"
-      );
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(visionHue);
+      this.setColour(90);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -418,7 +326,7 @@ function loadVisionBlocks(Blockly) {
         .appendField("Distance to");
       this.setInputsInline(false);
       this.setOutput(true, "Number");
-      this.setColour(visionHue);
+      this.setColour(90);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -431,7 +339,7 @@ function loadVisionBlocks(Blockly) {
         .appendField("Angle to");
       this.setInputsInline(false);
       this.setOutput(true, "Number");
-      this.setColour(visionHue);
+      this.setColour(90);
       this.setTooltip("");
       this.setHelpUrl("");
     }
@@ -444,20 +352,36 @@ function loadVisionBlocks(Blockly) {
         .appendField("Marker type of");
       this.setInputsInline(false);
       this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks["vision_marker_type_arena"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Arena");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks["vision_marker_type_basket"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Basket");
+      this.setOutput(true, "MarkerType");
+      this.setColour(90);
       this.setTooltip("");
       this.setHelpUrl("");
     }
   };
 
   Blockly.Python["vision_see"] = function(block) {
-    const code = `R.see()`;
-    return [code, Blockly.Python.ORDER_NONE];
-  };
-
-  Blockly.Python["vision_camera_res"] = function(block) {
     const dropdown_vision_resolution = block.getFieldValue("VISION_RESOLUTION");
-    return `R.camera.res = ${dropdown_vision_resolution}\n`;
+    const code = `R.see(res=${dropdown_vision_resolution})`;
+    return [code, Blockly.Python.ORDER_NONE];
   };
 
   Blockly.Python["vision_distance_to"] = function(block) {
@@ -476,7 +400,7 @@ function loadVisionBlocks(Blockly) {
       "MARKER",
       Blockly.Python.ORDER_ATOMIC
     );
-    const code = `${value_marker}.bearing.y`;
+    const code = `${value_marker}.rot_y`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 
@@ -486,12 +410,19 @@ function loadVisionBlocks(Blockly) {
       "MARKER",
       Blockly.Python.ORDER_ATOMIC
     );
-    const code = `${value_marker}.info.type`;
+    const code = `${value_marker}.info.marker_type`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 
-  // Load marker blocks. These may change for different competitions. 
-  loadVisionMarkerBlocks(Blockly);
+  Blockly.Python["vision_marker_type_arena"] = function() {
+    const code = "MARKER_TYPE_ARENA";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+
+  Blockly.Python["vision_marker_type_basket"] = function() {
+    const code = "MARKER_TYPE_BASKET";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
 }
 
 export default function loadBlocks(Blockly) {

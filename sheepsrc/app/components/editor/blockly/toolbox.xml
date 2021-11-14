@@ -378,7 +378,6 @@
   </category>
   <category name="Vision" colour="#80a55b">
     <block type="vision_see"></block>
-    <block type="vision_camera_res"></block>
     <block type="vision_distance_to">
       <value name="MARKER">
         <block type="variables_get">
@@ -393,7 +392,7 @@
         </block>
       </value>
     </block>
-    <block type="vision_marker_type">
+       <block type="vision_marker_type">
       <value name="MARKER">
         <block type="variables_get">
           <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">marker</field>
@@ -401,11 +400,7 @@
       </value>
     </block>
     <block type="vision_marker_type_arena"></block>
-    <block type="vision_marker_type_winkie"></block>
-    <block type="vision_marker_type_gillikin"></block>
-    <block type="vision_marker_type_quadling"></block>
-    <block type="vision_marker_type_munchkin"></block>
-
+    <block type="vision_marker_type_basket"></block>
     <block type="controls_forEach">
       <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">i</field>
       <value name="LIST">

@@ -73,7 +73,8 @@ export default Vue.extend({
     // noinspection TypeScriptUnresolvedFunction
     this.workspace.addChangeListener(() => {
       // noinspection TypeScriptUnresolvedFunction
-      this.code = `from robot import *
+      this.code = `from __future__ import print_function
+from robot import *
 import time
 
 R = Robot()
