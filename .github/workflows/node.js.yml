@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm' 
         cache-dependency-path: sheepsrc/package-lock.json
-    - name: Instal dependencies
+    - name: Install dependencies
       run: npm install
       working-directory: sheepsrc
     - name: Test if build
