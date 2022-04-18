@@ -2,14 +2,14 @@
     <div>
         <ProjectTab key="header" name="Projects" :header="true">
             <IconButton v-if="saving" class="disabled" tooltip="Saving...">
-                <FontAwesomeIcon :icon="['far', 'sync-alt']" spin/>
+                <FontAwesomeIcon :icon="['fas', 'sync-alt']" spin/>
             </IconButton>
             <input type="file" ref="file" multiple accept=".py,.xml" style="display: none" @change="filesChanged">
             <IconButton @click="selectFiles" tooltip="Upload (CTRL-U)">
-                <FontAwesomeIcon :icon="['far', 'upload']"/>
+                <FontAwesomeIcon :icon="['fas', 'upload']"/>
             </IconButton>
             <IconButton @click="$emit('create')" tooltip="New Project (CTRL-ALT-N)">
-                <FontAwesomeIcon :icon="['far', 'plus']"/>
+                <FontAwesomeIcon :icon="['fas', 'plus']"/>
             </IconButton>
         </ProjectTab>
         <ProjectTab
@@ -20,13 +20,13 @@
              <IconButton
                     @click="$emit('download', project)"
                     tooltip="Download">
-                <FontAwesomeIcon :icon="['far', 'download']"/>
+                <FontAwesomeIcon :icon="['fas', 'download']"/>
             </IconButton>
             <IconButton
                     v-if="!project.filename.endsWith('.json')"
                     @click="$emit('delete', project)"
                     tooltip="Delete">
-                <FontAwesomeIcon :icon="['far', 'trash']"/>
+                <FontAwesomeIcon :icon="['fas', 'trash']"/>
             </IconButton>
         </ProjectTab>
     </div>

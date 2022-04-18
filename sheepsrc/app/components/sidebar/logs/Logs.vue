@@ -2,7 +2,7 @@
     <div id="logs">
         <ProjectTab name="Logs" :header="true">
             <IconButton v-if="currentProject && !currentProject.filename.endsWith('.json')" @click="run" :class="{disabled: running}" tooltip="Run (F5)">
-                <FontAwesomeIcon :icon="running ? ['far', 'sync-alt'] : ['fas', 'play']" :spin="running" class="run-button"/>
+                <FontAwesomeIcon :icon="running ? ['fas', 'sync-alt'] : ['fas', 'play']" :spin="running" class="run-button"/>
             </IconButton>
             <IconButton @click="stop" tooltip="Stop (CTRL-F5)">
                 <FontAwesomeIcon :icon="['fas', 'stop']" class="stop-button"/>

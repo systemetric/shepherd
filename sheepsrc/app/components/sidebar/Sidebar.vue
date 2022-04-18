@@ -5,7 +5,7 @@
             <IconButton
                     @click="toggle"
                     tooltip="Toggle">
-                <FontAwesomeIcon :icon="['far', 'arrow-alt-from-right']" :rotation="iconRotation"/>
+                <FontAwesomeIcon :icon="['fas', 'chevron-left']" :rotation="iconRotation"/>
             </IconButton>
         </div>
     </div>

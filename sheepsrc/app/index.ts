@@ -12,7 +12,7 @@ import store, {
 } from "./store";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlay, faStop } from "@fortawesome/pro-solid-svg-icons";
+
 import {
   faPlus,
   faTrash,
@@ -22,22 +22,24 @@ import {
   faDownload,
   faInfoCircle,
   faExclamationCircle,
-  faArrowAltFromRight
-} from "@fortawesome/pro-regular-svg-icons";
-
-library.add(
+  faChevronLeft,
   faPlay,
   faStop,
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(
   faPlus,
   faTrash,
   faSyncAlt,
-  faInfoCircle,
   faExclamationTriangle,
-  faExclamationCircle,
   faUpload,
   faDownload,
-  faArrowAltFromRight
-);
+  faInfoCircle,
+  faExclamationCircle,
+  faChevronLeft,
+  faPlay,
+  faStop
+)
 
 import App from "./App.vue";
 
