@@ -23,7 +23,7 @@
     "file-saver": "^2.0.2",
     "json-schema-traverse": "^0.4.1",
     "jszip": "^3.2.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "minireset.css": "0.0.3",
     "monaco-editor": "^0.14.3",
     "monaco-languageclient": "^0.9.1",
