@@ -22,7 +22,7 @@
     "fast-deep-equal": "^2.0.1",
     "file-saver": "^2.0.2",
     "json-schema-traverse": "^0.4.1",
-    "jszip": "^3.2.2",
+    "jszip": "^3.7.0",
     "lodash": "^4.17.15",
     "minireset.css": "0.0.3",
     "monaco-editor": "^0.14.3",
