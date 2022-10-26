@@ -401,10 +401,37 @@
       </value>
     </block>
     <block type="vision_marker_type_arena"></block>
-    <block type="vision_marker_type_winkie"></block>
-    <block type="vision_marker_type_gillikin"></block>
-    <block type="vision_marker_type_quadling"></block>
-    <block type="vision_marker_type_munchkin"></block>
+    <block type="vision_marker_type_sheep"></block>
+    <block type="vision_marker_owner">
+      <value name="MARKER">
+        <block type="variables_get">
+          <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">marker</field>
+        </block>
+      </value>
+    </block>
+    <block type="vision_marker_owner_me"></block>
+    <block type="vision_marker_owner_another_team"></block>
+    <block type="vision_marker_owner_arena"></block>
+    <block type="vision_marker_owning_team">
+      <value name="MARKER">
+        <block type="variables_get">
+          <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">marker</field>
+        </block>
+      </value>
+    </block>
+    <block type="vision_marker_team_leon"></block>
+    <block type="vision_marker_team_zhora"></block>
+    <block type="vision_marker_team_pris"></block>
+    <block type="vision_marker_team_roy"></block>
+    <block type="vision_marker_wool_type">
+      <value name="MARKER">
+        <block type="variables_get">
+          <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">marker</field>
+        </block>
+      </value>
+    </block>
+    <block type="vision_marker_wool_gold"></block>
+    <block type="vision_marker_wool_steel"></block>
 
     <block type="controls_forEach">
       <field name="VAR" id=";)moF_=/[]v+i@k*^`Aq" variabletype="">i</field>

@@ -4,6 +4,9 @@ const movementHue = 0;
 const gpioHue = 210;
 const visionHue = 90;
 const markerTypeHue = 70;
+const markerOwnerHue = 60;
+const markerTeamHue = 50;
+const woolTypeHue = 40;
 
 function loadMovementBlocks(Blockly) {
   Blockly.Blocks["motors_set_power"] = {
@@ -303,8 +306,21 @@ function loadGPIOBlocks(Blockly) {
   };
 }
 
-function loadVisionMarkerBlocks(Blockly) {
-  /* Year dependent marker blocks (2022) */
+function loadMarkerTypeBlocks(Blockly) {
+  /* Year marker type blocks (2023) */
+  Blockly.Blocks["vision_marker_type_sheep"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Sheep");
+      this.setOutput(true, "MarkerType");
+      this.setColour(markerTypeHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_type_sheep"] = function() {
+    const code = "TEAM.SHEEP";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
 
   Blockly.Blocks["vision_marker_type_arena"] = {
     init: function() {
@@ -315,61 +331,144 @@ function loadVisionMarkerBlocks(Blockly) {
       this.setHelpUrl("");
     }
   };
-  Blockly.Blocks["vision_marker_type_winkie"] = {
+  Blockly.Python["vision_marker_type_arena"] = function() {
+    const code = "MARKER_TYPE.ARENA";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+}
+
+function loadMarkerOwnerBlocks(Blockly) {
+  /* Year team owner blocks (2023) */
+  Blockly.Blocks["vision_marker_owner_me"] = {
     init: function() {
-      this.appendDummyInput().appendField("Winkie");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
+      this.appendDummyInput().appendField("Me");
+      this.setOutput(true, "markerOwner");
+      this.setColour(markerOwnerHue);
       this.setTooltip("");
       this.setHelpUrl("");
     }
   };
-  Blockly.Blocks["vision_marker_type_gillikin"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Gillikin");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-  Blockly.Blocks["vision_marker_type_quadling"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Quadling");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-  Blockly.Blocks["vision_marker_type_munchkin"] = {
-    init: function() {
-      this.appendDummyInput().appendField("Munchkin");
-      this.setOutput(true, "MarkerType");
-      this.setColour(markerTypeHue);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
+  Blockly.Python["vision_marker_owner_me"] = function() {
+    const code = "MARKER_OWNER.ME";
+    return [code, Blockly.Python.ORDER_NONE];
   };
 
-  Blockly.Python["vision_marker_type_arena"] = function() {
-    const code = "MARKER_ARENA";
+  Blockly.Blocks["vision_marker_owner_another_team"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Zhora");
+      this.setOutput(true, "markerOwner");
+      this.setColour(markerOwnerHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_owner_another_team"] = function() {
+    const code = "MARKER_OWNER.ANOTHER_TEAM";
     return [code, Blockly.Python.ORDER_NONE];
   };
-  Blockly.Python["vision_marker_type_winkie"] = function() {
-    const code = "MARKER_CUBE_WINKIE";
+
+  Blockly.Blocks["vision_marker_owner_arena"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Pris");
+      this.setOutput(true, "markerOwner");
+      this.setColour(markerOwnerHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_owner_arena"] = function() {
+    const code = "MARKER_OWNER.ARENA";
     return [code, Blockly.Python.ORDER_NONE];
   };
-  Blockly.Python["vision_marker_type_gillikin"] = function() {
-    const code = "MARKER_CUBE_GILLIKIN";
+}
+
+function loadMarkerTeamBlocks(Blockly) {
+  /* Year team marker blocks (2023) */
+  Blockly.Blocks["vision_marker_team_leon"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Leon");
+      this.setOutput(true, "markerTeam");
+      this.setColour(markerTeamHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_team_leon"] = function() {
+    const code = "TEAM.LEON";
     return [code, Blockly.Python.ORDER_NONE];
   };
-  Blockly.Python["vision_marker_type_quadling"] = function() {
-    const code = "MARKER_CUBE_QUADLING";
+
+  Blockly.Blocks["vision_marker_team_zhora"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Zhora");
+      this.setOutput(true, "markerTeam");
+      this.setColour(markerTeamHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_team_zhora"] = function() {
+    const code = "TEAM.ZHORA";
     return [code, Blockly.Python.ORDER_NONE];
   };
-  Blockly.Python["vision_marker_type_munchkin"] = function() {
-    const code = "MARKER_CUBE_MUNCHKIN";
+
+  Blockly.Blocks["vision_marker_team_pris"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Pris");
+      this.setOutput(true, "markerTeam");
+      this.setColour(markerTeamHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_team_pris"] = function() {
+    const code = "TEAM.PRIS";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+
+  Blockly.Blocks["vision_marker_team_roy"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Roy");
+      this.setOutput(true, "markerTeam");
+      this.setColour(markerTeamHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_team_roy"] = function() {
+    const code = "TEAM.ROY";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+
+}
+
+function loadMarkerWoolBlocks(Blockly) {
+  /* Year team owner blocks (2023) */
+  Blockly.Blocks["vision_marker_wool_gold"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Golden Fleece");
+      this.setOutput(true, "woolType");
+      this.setColour(woolTypeHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_wool_gold"] = function() {
+    const code = "WOOL_TYPE.GOLDEN_FLEECE";
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+
+  Blockly.Blocks["vision_marker_wool_steel"] = {
+    init: function() {
+      this.appendDummyInput().appendField("Steel Wool");
+      this.setOutput(true, "woolType");
+      this.setColour(woolTypeHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_wool_steel"] = function() {
+    const code = "WOOL_TYPE.STEEL_WOOL";
     return [code, Blockly.Python.ORDER_NONE];
   };
 }
@@ -490,8 +589,77 @@ function loadVisionBlocks(Blockly) {
     return [code, Blockly.Python.ORDER_NONE];
   };
 
+  Blockly.Blocks["vision_marker_owner"] = {
+    init: function() {
+      this.appendValueInput("MARKER")
+        .setCheck("Marker")
+        .appendField("Marker owner of");
+      this.setInputsInline(false);
+      this.setOutput(true, "markerOwner");
+      this.setColour(markerOwnerHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_owner"] = function(block) {
+    const value_marker = Blockly.Python.valueToCode(
+      block,
+      "MARKER",
+      Blockly.Python.ORDER_ATOMIC
+    );
+    const code = `${value_marker}.info.owner`;
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+
+  Blockly.Blocks["vision_marker_owning_team"] = {
+    init: function() {
+      this.appendValueInput("MARKER")
+        .setCheck("Marker")
+        .appendField("Marker team that owns");
+      this.setInputsInline(false);
+      this.setOutput(true, "markerTeam");
+      this.setColour(markerTeamHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_owning_team"] = function(block) {
+    const value_marker = Blockly.Python.valueToCode(
+      block,
+      "MARKER",
+      Blockly.Python.ORDER_ATOMIC
+    );
+    const code = `${value_marker}.info.owning_team`;
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+  
+  Blockly.Blocks["vision_marker_wool_type"] = {
+    init: function() {
+      this.appendValueInput("MARKER")
+        .setCheck("Marker")
+        .appendField("Marker wool type of");
+      this.setInputsInline(false);
+      this.setOutput(true, "woolType");
+      this.setColour(woolTypeHue);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+  Blockly.Python["vision_marker_wool_type"] = function(block) {
+    const value_marker = Blockly.Python.valueToCode(
+      block,
+      "MARKER",
+      Blockly.Python.ORDER_ATOMIC
+    );
+    const code = `${value_marker}.info.wool_type`;
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+
   // Load marker blocks. These may change for different competitions. 
-  loadVisionMarkerBlocks(Blockly);
+  loadMarkerTypeBlocks(Blockly);
+  loadMarkerOwnerBlocks(Blockly);
+  loadMarkerTeamBlocks(Blockly);
+  loadMarkerWoolBlocks(Blockly);
 }
 
 export default function loadBlocks(Blockly) {
