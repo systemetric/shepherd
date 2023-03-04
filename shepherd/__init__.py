@@ -6,12 +6,14 @@ import errno
 import os
 from pathlib import Path
 
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, request
 from flask_sockets import Sockets
 from flask_cors import CORS
 import RPi.GPIO as GPIO
 from logging.handlers import SysLogHandler
 import logging
+import base64
+from PIL import Image
 
 from shepherd.blueprints import upload, run, pyls, editor, staticroutes
 
@@ -82,6 +84,11 @@ if (not app.debug) or os.environ.get("WERKZEUG_RUN_MAIN"):
         static_graphic = Path('shepherd/static/image.jpg')
         static_graphic.write_bytes(start_graphic.read_bytes())
 
+        img = Image.open(start_graphic)
+        img = img.resize((1280, 720))
+        img.save("/tmp/current_capture.jpg")
+
+
     def _start(channel):
         # Set the zone based on files in game_contol_path, defaulting to zone 0
         zone = "0"
@@ -120,3 +127,27 @@ def about():
 @app.route("/favicon.ico")
 def favicon():
     return send_file(os.path.join(app.root_path, "static", "favicon.ico"))
+
+
+# prev_bytes = None
+
+
+@app.route("/livestream")
+def livestream():
+    # global prev_bytes
+
+    with open("/tmp/log.txt", "a") as file:
+        file.write("="*20 + "\n")
+
+    # while True:
+    with open("/tmp/current.jpg", "rb") as image:
+        vid_bytes = image.read()
+    #     if vid_bytes == prev_bytes:
+    #         with open("/tmp/log.txt", "a") as file:
+    #             file.write(f"duplicate\n")
+    #         continue
+    #     prev_bytes = vid_bytes
+    #     with open("/tmp/log.txt", "a") as file:
+    #         file.write(f"{base64.b85encode(vid_bytes)}\n")
+    # return base64.b85encode(vid_bytes).decode()
+    return base64.b85encode(vid_bytes).decode()
