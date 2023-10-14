@@ -6,7 +6,6 @@ when the image file has been changed, i.e. when an image is taken from the camer
 
 import asyncio
 import os
-import random
 import websockets
 
 CONNECTIONS = set()
