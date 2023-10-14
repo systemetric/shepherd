@@ -18,12 +18,12 @@ async def register(websocket):#add client to list of connnected clients upon con
 
 async def send_file_change_messages():#broadcasts a websocket message when image file changed
     while True:
-        await os.system("watch -d -t -g ls /home/pi/shepherd/shepherd/static/image.jpg && echo \"changed\"")#run blocking code here waiting until file has changed
+        os.system("watch -d -t -g ls /home/pi/shepherd/shepherd/static/image.jpg && echo \"changed\"")#run blocking code here waiting until file has changed
         websockets.broadcast(CONNECTIONS, "Image updated")
         print("Image updated message sent.")
 
 async def main():#runs the websocket
-    async with websockets.serve(register, "localhost", 5001):
+    async with websockets.serve(register, "0.0.0.0", 5001):
         await send_file_change_messages()
 
 if __name__ == "__main__":
