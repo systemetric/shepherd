@@ -26,7 +26,7 @@ async def send_file_change_messages():
         message = "Image updated"
         websockets.broadcast(CONNECTIONS, message)
         wait_for_file_change()
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         
 
 async def main():
