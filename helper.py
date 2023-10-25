@@ -24,6 +24,7 @@ CONNECTIONS = set()
 #The following sets up the asynchronous waiting for file change
 watcher = aionotify.Watcher()
 
+#TODO - Change the input_file to the location of the image the camera takes!
 static_path = '/home/pi/shepherd/shepherd/static/'
 input_file = static_path + "full_image.jpg"
 output_file = static_path + "image.jpg"
