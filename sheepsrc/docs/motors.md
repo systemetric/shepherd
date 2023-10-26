@@ -20,20 +20,16 @@ If you want to spin your motors in reverse, just stick a negative sign in front 
 You can control motors using the `motors` property of the `Robot` object. To set the power of the first motor to 60% use:
 
 ```python
-R.motors[1] = 60
+R.motors[0] = 60
 ```
-
-:::warning
-If you are using the mini-bot or similar motors. Do not exceed a motor power of 25% otherwise they will burn out.
-:::
 
 To control the second motor instead, replace `motors[1]` with `motors[2]`.
 
 To stop both motors:
 
 ```python
+R.motors[0] = 0
 R.motors[1] = 0
-R.motors[2] = 0
 ```
 
 Here's a more complete example:
@@ -44,28 +40,26 @@ import robot
 R = robot.Robot()
 
 # set motor 1 to 60% power
-R.motors[1] = 60
+R.motors[0] = 60
 
 # set motor 2 to 60% power in the backwards direction
-R.motors[2] = -60
+R.motors[1] = -60
 
 # turn both motors off
+R.motors[0] = 0
 R.motors[1] = 0
-R.motors[2] = 0
 ```
+
+:::tip
+By default the BrainBox is designed to work safely with the TT motors supplied, these are 6V motors. If you choose to use motors that have a diffrent nominal voltage, then you can specify this when initalising the robot object. For example when using 9V motors:
+
+```python
+R = robot.Robot(max_motor_voltage=9)
+```
+
+We do not recommend running motors above their design voltage, it may (sometimes dramatically) shorten the lifespan of your motors. If you choose to overvolt your motors you should be prepared to swap them with spares and design your robot to ensure you have access to replace them.
+:::
 
 ## Blockly
 
 Blocks for controlling motors can be found in the **Movement** section.
-
-# Using larger motors than supplied
-The Brainbox outputs 12v pulses and by default is restricted to 25% for safe use with the 6v motors, if you wish to use other motors you may wish to change the maximum duty cycle, for example 12v motors may accept 100% duty cycles.
-You can use any motors you like with the brain box as long as the total current requested does not exceed 20A.
-
-The maximum motor current is a feature of the robot and can only be set when first initilizing the robot object
-
-```python
-import robot
-
-R = robot.Robot(motor_max=100)
-```

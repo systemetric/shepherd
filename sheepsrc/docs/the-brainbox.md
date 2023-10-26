@@ -3,21 +3,21 @@ title: The BrainBox
 category: Hardware
 position: 2
 ---
-# The Brain Box
+# The BrainBox
 
-The brain box is the center of the kit, it controls power, provides you with useful electronics and is where your code runs. Do **NOT** open the brain box unless given written permission by Hills Road RoboCon.
-
-![The brain box](./images/brainbox.jpg)
-
+The BrainBox is the core of the kit which we provide. In it is all of the electronics and software you need to power a robot. Lets start by turning it on. Take a battery from the kit and plug it into the yellow socket labelled battery, then take a red "power button" and connect that to the black connector along the side of the BrainBox. The battery and start button are both labelled on the red surface of the BrainBox. 
+![The brain box](/images/angled.png)
+## How to turn everything on
+Pressing the start button will cause the battery status LEDs on the front of the BrainBox flash in an upwards direction and the power LED turns green. When the user light starts flashing blue your BrainBox is ready to run code. You can now turn connect to your robot. The user LED will go solid while code is running. 
 ## Power
 
-The BrainBox distributes power to the robot from the battery. It provides both 12V and 5V power out. All power must go through the brain box and the fuse should never be replaced.
+The BrainBox distributes power to the robot from the battery. It provides both 12V and 5V power out. All power must go through the BrainBox and the fuse should never be replaced.
 
-The On|Off switch also plugs into the BrainBox as well as the Start button which is used to start your robot code running.
+The On/Off switch also plugs into the BrainBox as well as the Start button which is used to start your robot code running.
 
 ## Motors & 12V Power
 
-The specifications for the motor board can be found [here](/docs/CytronBoardDocs.pdf), however to summarize:
+The specifications for the motor board can be found [here](/CytronBoardDocs.pdf), however to summarize:
 
 | Condition per channel     | Maximum Value |
 | ------------------------- | ------------- |
@@ -29,11 +29,17 @@ The specifications for the motor board can be found [here](/docs/CytronBoardDocs
 You can toggle the 12V which allows you to turn 12V devices on and off easily. However, this will also cut power to the motor board.
 :::
 
+## How to turn everything off
+When you are done for the day, press the power button, the user LED will flash rapidly, when this turns off you may unplug the battery. 
+
+## USB's
+On the new brainBox, there is only one USB port. If you want to use something that requires a USB port such as a USB camera, you will need to get your own USB hub.  
+ 
 ## GPIO
 
 ### GPIO - Out
 
-All of the Brain boxes GPIO pins are connected in-series with a 1K Ohm resistor, to provide current limiting. This means that you can plug devices such as LED's straight into your brain box.
+All of the BrainBox's GPIO pins are connected in-series with a 1K Ohm resistor, to provide current limiting. This means that you can plug devices such as LED's straight into your BrainBox.
 
 Nominally they operate at 5V but depending on your load the true output will vary. You can calculate the voltage you will get across your load by measuring its resistance, then doing the sum:
 
@@ -47,7 +53,7 @@ If you need to sense something with an impedance of more than 9K then you will n
 
 ### GPIO - Limits
 
-Do not try and sink or source more than 25mA into the brainbox's GPIO, it may damage some of the internal components.
+Do not try and sink or source more than 25mA into the BrainBox's GPIO, it may damage some of the internal components.
 
 ## PWM Pins
 
@@ -67,22 +73,19 @@ The PWM pins ranges:
 
 ## Pin Out
 
-### USB's
+### IO
 
-![USB's](./images/brainboxdocsusb.png)
+![USB's](/images/powerconnector.png)
 
 ### Motors
 
-![Motors](./images/brainboxdocsmotors.png)
+![Motors](/images/brainboxmotors.png)
 
-### GPIO
-
-![GPIO](./images/brainboxdocsgpio.png)
 
 ### Front
 
-![Front](./images/brainboxdocfront.png)
+![Front](/images/redpanel.png)
 
 ## Expansion I2C, UART & USB
 
-For expansion please see the [expansion page](/expanding-functionality.html).
+For expansion please see the [expansion page](/docs/expanding-functionality.html).

@@ -5,18 +5,18 @@ position: 3
 ---
 # Using the Editor
 
-We recommend you use the code editor that's included with Shepherd to program your robot. You can either program in Python or using Blockly, a powerful Scratch-like programming tool.
+We recommend you use the code editor that's included with Shepherd to program your robot. You can either program in Python or use Blockly, a powerful Scratch-like programming tool.
 
-Assuming you've [connected to your robot](/connecting.md), head to <http://robot.go/editor> or click the orange
+Assuming you've [connected to your robot](/docs/connecting.md), head to <http://robot.go/editor> or click the orange
 editor button on the Shepherd homepage.
 
-![Upload Button](./images/shepherd-editor.png)
+![Upload Button](/images/shepherd-editor.png)
 
 ## The Editor Interface
 
 You should now see the editor interface. _(yours will look slightly different to this)_
 
-![Annotated Editor Interface](./images/shepherd-editor-annotated.png)
+![Annotated Editor Interface](/images/shepherd-editor-annotated.png)
 
 The **<span style="color: #00A510">green sidebar</span>** is the **projects panel**. This is where you can access or
 export your existing projects, and create or import new ones. Clicking on a project in this list will open it in the
@@ -44,7 +44,7 @@ from your robot when you run your program.
 * The **<span style="color: #630000">dark red button</span>** is the **stop button**. Pressing this will force the robot
   to stop what it's doing, useful if your robot is out of control.
 
-The **main section** in the middle is the **editor**. This will be different depending on whether your editing a Python or a
+The **main section** in the middle is the **editor**. This will be different depending on whether you're editing a Python or a
 Blockly project.
 
 ## Creating a new project
@@ -52,17 +52,17 @@ Blockly project.
 Click on the **create project button** (marked in **<span style="color: #0094FF">blue</span>** in the above screenshot).
 The create project dialog will appear:
 
-![Create Project Interface](./images/shepherd-editor-create-project.png)
+![Create Project Interface](/images/shepherd-editor-create-project.png)
 
 Give your project a name, then select the type of project you would like. Choose either Python or Blockly. Then click the **create** button.
 
 Your new project will open in the editor. See the sections below for more information on [Python](#python-projects) and
-[Blockly](#blockly-projects) projects. Once you've read these, why not start learning [how to program your robot](/init-robot.md). 
+[Blockly](#blockly-projects) projects. Once you've read these, why not start learning [how to program your robot](/docs/init-robot.md). 
 
 ## Python Projects
 
-Python projects provides a powerful development tool with syntax highlighting and code completion for the standard Python libraries and also the `robot` module. If you are interested, it uses the text-editor that powers Visual Studio Code.
+Python projects provide a powerful development tool with syntax highlighting and code completion for the standard Python libraries and also the `robot` module. If you are interested, it uses the text editor that powers Visual Studio Code.
 
 ## Blockly Projects
 
-Google's Blockly is a programming environment similar to scratch that allows you to program your robot with blocks. You still have access to all the features of the robot so you are not disadvantaged if you decide to use this over Python.
+Google's Blockly is a programming environment similar to Scratch that allows you to program your robot with blocks. You still have access to all the features of the robot so you are not disadvantaged if you decide to use this over Python.
