@@ -60,18 +60,18 @@ async def wait_for_file_change():
         failing = True
         c = 0
         while failing:
-            if c < 5:
+            time.sleep(0.1)#give it time to write the file.
+            if c < 3:
                 try:#this runs until the bot has finished writing the image
                     img = Image.open(input_file)
                     img.load()
-                    print("Opened successfully :)")
+                    print("Opened successfully")
                     failing = False
                 except:
                     print("Error opening file: attempt #"+str(c))
             else:
                 failing = False
             c += 1
-            time.sleep(0.1)
 
         if c > 5:
             continue#error with this file, go back and wait for next change.
