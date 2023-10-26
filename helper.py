@@ -73,7 +73,7 @@ async def wait_for_file_change():
                 failing = False
             c += 1
 
-        if c > 5:
+        if c > 3:
             continue#error with this file, go back and wait for next change.
         #Resizes image
         width_i, height_i = img.size
