@@ -69,10 +69,11 @@ async def wait_for_file_change():
                     print("Error opening file: attempt #"+str(c))
             else:
                 failing = False
-                raise "Image file error"
             c += 1
             time.sleep(0.1)
 
+        if c > 5:
+            continue#error with this file, go back and wait for next change.
         #Resizes image
         width_i, height_i = img.size
         width = float(width_i)
