@@ -55,21 +55,16 @@ async def wait_for_file_change():
             event = await watcher.get_event()#blocks until file changed
         else:
             bypass = False#reset bypass
-        failing = True
-        c = 0
-        while failing:
+        
+        for c in range(3):
             time.sleep(0.1)#give it time to write the file.
-            if c < 3:
-                try:#this runs until the bot has finished writing the image
-                    img = Image.open(input_file)
-                    img.load()
-                    print("Opened successfully")
-                    failing = False
-                except:
-                    print("Error opening file: attempt #"+str(c))
-            else:
-                failing = False
-            c += 1
+            try:#this runs until the bot has finished writing the image
+                img = Image.open(input_file)
+                img.load()
+                print("Opened successfully")
+                break
+            except:
+                print("Error opening file: attempt #"+str(c))
 
         if c > 3:
             continue#error with this file, go back and wait for next change.
