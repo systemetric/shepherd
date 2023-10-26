@@ -63,6 +63,7 @@ async def wait_for_file_change():
             if c < 5:
                 try:#this runs until the bot has finished writing the image
                     img = Image.open(input_file)
+                    img.load()
                     print("Opened successfully :)")
                     failing = False
                 except:
