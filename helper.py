@@ -26,8 +26,8 @@ watcher = aionotify.Watcher()
 
 #TODO - Change the input_file to the location of the image the camera takes!
 static_path = '/home/pi/shepherd/shepherd/static/'
-input_file = static_path + "full_image.jpg"
-output_file = static_path + "image.jpg"
+input_file = static_path + "image.jpg"
+output_file = static_path + "resized_image.jpg"
 stat_file = static_path + "imgtime.txt"
 mod_time = 0
 out_width = 640.0
@@ -42,26 +42,21 @@ def im_2_b64(image):
     return img_str
 
 async def wait_for_file_change():
-    print("Waiting for file change")
     loop = asyncio.get_event_loop()
-    c = 0
-    bypass = False#so that the very first image isn't ignored.
+
+    bypass = False#so first image is not ignored.
+    while not os.path.exists(input_file):
+        time.sleep(0.5)#twiddle thumbs :)
+        if not bypass:
+            bypass = True
+    await watcher.setup(loop)
+    print("File change watcher is running.")
     
-    try:#the following fails if full_image.jpg doesn't exist. This is VERY UNUSUAL but can happen.
-        await watcher.setup(loop)
-    except OSError:
-        print("Waiting for full_image.jpg")
-        while not os.path.exists(input_file):
-            time.sleep(0.5)#twiddle thumbs :)
-        await watcher.setup(loop)
-        bypass = True
-    
-    for _i in range(20):#for the first 20 events
+    while True:#for all events
         if not bypass:
             event = await watcher.get_event()#blocks until file changed
         else:
             bypass = False#reset bypass
-        print("Processing...")
         failing = True
         c = 0
         while failing:
@@ -80,8 +75,8 @@ async def wait_for_file_change():
 
         #Resizes image
         width_i, height_i = img.size
-        width = width_i * 1.0
-        height = height_i * 1.0
+        width = float(width_i)
+        height = float(height_i)
         scale_x = out_width / width
         scale_y = out_height / height
         if scale_x > scale_y:
@@ -91,9 +86,8 @@ async def wait_for_file_change():
 
         #converts image to a base64 which can be sent as a long string to the browser.
         img_b64 = im_2_b64(img).decode()
-        print("Sending...")
         websockets.broadcast(CONNECTIONS, img_b64)#sends image to all connected browsers.
-        print("Broadcast message!")
+        print("Image broadcast.")
 
         #Save image file as a backup for when/if the websocket fails
         img.save(output_file,"JPEG")
