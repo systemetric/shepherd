@@ -4,8 +4,6 @@ IMPORTANT NOTE!!
 => The following will ONLY run on Python 3.7 to 3.9
 => Install websockets version 11.0.3 via pip whl (do not use v12)
 => Install asynio 0.2.0 via pip whl
-
-I will also update sheep to consume the websocket at the other end.
 '''
 
 import asyncio
