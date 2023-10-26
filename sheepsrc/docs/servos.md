@@ -16,10 +16,10 @@ Servos are plugged into the **PWM** ports on the BrainBox. **PWM 1** represents 
 You can control servos using the `servos` property of the `Robot` object. To set the first servo to the 50% position use:
 
 ```python
-R.servos[1] = 50
+R.servos[0] = 50
 ```
 
-To control the fourth servo instead, replace `servos[1]` with `servos[4]`.
+To control the fourth servo instead, replace `servos[0]` with `servos[3]`.
 
 Here's a more complete example:
 
@@ -29,14 +29,14 @@ import robot
 R = robot.Robot()
 
 # set servo 1 to the 50% position
-R.servos[1] = 50
+R.servos[0] = 50
 
 # set servo 3 to the -100% position
-R.servos[3] = -100
+R.servos[2] = -100
 
 # set servos 1 & 3 to the default positions
-R.servos[1] = 0
-R.servos[3] = 0
+R.servos[0] = 0
+R.servos[2] = 0
 ```
 
 ## Blockly
@@ -52,9 +52,9 @@ E.g. to set PWM1 to `100%` and PWM3 to `50%` use
 import robot
 
 servo_values = {
-    1: 100,
-    2: 50,
-    3: -100
+    0: 100,
+    1: 50,
+    2: -100
 }
 
 R = robot.Robot(servo_defaults=servo_values)

@@ -9,9 +9,9 @@ We hope that the RoboCon kit was useful to you, we ask that all kits are returne
 ## Packing and returning the kit
 Shipping can sometimes be quite rough for the kit and so we require the following standards to be adheared to if the kit is to be shipped:
 *  The kit it should be returned inside of the Really Useful Box (RUB) provided
-*  All space inside the RUB should be filled with a packing material (carboard etc) such that the kit can not move around inside the RUB.
-*  The RUB should be wrapped in a protective layer of Carboard.
-*  Most couriers have rules and regulations regarding shippment of Lithium batteries, you must check with any courier before hand about lithium batteries. In most cases it is required for the batteries to be in a device meaning that the **lose batteries provided in the RoboCon kit can not be shipped**. You may find it easier to return the kit to Hills Road in person. Shippment is at your own risk.
+*  All space inside the RUB should be filled with a packing material (cardboard etc) such that the kit can not move around inside the RUB.
+*  The RUB should be wrapped in a protective layer of cardboard.
+*  Most couriers have rules and regulations regarding shippment of lithium batteries, you must check with any courier beforehand about lithium batteries. In most cases it is required for the batteries to be in a device meaning that the **loose batteries provided in the RoboCon kit can not be shipped**. You may find it easier to return the kit to Hills Road in person. Shipment is at your own risk.
 * Hills Road Robotics will **not** fund the shipment of kit back to us.
 
 If you plan to return the kit to Hills Road in person then please email [robotics@hrsfc.ac.uk](robotics@hrsfc.ac.uk) and we will organise a time to have someone meet you at reception.
@@ -20,7 +20,7 @@ If you plan to return the kit to Hills Road in person then please email [robotic
 ### Containers:
 *  1 x 12L Really Useful Box
 ## Electronics Kit:
-*  1 Brainbox
+*  1 BrainBox
 *  1 microservo 9g SG90
 *  1 6 pin GPIO connector
 *  1 2 pin 12V connector

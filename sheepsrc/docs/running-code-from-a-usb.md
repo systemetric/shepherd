@@ -5,10 +5,10 @@ position: 4
 ---
 # USB Tricks
 
-![USB Stick](./images/usbstick.jpg)
+![USB Stick](/images/usbstick.jpg)
 
 :::tip
-The brain only checks for the presence of USB sticks at boot, only plug and unplug USB sticks when the brain is off (front panel blue light off).
+The BrainBox only checks for the presence of USB sticks at boot, only plug and unplug USB sticks when the BrainBox is off (front panel blue light off).
 :::
 
 :::warning
@@ -27,28 +27,28 @@ When started, using the start button the robot will default to running the last 
 :::warning
 
 * During the competition **RoboCon** requires unrestricted access to at least one USB port, if you want to use a USB stick during the competition it must leave enough space around at least one port to insert our low profile USB stick.
-* Code copied from USB sticks is not [Linted](https://en.wikipedia.org/wiki/Lint_%28software%29), sufficiently broken code may crash not just the user code, but also the web interface preventing the robot from reaching "Blinky". See [troubleshooting](/troubleshooting.html#troubleshooting) for details about what the LEDs mean. It is highly recommended for users to export working code from the editor to the USB stick rather than editing code directly. See [troubleshooting](/troubleshooting.html#the-brainbox-appears-to-power-up-but-i-can-t-connect-to-the-website-and-the-blue-led-lights-but-never-starts-flashing) for how to recover a robot which does not boot to Blinky.
+* Code copied from USB sticks is not [Linted](https://en.wikipedia.org/wiki/Lint_%28software%29), sufficiently broken code may crash not just the user code, but also the web interface preventing the robot from reaching "Blinky". See [troubleshooting](/docs/troubleshooting.html#troubleshooting) for details about what the LEDs mean. It is highly recommended for users to export working code from the editor to the USB stick rather than editing code directly. See [troubleshooting](/docs/troubleshooting.html#the-brainbox-appears-to-power-up-but-i-can-t-connect-to-the-website-and-the-blue-led-lights-but-never-starts-flashing) for how to recover a robot which does not boot to Blinky.
 
 :::
-
 
 # Getting Logs
 
 When running your robot code you can see the logs from the robot in the editor. Sometimes it's useful to be able to view the logs later to analyse what happened.
 
 :::warning
+
 * Be careful when reusing USB sticks to avoid accidentally running code from the USB Stick!
-:::
+  :::
 
 1. Insert a USB stick in the robot before turning it on.
 2. The log file will be automatically written to the USB stick as `logs.txt`
 3. Remember to fully power down the robot before removing the USB stick
 
-
 :::tip
+
 * Logs are collected whatever way the code is run, but only the most recent logs are preserved
 * The log files are also collected during system shutdown leading to worrying messages like:
-:::
+  :::
 
 ```
 Exception in thread Thread-2:
@@ -72,7 +72,7 @@ IOError: \[Errno 121] Remote I/O error
 
  These can safely be ignored unless you also see them on the web interface.
 
-# Collecting iamges and raw analysis
+# Collecting images and raw analysis
 
 Every time the robot takes a picture it is updated on the web interface, during development it is occasionally useful to be able to also keep a log of pictures that have been analysed to check camera focus, motion blur etc.
 
@@ -80,11 +80,12 @@ Every time the robot takes a picture it is updated on the web interface, during 
 2. Add a file with the name "log_markers.txt" to the USB stick to collect analysis of images
 3. Insert the stick before turning the robot on
 4. Remember to fully shut down the robot before removing the USB stick
-WARNING: Collecting all images may slow down the processing time from your robot - Use with care!
+   WARNING: Collecting all images may slow down the processing time from your robot - Use with care!
 
 # Updating your team image
 
 When the robot boots, it loads a default image which is displayed until the robot takes a picture, in the arena these images are displayed on an overhead projector. You can change the default image.
+
 1. Save your Image as 440x330 pixels in jpeg format onto the USB stick as "team_logo.jpg"
 2. Boot the robot once to install the image
 3. Fully shut down the robot

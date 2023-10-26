@@ -9,12 +9,22 @@ Your code will probably need to look for different markers depending on the zone
 
 ## Python
 
-`R.zone` will be equal to the start zone of the robot and will have a value from `0` to `3`.
+`R.zone` will be equal to the the start zone of the robot, and will be equal to one of the teams.
 
+| **Team** | **Code** |
+| --- | --- |
+| Leon | `robot.TEAM.LEON` |
+| Zhora | `robot.TEAM.ZHORA` |
+| Pris | `robot.TEAM.PRIS` |
+| Roy | `robot.TEAM.ROY` |
 Here's an example:
 
 ```python
-if R.zone == 3:
+import robot
+
+R = robot.Robot()
+
+if R.zone == robot.TEAM.LEON:
     print("Do something!")
 else:
     print("Do something else!")

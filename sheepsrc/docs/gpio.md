@@ -15,7 +15,7 @@ There are 4 modes:
 |Digital Output|`robot.OUTPUT`|Allows you to write a high or low signal|
 |Digital Input|`robot.INPUT`|Allows you to read a high or low signal|
 |Analog Input|`robot.INPUT_ANALOG`|Allows you to read a voltage, like a voltmeter|
-|Pullup Input|`robot.INPUT_PULLUP`|Like analog, but uses a [weak pullup resistor](/gpio.html#pull-ups)|
+|Pullup Input|`robot.INPUT_PULLUP`|Like analog, but uses a [weak pullup resistor](/docs/gpio.html#pull-ups)|
 
 :::tip
 The GPIO are numbered 0-3
@@ -85,4 +85,5 @@ Many pieces of off-the-shelf electronics that have some form of standard I/O out
 
 However, the built-in pull-up resistor alleviates this need. It essentially wires in a resistor connected to 5V, meaning that when this option is enabled, an input pin will “default” to being high. This means you can simply connect a switch between the input pin and a ground pin without any need of resistors - when the switch is open, the pin will read high; when closed, it will read low.
 
-![An example weak pull up](./images/capture.png)
+![An example weak pull up](/images/capture.png)
+
