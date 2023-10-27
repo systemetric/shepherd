@@ -33,6 +33,31 @@ out_height = 480.0
 
 watcher.watch(alias='image', path=input_file, flags=aionotify.Flags.MODIFY)#sets up watcher
 
+def shrink_image():
+    for c in range(3):
+        time.sleep(0.1)#give it time to write the file.
+         try:#this runs until the bot has finished writing the image
+            img = Image.open(input_file)
+            img.load()
+            print("Opened successfully")
+            break
+        except:
+            print("Error opening file: attempt #"+str(c))
+
+    if c > 3:
+        continue#error with this file, go back and wait for next change.
+    #Resizes image
+    width_i, height_i = img.size
+    width = float(width_i)
+    height = float(height_i)
+    scale_x = out_width / width
+    scale_y = out_height / height
+    if scale_x > scale_y:
+        img = img.resize((int(width*scale_y), int(height*scale_y)), Image.LANCZOS)
+    else:
+        img = img.resize((int(width*scale_x), int(height*scale_x)), Image.LANCZOS)
+    return img
+
 def im_2_b64(image):
     buff = BytesIO()
     image.save(buff, format="JPEG")
@@ -55,30 +80,7 @@ async def wait_for_file_change():
             event = await watcher.get_event()#blocks until file changed
         else:
             bypass = False#reset bypass
-        
-        for c in range(3):
-            time.sleep(0.1)#give it time to write the file.
-            try:#this runs until the bot has finished writing the image
-                img = Image.open(input_file)
-                img.load()
-                print("Opened successfully")
-                break
-            except:
-                print("Error opening file: attempt #"+str(c))
-
-        if c > 3:
-            continue#error with this file, go back and wait for next change.
-        #Resizes image
-        width_i, height_i = img.size
-        width = float(width_i)
-        height = float(height_i)
-        scale_x = out_width / width
-        scale_y = out_height / height
-        if scale_x > scale_y:
-            img = img.resize((int(width*scale_y), int(height*scale_y)), Image.LANCZOS)
-        else:
-            img = img.resize((int(width*scale_x), int(height*scale_x)), Image.LANCZOS)
-
+        img = shrink_image()
         #converts image to a base64 which can be sent as a long string to the browser.
         img_b64 = im_2_b64(img).decode()
         websockets.broadcast(CONNECTIONS, img_b64)#sends image to all connected browsers.
@@ -95,6 +97,9 @@ async def wait_for_file_change():
 async def register(websocket):#Runs every time someone connects
     CONNECTIONS.add(websocket)
     print("Someone has connected to the websocket.")
+    img = shrink_image()
+    img_b64 = im_2_b64(img).decode()
+    websocket.send(img_b64)
     try:
         await websocket.wait_closed()
     finally:
