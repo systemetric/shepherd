@@ -33,20 +33,7 @@ out_height = 480.0
 
 watcher.watch(alias='image', path=input_file, flags=aionotify.Flags.MODIFY)#sets up watcher
 
-def shrink_image():
-    for c in range(3):
-        time.sleep(0.1)#give it time to write the file.
-         try:#this runs until the bot has finished writing the image
-            img = Image.open(input_file)
-            img.load()
-            print("Opened successfully")
-            break
-        except:
-            print("Error opening file: attempt #"+str(c))
-
-    if c > 3:
-        continue#error with this file, go back and wait for next change.
-    #Resizes image
+def shrink_image(img):
     width_i, height_i = img.size
     width = float(width_i)
     height = float(height_i)
@@ -80,7 +67,22 @@ async def wait_for_file_change():
             event = await watcher.get_event()#blocks until file changed
         else:
             bypass = False#reset bypass
-        img = shrink_image()
+
+        for c in range(3):
+            time.sleep(0.1)#give it time to write the file.
+            try:#this runs until the bot has finished writing the image
+                img = Image.open(input_file)
+                img.load()
+                print("Opened successfully")
+                break
+            except:
+                print("Error opening file: attempt #"+str(c))
+
+        if c > 3:
+            continue#error with this file, go back and wait for next change.
+    
+
+        img = shrink_image(img)
         #converts image to a base64 which can be sent as a long string to the browser.
         img_b64 = im_2_b64(img).decode()
         websockets.broadcast(CONNECTIONS, img_b64)#sends image to all connected browsers.
@@ -97,9 +99,22 @@ async def wait_for_file_change():
 async def register(websocket):#Runs every time someone connects
     CONNECTIONS.add(websocket)
     print("Someone has connected to the websocket.")
-    img = shrink_image()
-    img_b64 = im_2_b64(img).decode()
-    websocket.send(img_b64)
+    for c in range(3):
+        time.sleep(0.1)#give it time to write the file.
+        try:#this runs until the bot has finished writing the image
+            img = Image.open(input_file)
+            img.load()
+            print("Opened successfully")
+            break
+        except:
+            print("Error opening file: attempt #"+str(c))
+    bypass = False
+    if c > 3:
+        bypass = True#error with this file, go back and wait for next change.
+    if not bypass:
+        img = shrink_image(img)
+        img_b64 = im_2_b64(img).decode()
+        await websocket.send(img_b64)
     try:
         await websocket.wait_closed()
     finally:
