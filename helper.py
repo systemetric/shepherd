@@ -20,18 +20,22 @@ from PIL import Image
 CONNECTIONS = set()
 
 #The following sets up the asynchronous waiting for file change
-watcher = aionotify.Watcher()
+picture_watcher = aionotify.Watcher()
+log_watcher = aionotify.Watcher()
 
-#TODO - Change the input_file to the location of the image the camera takes!
-static_path = '/home/pi/shepherd/shepherd/static/'
-input_file = static_path + "image.jpg"
-output_file = static_path + "resized_image.jpg"
-stat_file = static_path + "imgtime.txt"
+img_static_path = '/home/pi/shepherd/shepherd/static/'
+img_input_file = img_static_path + "image.jpg"
+img_output_file = img_static_path + "resized_image.jpg"
+stat_file = img_static_path + "imgtime.txt"
 mod_time = 0
 out_width = 640.0
 out_height = 480.0
 
-watcher.watch(alias='image', path=input_file, flags=aionotify.Flags.MODIFY)#sets up watcher
+log_static_path = "/media/RobotUSB/"
+log_input_file = log_static_path + "logs.txt"
+
+picture_watcher.watch(alias='image', path=img_input_file, flags=aionotify.Flags.MODIFY)#sets up watcher
+log_watcher.watch(alias='logs', path=log_input_file, flags=aionotify.Flags.MODIFY)
 
 def shrink_image(img):
     width_i, height_i = img.size
@@ -51,50 +55,93 @@ def im_2_b64(image):
     img_str = base64.b64encode(buff.getvalue())
     return img_str
 
-async def wait_for_file_change():
+async def wait_for_picture_change():
     loop = asyncio.get_event_loop()
 
     bypass = False#so first image is not ignored.
-    while not os.path.exists(input_file):
-        time.sleep(0.5)#twiddle thumbs :)
+    while not os.path.exists(img_input_file):
+        await asyncio.sleep(0.5)#twiddle thumbs :)
         if not bypass:
             bypass = True
-    await watcher.setup(loop)
-    print("File change watcher is running.")
+    await picture_watcher.setup(loop)
+    print("Image change watcher is running.")
     
     while True:#for all events
         if not bypass:
-            event = await watcher.get_event()#blocks until file changed
+            event = await picture_watcher.get_event()#blocks until file changed
         else:
             bypass = False#reset bypass
 
-        for c in range(3):
-            time.sleep(0.1)#give it time to write the file.
+        for c in range(10):
+            await asyncio.sleep(0.01)#give it time to write the file.
             try:#this runs until the bot has finished writing the image
-                img = Image.open(input_file)
+                img = Image.open(img_input_file)
                 img.load()
                 print("Opened successfully")
                 break
             except:
-                print("Error opening file: attempt #"+str(c))
+                print("Error opening file: attempt \#"+str(c))
 
-        if c > 3:
+        if c >= 9:
             continue#error with this file, go back and wait for next change.
     
 
         img = shrink_image(img)
         #converts image to a base64 which can be sent as a long string to the browser.
         img_b64 = im_2_b64(img).decode()
-        websockets.broadcast(CONNECTIONS, img_b64)#sends image to all connected browsers.
+        websockets.broadcast(CONNECTIONS, "[CAMERA]"+img_b64)#sends image to all connected browsers.
         print("Image broadcast.")
-
-        #Save image file as a backup for when/if the websocket fails
-        img.save(output_file,"JPEG")
     
     #politely stops watching file system.
-    watcher.close()
+    picture_watcher.close()
     loop.stop()
     loop.close()
+
+async def wait_for_log_change():
+    loop = asyncio.get_event_loop()
+
+    bypass = False#so first image is not ignored.
+    while not os.path.exists(log_input_file):
+        await asyncio.sleep(0.5)#twiddle thumbs :)
+        if not bypass:
+            bypass = True
+    await log_watcher.setup(loop)
+    print("Log change watcher is running.")
+    
+    while True:#for all events
+        if not bypass:
+            event = await log_watcher.get_event()#blocks until file changed
+        else:
+            bypass = False#reset bypass
+
+        with open(log_input_file,"r") as l:
+            old_logs = l.read()
+        for c in range(10):
+            await asyncio.sleep(0.01)#give it time to write the file.
+            try:#this runs until the bot has finished writing the logs
+                with open(log_input_file,'r') as l:
+                    new_logs = l.read()
+                print("Opened logs successfully")
+                break
+            except:
+                print("Error opening logs: attempt \#"+str(c))
+
+        if c >= 9:
+            continue#error with this file, go back and wait for next change.
+    
+        new_logs.replace(old_logs,"")#only new logs remain.
+        index = len(new_logs) - len(old_logs)
+        old_logs = new_logs
+        new_logs = new_logs[index:]
+
+        websockets.broadcast(CONNECTIONS, "[LOGS]"+new_logs)#sends new logs.
+        print("Logs broadcast.")
+    
+    #politely stops watching file system.
+    log_watcher.close()
+    loop.stop()
+    loop.close()
+
 
 async def register(websocket):#Runs every time someone connects
     CONNECTIONS.add(websocket)
@@ -102,7 +149,7 @@ async def register(websocket):#Runs every time someone connects
     for c in range(3):
         time.sleep(0.1)#give it time to write the file.
         try:#this runs until the bot has finished writing the image
-            img = Image.open(input_file)
+            img = Image.open(img_input_file)
             img.load()
             print("Opened successfully")
             break
@@ -122,7 +169,7 @@ async def register(websocket):#Runs every time someone connects
 
 async def main():
     async with serve(register, "0.0.0.0", 5001):
-        await asyncio.gather(wait_for_file_change())#runs the file change checker and webserver at the same time.
+        await asyncio.gather(wait_for_picture_change(),wait_for_log_change())#runs the file change checker and webserver at the same time.
 
 asyncio.run(main())
 print("Goodbye.")
