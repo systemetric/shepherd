@@ -1,10 +1,10 @@
-"""
-IMPORTANT NOTE!!
+#!/usr/bin/env python3.7
+import sys
 
-=> The following will ONLY run on Python 3.7 to 3.9
-=> Install websockets version 11.0.3 via pip whl (do not use v12)
-=> Install asynio 0.2.0 via pip whl
-"""
+major_version, minor_version, micro_version = sys.version_info
+
+if not (major_version == 3 and 7 <= minor_version <= 9):
+    raise Error("Bad python version need a version between 3.7-3.9")
 
 import asyncio
 import aionotify
@@ -34,6 +34,9 @@ out_height = 480.0
 log_static_path = "/media/RobotUSB/"
 log_input_file = log_static_path + "logs.txt"
 
+file_open_attempts = 10
+wait_between_attempts = 0.1
+
 picture_watcher.watch(
     alias="image", path=img_input_file, flags=aionotify.Flags.MODIFY
 )  # sets up watcher
@@ -47,9 +50,9 @@ def shrink_image(img):
     scale_x = out_width / width
     scale_y = out_height / height
     if scale_x > scale_y:
-        img = img.resize((int(width * scale_y), int(height * scale_y)), Image.LANCZOS)
+        img = img.resize((int(width * scale_y), int(height * scale_y)), Image.LANCZOS) # replacement for Image.ANTIALIAS
     else:
-        img = img.resize((int(width * scale_x), int(height * scale_x)), Image.LANCZOS)
+        img = img.resize((int(width * scale_x), int(height * scale_x)), Image.LANCZOS) # replacement for Image.ANTIALIAS
     return img
 
 
@@ -65,7 +68,7 @@ async def wait_for_picture_change():
 
     bypass = False  # so first image is not ignored.
     while not os.path.exists(img_input_file):
-        await asyncio.sleep(0.5)  # twiddle thumbs :)
+        await asyncio.sleep(0.5)  # wait until image.jpg does exist
         if not bypass:
             bypass = True
     await picture_watcher.setup(loop)
@@ -77,8 +80,8 @@ async def wait_for_picture_change():
         else:
             bypass = False  # reset bypass
 
-        for c in range(10):
-            await asyncio.sleep(0.01)  # give it time to write the file.
+        for c in range(file_open_attempts):
+            await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
             try:  # this runs until the bot has finished writing the image
                 img = Image.open(img_input_file)
                 img.load()
@@ -87,7 +90,8 @@ async def wait_for_picture_change():
             except:
                 print("Error opening file: attempt \#" + str(c))
 
-        if c >= 9:
+        if c >= (file_open_attempts - 1):
+            print("Cannot open image (failed "+str(c)+" times)")
             continue  # error with this file, go back and wait for next change.
 
         img = shrink_image(img)
@@ -123,8 +127,8 @@ async def wait_for_log_change():
 
         with open(log_input_file, "r") as l:
             old_logs = l.read()
-        for c in range(10):
-            await asyncio.sleep(0.01)  # give it time to write the file.
+        for c in range(file_open_attempts):
+            await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
             try:  # this runs until the bot has finished writing the logs
                 with open(log_input_file, "r") as l:
                     new_logs = l.read()
@@ -153,8 +157,8 @@ async def wait_for_log_change():
 async def register(websocket):  # Runs every time someone connects
     CONNECTIONS.add(websocket)
     print("Someone has connected to the websocket.")
-    for c in range(3):
-        time.sleep(0.1)  # give it time to write the file.
+    for c in range(file_open_attempts):
+        time.sleep(wait_between_attempts)  # give it time to write the file.
         try:  # this runs until the bot has finished writing the image
             img = Image.open(img_input_file)
             img.load()
@@ -163,7 +167,7 @@ async def register(websocket):  # Runs every time someone connects
         except:
             print("Error opening file: attempt #" + str(c))
     bypass = False
-    if c > 3:
+    if c > (file_open_attempts - 1):
         bypass = True  # error with this file, go back and wait for next change.
     if not bypass:
         img = shrink_image(img)
