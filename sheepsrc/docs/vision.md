@@ -23,6 +23,9 @@ print(markers)
 ```
 [arena Marker 0: 0.856m @0.754 degrees
 {
+  info.type = POTATO
+  info.id = 15
+  info.owning_team = ARENA
   dist = 0.856
   bearing.y = 0.754
   bearing.x = 1.03e+02
@@ -37,23 +40,24 @@ print(markers)
 
 Full reference of the properties are further below but some useful properties are:
 
-| Property           | Description                                                        |
-| ------------------ | ------------------------------------------------------------------ |
-| `marker.dist`      | Distance to the marker in metres                                   |
-| `marker.bearing.y` | The angle your robot needs to turn to get to the marker in degrees |
-| `marker.info.id`   | Numeric code of the marker                                         |
-| `marker.info.type` | One of `arena` or `cube`                                           |
+| Property                 | Description                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------- |
+| `marker.dist`            | Distance to the marker in metres                                                  |
+| `marker.bearing.y`       | The angle your robot needs to turn to get to the marker in degrees                |
+| `marker.info.id`         | Numeric code of the marker                                                        |
+| `marker.info.type`       | One of `ARENA` or `POTATO`                                                        |
+| `marker.info.owning_team`| A team (`PURPLE`, `MARIS_PIPER`, etc), `ARENA` for hot potato or `none` for walls |
 
 ## Codes
 
 Every april tag has a code:
 
-- April tags 0-39 will be used for cubes. Although each shepherdess only has 6
-  sheep to find, there are 9 codes allocated to each team. This is to allow us
-  to have spare sheep incase some get damaged during play
+- April tags 0-39 will be used for cubes. Although only 20 are used in each round, there are another 20 spare in case some get damaged.
 
 - April tags 100+ will around the arena on the walls. See the rules for
   specifics on where around the rules they will be placed
+
+- You do not need to use the marker numbers, and can instead use marker.type and marker.owning_team
 
 | Codes    | Team  |
 | -------- | ----- |
@@ -139,12 +143,9 @@ A `Marker` object contains information about a _detected_ marker. It has the fol
 | `rotation.z`                | The **yaw** of the marker                                                                                                                                                                                                                            |
 | `info`                      | An object with various information about the marker                                                                                                                                                                                                  |
 | `info.id`                   | The ID number of the marker                                                                                                                                                                                                                          |
-| `info.type`                 | The type of marker, one of MARKER_TYPE                                                                                                                                                                                                               |
 | `info.size`                 | The length of the black edge of the marker in meters                                                                                                                                                                                                 |
-| `info.owner`                | Who or what owns the marker, a `MARKER_OWNER`                                                                                                                                                                                                       |
 | `info.type`                 | The type of marker, a `MARKER_TYPE`                                                                                                                                                                                                                  |
 | `info.owning_team`          | Which team owns the marker, a `TEAM`, only set when `info.owner` is not `MARKER_OWNER.ARENA`                                                                                                                                                         |
-| `info.wool_type`            | What type of wool the sheep has, a `WOOL_TYPE`, only set when `info.type` is `MARKER_TYPE.SHEEP`                                                                                                                                                     |
 | `info.bounding_box_colour`  | A tuple describing the colour which is drawn around the marker in the preview image (Blue, Red, Green)                                                                                                                                               |
 | `detection`                 | Technical information which has been inferred from the image.                                                                                                                                                                                        |
 | `detection.tag_family`      | The family of AprilTag which is detected. RoboCon currently only uses `tag36h11`.                                                                                                                                                                    |

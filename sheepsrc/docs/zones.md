@@ -13,10 +13,10 @@ Your code will probably need to look for different markers depending on the zone
 
 | **Team** | **Code** |
 | --- | --- |
-| Leon | `robot.TEAM.LEON` |
-| Zhora | `robot.TEAM.ZHORA` |
-| Pris | `robot.TEAM.PRIS` |
-| Roy | `robot.TEAM.ROY` |
+| Russet | `robot.TEAM.RUSSET` |
+| Sweet | `robot.TEAM.SWEET` |
+| Maris Piper | `robot.TEAM.MARIS_PIPER` |
+| Purple | `robot.TEAM.PURPLE` |
 Here's an example:
 
 ```python
