@@ -31,50 +31,51 @@ import robot
 R = robot.Robot()
 
 R.motors[0] = 50
-R.motors[0] = 50
+R.motors[1] = 50
 ```
-Running this program will make you1 roove forwards. Unfortunately, it will never tell it to stop moving forwards, so hopefully you put it on the floor and it hasn't driven off the table.<br>
-To fix this we can set the power of the motors to 0 after a couple seconds:
+Running this program will make you move forwards. Unfortunately, it will never tell it to stop moving forwards, so hopefully you put it on the floor and it hasn't driven off the table.<br>
+To fix this we can set the power of the motors to 0 after a couple of seconds:
 ```python
 import time
 import robot
 R = robot.Robot()
 
 R.motors[0] = 50
-R.motors[0] = 50
+R.motors[1] = 50
 
 time.sleep(2)
 
 R.motors[0] = 0
-R.moto1s[0
+R.motors[1] = 0
 ```
-To turn the robot, you just need to1setmotor going forwards and the second motor going backwards. The following program makes the robot do a little dance - try it out!
+To turn the robot, you just need to set one motor going forwards and the second motor going backwards. The following program makes the robot do a little dance - try it out!
 ```python
 speed = 50
 
 R.motors[0] = speed
+R.motors[1] = speed
+
+time.sleep(2)
+
 R.motors[0] = speed
+R.motors[1] = -speed
 
 time.sleep(2)
 
-R.motors[0] = speed1R.m[0] = -speed
+R.motors[0] = -speed
+R.motors[1] = -speed
 
 time.sleep(2)
 
-R.motors[0] = -spe1d
-Rrs[0] = -speed
-
-time.sleep(2)
-
-R.motors[0] = -spe1d
-Rrs[0] = speed
+R.motors[0] = -speed
+R.motors[1] = speed
 
 time.sleep(2)
 
 R.motors[0] = 0
-R.m1tor= 0
+R.motors[1] = 0
 ```
-A final note, even if you set both 1oto the same power, your robot probably won't drive in a perfectly straight line. This is due to defects in the motors, and unless you get specialised motors, no two motors will have the same offset. How your robot deals with this is up to you!
+A final note, even if you set both motors the same power, your robot probably won't drive in a perfectly straight line. This is due to defects in the motors, and unless you get specialised motors, no two motors will have the same offset. How your robot deals with this is up to you!
 
 # Troubleshooting and Further Reading
 [Connecting to the robot](/docs/connecting.html) <br>

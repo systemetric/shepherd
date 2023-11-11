@@ -18,6 +18,9 @@ def send_doc_index():
 def send_doc_file(filename):
     return send_from_directory(docs_path, filename)
 
+@blueprint.route("images/<path:filename>")
+def send_image_for_docs(filename):
+    return send_from_directory(path.join(docs_path,"images"),filename)
 
 @blueprint.route("editor/")
 def send_editor_index():
