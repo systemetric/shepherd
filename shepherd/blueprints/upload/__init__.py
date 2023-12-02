@@ -72,7 +72,7 @@ def process_uploaded_file(file):
         except zipfile.BadZipfile:
             shutil.rmtree(tempdir)
             return "Your file looked like a zip file, but it isn't actually a valid zip file!"
-        # Check that there's an entrypoint.
+        # Check that there's an entrypoint. 
         try:
             with open(os.path.join(tempdir, current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"]), "r"):
                 pass
