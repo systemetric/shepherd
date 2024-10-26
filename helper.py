@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.7
 import sys
 
-major_version, minor_version, micro_version = sys.version_info
+major_version, minor_version, micro_version, *_ = sys.version_info
 
 if not (major_version == 3 and 7 <= minor_version <= 9):
     raise Error("Bad python version need a version between 3.7-3.9")
