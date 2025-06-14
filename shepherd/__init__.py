@@ -15,7 +15,7 @@ import logging
 
 from shepherd.blueprints import upload, run, pyls, editor, staticroutes
 
-START_BUTTON_PIN = 5  # This is a BCM pin number (BCM0 corresponds to phys27).
+START_BUTTON_PIN = 26  # GPIO 26, pin 37
 
 syslogger = logging.getLogger()
 syslogger.addHandler(SysLogHandler('/dev/log'))
