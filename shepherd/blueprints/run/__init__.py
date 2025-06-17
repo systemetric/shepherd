@@ -28,16 +28,30 @@ if not os.path.exists(ROBOT_LIB_LOCATION):
 sys.path.insert(0, ROBOT_LIB_LOCATION)
 import robot.reset as robot_reset
 
+# Import RcMux library for pipe handling
+RCMUX_LIB_LOCATION="/home/pi/rcmux"
+if not os.path.exists(RCMUX_LIB_LOCATION):
+    raise ImportError(f"Could not find rcmux at {RCMUX_LIB_LOCATION}")
+
+sys.path.insert(0, RCMUX_LIB_LOCATION)
+from rcmux.client import *
+from rcmux.common import *
 
 blueprint = Blueprint("run", __name__, template_folder="templates")
 
 REAP_GRACE_TIME = 5  # Seconds before user code is forcefully killed
 OUTPUT_FILE_PATH = "/media/RobotUSB/logs.txt"
-
+PIPE_DIRECTORY = "/home/pi/pipes"
 
 # Since we can't access app.debug in a blueprint, this will be run
 # manually when the app is constructed.
 def init(app):
+    global USER_PIPE_NAME, rcmux_client
+    rcmux_client = RcMuxClient()
+    USER_PIPE_NAME = PipeName((PipeType.INPUT, "start-button", "flask"), PIPE_DIRECTORY)
+    rcmux_client.open_pipe(USER_PIPE_NAME, delete=True, create=True)
+    atexit.register(partial(rcmux_client.close_pipe, USER_PIPE_NAME))
+
     # Factored into separate functions so we can call them separately in
     # `blueprints.upload` (tight coupling ftw!!1!)
     robot_reset.reset()
@@ -47,14 +61,9 @@ def init(app):
 
 
 def _reset_state():
-    global USER_FIFO_PATH, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file
+    global USER_PIPE_NAME, state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, output_file, rcmux_client
     # Yes, it's (literally) global state. Deal with it.
 
-    # tempfile.mktemp is deprecated, but there's no possibility of a race --
-    # os.mkfifo raises if its path already exists.
-    USER_FIFO_PATH = mktemp(prefix="shepherd-fifo-")
-    os.mkfifo(USER_FIFO_PATH)
-    atexit.register(partial(os.remove, USER_FIFO_PATH))
     state = State.ready  # The state of the user code.
     zone = None  # The robot's home zone, an integer from 0 to 3.
     mode = None  # The robot's mode (development or competition), used for marker recognition.
@@ -72,7 +81,7 @@ def _user_code_wait():
         round_end()
 
 def _start_user_code(app):
-    global user_code, output_file
+    global user_code, output_file, USER_PIPE_NAME
     output_file = open(OUTPUT_FILE_PATH, "w", 1)
     environment = dict(os.environ)
     environment["PYTHONPATH"] = ROBOT_LIB_LOCATION
@@ -81,8 +90,6 @@ def _start_user_code(app):
         [
             # python -u /path/to/the_code.py
             sys.executable, "-u", app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"],
-            # --startfifo /path/to/fifo
-            "--startfifo", USER_FIFO_PATH,
         ],
         stdout=output_file, stderr=subprocess.STDOUT,
         bufsize=1,  # Line-buffered
@@ -169,7 +176,7 @@ def toggle_auto_refresh():
 
 @blueprint.route("/start", methods=["POST"])
 def start():
-    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code
+    global state, zone, mode, disable_reaper, reaper_timer, reap_time, user_code, rcmux_client, USER_PIPE_NAME
     zone = request.form["zone"]
     mode = Mode[request.form["mode"]]
     if state == State.ready:
@@ -179,18 +186,17 @@ def start():
             reap(reason="code is already dead")
             flash("Your code seems to have crashed, not starting it.", "error")
         else:
-            print("opening fifo")
-            # FIXME: should be in own thread so that if the code just takes a long time to load shepherd still functions
-            with open(USER_FIFO_PATH, "w") as f:
-                print("dumping json")
-                json.dump(
-                    {
-                        "mode": mode.value,
-                        "zone": int(zone),
-                        "arena": "A",
-                    }, f
-                )
-                print("json dumped")
+            start_args = json.dumps(
+                {
+                    "mode": mode.value,
+                    "zone": int(zone),
+                    "arena": "A",
+                }
+            )
+
+            # Put the JSON configuration in the pipe
+            rcmux_client.write(USER_PIPE_NAME, start_args.encode("utf-8"))
+
             if mode == Mode.competition:
                 reaper_timer = threading.Timer(ROUND_LENGTH, round_end)
                 # If we get told to exit, there's no point waiting around for the round to finish.
