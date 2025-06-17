@@ -9,7 +9,6 @@ import json
 import os
 import subprocess
 import sys
-from tempfile import mktemp
 import threading
 import time
 
