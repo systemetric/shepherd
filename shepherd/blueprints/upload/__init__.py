@@ -2,7 +2,6 @@
 
 
 
-from datetime import datetime
 import errno
 import os
 import shutil
@@ -12,7 +11,6 @@ import zipfile
 from flask import Blueprint, render_template, flash, redirect, url_for, request, abort, current_app
 
 from shepherd.blueprints import run  # FIXME: this coupling is horrific
-import robot.reset as robot_reset  # This *should* be safe, if nasty.
 
 blueprint = Blueprint("upload", __name__, template_folder="templates")
 
@@ -37,23 +35,14 @@ def upload():
             flash(err, "error")
         else:
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
-            if run.reaper_timer is not None:
-                run.reaper_timer.cancel()
-            run.reap(reason="new code upload")
-
-            # Turn everything off
-            # run._kill_motors()
-            # run._kill_gpios()
-
-            robot_reset.reset()
-
-            # Make the world look like the Pi just booted
-            # run._work_around_pic_servo_bug()
-            run._reset_state()
-
-            run._start_user_code(current_app)
+            run.send("upload", {})
     return redirect(url_for(".index"))
 
+def chown_usercode():
+    for root, dirs, files in os.walk(current_app.config["SHEPHERD_USER_CODE_PATH"]):
+        os.chown(root, 1000, 1000)
+        for name in dirs + files:
+            os.chown(os.path.join(root, name), 1000, 1000)
 
 def process_uploaded_file(file):
     if file.mimetype.startswith("text") or file.filename.endswith(".py"):
@@ -62,6 +51,7 @@ def process_uploaded_file(file):
         file.save(os.path.join(tempdir, current_app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"]))
         shutil.rmtree(current_app.config["SHEPHERD_USER_CODE_PATH"])
         shutil.move(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
+        chown_usercode()
         return None
     elif ("zip" in file.mimetype or file.filename.endswith(".zip")) and zipfile.is_zipfile(file):
         # Hopefully a zip file.
@@ -85,6 +75,7 @@ def process_uploaded_file(file):
                 return "Your file is a zip file, but something went wrong after extracting it! (error: {})".format(errorcode)
         shutil.rmtree(current_app.config["SHEPHERD_USER_CODE_PATH"])
         shutil.move(tempdir, current_app.config["SHEPHERD_USER_CODE_PATH"])
+        chown_usercode()
         return None
     else:
         return "Your file doesn't look like valid code. Make sure the extension is correct."
