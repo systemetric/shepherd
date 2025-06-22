@@ -137,7 +137,7 @@ async def wait_for_log_change():
             except:
                 print("Error opening logs: attempt \#" + str(c))
 
-        if c >= 9:
+        if c >= (file_open_attempts - 1):
             continue  # error with this file, go back and wait for next change.
 
         new_logs.replace(old_logs, "")  # only new logs remain.
