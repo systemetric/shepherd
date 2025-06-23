@@ -15,8 +15,6 @@ import logging
 
 from shepherd.blueprints import upload, run, pyls, editor, staticroutes
 
-START_BUTTON_PIN = 26  # GPIO 26, pin 37
-
 syslogger = logging.getLogger()
 syslogger.addHandler(SysLogHandler('/dev/log'))
 
@@ -29,18 +27,6 @@ app.secret_key = os.urandom(32)
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MiB
-# app.config["SHEPHERD_USER_CODE_PATH"] = os.path.join("/", "opt", "shepherd")
-app.config["SHEPHERD_USER_CODE_PATH"] = "/home/pi/usercode"
-app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"] = "main.py"
-app.config["SHEPHERD_USER_CODE_ENTRYPOINT_PATH"] = os.path.join(app.config["SHEPHERD_USER_CODE_PATH"], app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"])
-try:
-    os.mkdir(app.config["SHEPHERD_USER_CODE_PATH"])
-    os.chown(app.config["SHEPHERD_USER_CODE_PATH"], 1000, 1000) # pi:pi
-except OSError as e:
-    if e.errno == errno.EEXIST and os.path.isdir(app.config["SHEPHERD_USER_CODE_PATH"]):
-        pass
-    else:
-        raise e
 
 run.init()
 
