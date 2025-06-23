@@ -37,7 +37,7 @@ def init():
     rcmux_client.open_pipe(STARTER_PIPE_NAME, delete=True, create=True)
     atexit.register(partial(rcmux_client.close_pipe, STARTER_PIPE_NAME))
 
-def send(request, params):
+def send(request, params = {}):
     global rcmux_client, STARTER_PIPE_NAME
     print(f"writing request '{request}'")
     s = json.dumps({
@@ -69,5 +69,5 @@ def start():
 
 @blueprint.route("/stop", methods=["POST"])
 def stop():
-    send("stop", {})
+    send("stop")
     return redirect(url_for(".index"))

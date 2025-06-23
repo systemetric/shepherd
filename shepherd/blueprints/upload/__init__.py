@@ -35,7 +35,7 @@ def upload():
             flash(err, "error")
         else:
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
-            run.send("upload", {})
+            run.send("upload")
     return redirect(url_for(".index"))
 
 def chown_usercode():
