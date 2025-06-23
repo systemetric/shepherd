@@ -46,12 +46,6 @@ def send(request, params):
     })
     rcmux_client.write(STARTER_PIPE_NAME, s.encode("utf-8"))
 
-@blueprint.before_app_first_request
-@blueprint.route("/reset", methods=["POST"])
-def reset():
-    # TODO
-    return "This is no longer functional."
-
 @blueprint.route("/output")
 def get_output():
     return send_file(OUTPUT_FILE_PATH, mimetype="text/plain", cache_timeout=0)
