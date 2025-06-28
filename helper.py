@@ -17,6 +17,21 @@ from io import BytesIO
 from PIL import Image
 
 
+# Import RcMux library for pipe handling
+RCMUX_LIB_LOCATION="/home/pi/rcmux"
+if not os.path.exists(RCMUX_LIB_LOCATION):
+    raise ImportError(f"Could not find rcmux at {RCMUX_LIB_LOCATION}")
+
+sys.path.insert(0, RCMUX_LIB_LOCATION)
+from rcmux.client import *
+from rcmux.common import *
+
+PIPE_DIRECTORY = "/home/pi/pipes"
+
+RCMUX_CLIENT = RcMuxClient()
+LOG_PIPE_NAME = PipeName((PipeType.RECEIVING, "log", "helper"), PIPE_DIRECTORY)
+RCMUX_CLIENT.open_pipe(LOG_PIPE_NAME, delete=True, create=True)
+
 CONNECTIONS = set()
 
 # The following sets up the asynchronous waiting for file change
@@ -111,45 +126,15 @@ async def wait_for_picture_change():
 async def wait_for_log_change():
     loop = asyncio.get_event_loop()
 
-    bypass = False  # so first image is not ignored.
-    while not os.path.exists(log_input_file):
-        await asyncio.sleep(0.5)  # twiddle thumbs :)
-        if not bypass:
-            bypass = True
-    await log_watcher.setup(loop)
-    print("Log change watcher is running.")
+    while True:
+        d = RCMUX_CLIENT.read(LOG_PIPE_NAME)
 
-    while True:  # for all events
-        if not bypass:
-            event = await log_watcher.get_event()  # blocks until file changed
-        else:
-            bypass = False  # reset bypass
+        if d is not None:
+            websockets.broadcast(CONNECTIONS, "[LOGS]" + d.decode("utf-8"))
+            print(f"[LOGS]" + d.decode("utf-8"))
 
-        with open(log_input_file, "r") as l:
-            old_logs = l.read()
-        for c in range(file_open_attempts):
-            await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
-            try:  # this runs until the bot has finished writing the logs
-                with open(log_input_file, "r") as l:
-                    new_logs = l.read()
-                print("Opened logs successfully")
-                break
-            except:
-                print("Error opening logs: attempt \#" + str(c))
+        await asyncio.sleep(0)
 
-        if c >= 9:
-            continue  # error with this file, go back and wait for next change.
-
-        new_logs.replace(old_logs, "")  # only new logs remain.
-        index = len(new_logs) - len(old_logs)
-        old_logs = new_logs
-        new_logs = new_logs[index:]
-
-        websockets.broadcast(CONNECTIONS, "[LOGS]" + new_logs)  # sends new logs.
-        print("Logs broadcast.")
-
-    # politely stops watching file system.
-    log_watcher.close()
     loop.stop()
     loop.close()
 
@@ -172,7 +157,7 @@ async def register(websocket):  # Runs every time someone connects
     if not bypass:
         img = shrink_image(img)
         img_b64 = im_2_b64(img).decode()
-        await websocket.send(img_b64)
+        await websocket.send("[CAMERA]" + img_b64)
     try:
         await websocket.wait_closed()
     finally:
@@ -184,7 +169,6 @@ async def main():
         await asyncio.gather(
             wait_for_picture_change(), wait_for_log_change()
         )  # runs the file change checker and webserver at the same time.
-
 
 asyncio.run(main())
 print("Goodbye.")
