@@ -36,7 +36,6 @@ CONNECTIONS = set()
 
 # The following sets up the asynchronous waiting for file change
 picture_watcher = aionotify.Watcher()
-log_watcher = aionotify.Watcher()
 
 img_static_path = "/home/pi/shepherd/shepherd/static/"
 img_input_file = img_static_path + "image.jpg"
@@ -49,13 +48,17 @@ out_height = 480.0
 log_static_path = "/media/RobotUSB/"
 log_input_file = log_static_path + "logs.txt"
 
+log_buffer = []
+ERASE_ESCAPE_SEQUENCE = "\033[2J"
+
 file_open_attempts = 10
 wait_between_attempts = 0.1
 
 picture_watcher.watch(
     alias="image", path=img_input_file, flags=aionotify.Flags.MODIFY
 )  # sets up watcher
-log_watcher.watch(alias="logs", path=log_input_file, flags=aionotify.Flags.MODIFY)
+
+
 
 
 def shrink_image(img):
@@ -130,8 +133,15 @@ async def wait_for_log_change():
         d = RCMUX_CLIENT.read(LOG_PIPE_NAME)
 
         if d is not None:
-            websockets.broadcast(CONNECTIONS, "[LOGS]" + d.decode("utf-8"))
-            print(f"[LOGS]" + d.decode("utf-8"))
+            ds = d.decode("utf-8")
+            if ERASE_ESCAPE_SEQUENCE in ds:
+                log_buffer.clear()
+                websockets.broadcast(CONNECTIONS, ERASE_ESCAPE_SEQUENCE + "\n")
+                print("Received erase sequence")
+            else:
+                websockets.broadcast(CONNECTIONS, "[LOGS]" + ds)
+                log_buffer.append("[LOGS]" + ds)
+                print("[LOGS]" + ds, end="")     
 
         await asyncio.sleep(0)
 
@@ -142,6 +152,7 @@ async def wait_for_log_change():
 async def register(websocket):  # Runs every time someone connects
     CONNECTIONS.add(websocket)
     print("Someone has connected to the websocket.")
+
     for c in range(file_open_attempts):
         time.sleep(wait_between_attempts)  # give it time to write the file.
         try:  # this runs until the bot has finished writing the image
@@ -158,6 +169,11 @@ async def register(websocket):  # Runs every time someone connects
         img = shrink_image(img)
         img_b64 = im_2_b64(img).decode()
         await websocket.send("[CAMERA]" + img_b64)
+
+    # Send previous logs
+    for l in log_buffer:
+        await websocket.send(l)
+
     try:
         await websocket.wait_closed()
     finally:
