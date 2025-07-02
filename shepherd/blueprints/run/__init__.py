@@ -55,6 +55,9 @@ def toggle_auto_refresh():
     session["auto_refresh"] = not session.get("auto_refresh", True)
     return redirect(url_for(".index"))
 
+@blueprint.route("/picture")
+def get_picture():
+    return send_file("/home/pi/shepherd/shepherd/static/image.jpg", mimetype="image/jpeg")
 
 @blueprint.route("/start", methods=["POST"])
 def start():
