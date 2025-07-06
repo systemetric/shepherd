@@ -16,21 +16,14 @@ import os
 from io import BytesIO
 from PIL import Image
 
-
-# Import RcMux library for pipe handling
-RCMUX_LIB_LOCATION="/home/pi/rcmux"
-if not os.path.exists(RCMUX_LIB_LOCATION):
-    raise ImportError(f"Could not find rcmux at {RCMUX_LIB_LOCATION}")
-
-sys.path.insert(0, RCMUX_LIB_LOCATION)
-from rcmux.client import *
-from rcmux.common import *
+from hopper.client import *
+from hopper.common import *
 
 PIPE_DIRECTORY = "/home/pi/pipes"
 
-RCMUX_CLIENT = RcMuxClient()
+HOPPER_CLIENT = HopperClient()
 LOG_PIPE_NAME = PipeName((PipeType.RECEIVING, "log", "helper"), PIPE_DIRECTORY)
-RCMUX_CLIENT.open_pipe(LOG_PIPE_NAME, delete=True, create=True)
+HOPPER_CLIENT.open_pipe(LOG_PIPE_NAME, delete=True, create=True)
 
 CONNECTIONS = set()
 
@@ -130,7 +123,7 @@ async def wait_for_log_change():
     loop = asyncio.get_event_loop()
 
     while True:
-        d = RCMUX_CLIENT.read(LOG_PIPE_NAME)
+        d = HOPPER_CLIENT.read(LOG_PIPE_NAME)
 
         if d is not None:
             ds = d.decode("utf-8")
@@ -141,9 +134,9 @@ async def wait_for_log_change():
             else:
                 websockets.broadcast(CONNECTIONS, "[LOGS]" + ds)
                 log_buffer.append("[LOGS]" + ds)
-                print("[LOGS]" + ds, end="")     
+                print("[LOGS]" + ds, end="")
 
-        await asyncio.sleep(0)
+        await asyncio.sleep(0.1)
 
     loop.stop()
     loop.close()
