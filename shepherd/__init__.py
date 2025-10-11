@@ -29,7 +29,7 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MiB
 
 app.config["SHEPHERD_USER_CODE_ENTRYPOINT_NAME"] = "main.py"
-app.config["SHEPHERD_USER_CODE_PATH"] = "/home/pi/usercode/"
+app.config["SHEPHERD_USER_CODE_PATH"] = "/home/pi/shepherd/usercode/"
 
 run.init()
 

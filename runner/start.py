@@ -54,7 +54,7 @@ class Runner:
     USERCODE = None
     OUTPUT_FILE = None
 
-    USER_CODE_PATH = "/home/pi/usercode"
+    USER_CODE_PATH = "/home/pi/shepherd/usercode"
     USER_CODE_ENTRYPOINT_NAME = "main.py"
     USER_CODE_ENTRYPOINT_PATH = os.path.join(USER_CODE_PATH,USER_CODE_ENTRYPOINT_NAME)
 
