@@ -16,12 +16,19 @@ import os
 from io import BytesIO
 from PIL import Image
 
+from hopper.client import *
+from hopper.common import *
+
+PIPE_DIRECTORY = "/home/pi/pipes"
+
+HOPPER_CLIENT = HopperClient()
+LOG_PIPE_NAME = PipeName((PipeType.RECEIVING, "log", "helper"), PIPE_DIRECTORY)
+HOPPER_CLIENT.open_pipe(LOG_PIPE_NAME, delete=True, create=True)
 
 CONNECTIONS = set()
 
 # The following sets up the asynchronous waiting for file change
 picture_watcher = aionotify.Watcher()
-log_watcher = aionotify.Watcher()
 
 img_static_path = "/home/pi/shepherd/shepherd/static/"
 img_input_file = img_static_path + "image.jpg"
@@ -34,13 +41,17 @@ out_height = 480.0
 log_static_path = "/media/RobotUSB/"
 log_input_file = log_static_path + "logs.txt"
 
+log_buffer = []
+ERASE_ESCAPE_SEQUENCE = "\033[2J"
+
 file_open_attempts = 10
 wait_between_attempts = 0.1
 
 picture_watcher.watch(
     alias="image", path=img_input_file, flags=aionotify.Flags.MODIFY
 )  # sets up watcher
-log_watcher.watch(alias="logs", path=log_input_file, flags=aionotify.Flags.MODIFY)
+
+
 
 
 def shrink_image(img):
@@ -110,46 +121,25 @@ async def wait_for_picture_change():
 
 async def wait_for_log_change():
     loop = asyncio.get_event_loop()
+    
+    websockets.broadcast(CONNECTIONS, ERASE_ESCAPE_SEQUENCE + "\n")
 
-    bypass = False  # so first image is not ignored.
-    while not os.path.exists(log_input_file):
-        await asyncio.sleep(0.5)  # twiddle thumbs :)
-        if not bypass:
-            bypass = True
-    await log_watcher.setup(loop)
-    print("Log change watcher is running.")
+    while True:
+        d = HOPPER_CLIENT.read(LOG_PIPE_NAME)
 
-    while True:  # for all events
-        if not bypass:
-            event = await log_watcher.get_event()  # blocks until file changed
-        else:
-            bypass = False  # reset bypass
+        if d is not None:
+            ds = d.decode("utf-8")
+            if ERASE_ESCAPE_SEQUENCE in ds:
+                log_buffer.clear()
+                websockets.broadcast(CONNECTIONS, ERASE_ESCAPE_SEQUENCE + "\n")
+                print("Received erase sequence")
+            else:
+                websockets.broadcast(CONNECTIONS, "[LOGS]" + ds)
+                log_buffer.append("[LOGS]" + ds)
+                print("[LOGS]" + ds, end="")
 
-        with open(log_input_file, "r") as l:
-            old_logs = l.read()
-        for c in range(file_open_attempts):
-            await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
-            try:  # this runs until the bot has finished writing the logs
-                with open(log_input_file, "r") as l:
-                    new_logs = l.read()
-                print("Opened logs successfully")
-                break
-            except:
-                print("Error opening logs: attempt \#" + str(c))
+        await asyncio.sleep(0.1)
 
-        if c >= 9:
-            continue  # error with this file, go back and wait for next change.
-
-        new_logs.replace(old_logs, "")  # only new logs remain.
-        index = len(new_logs) - len(old_logs)
-        old_logs = new_logs
-        new_logs = new_logs[index:]
-
-        websockets.broadcast(CONNECTIONS, "[LOGS]" + new_logs)  # sends new logs.
-        print("Logs broadcast.")
-
-    # politely stops watching file system.
-    log_watcher.close()
     loop.stop()
     loop.close()
 
@@ -157,6 +147,7 @@ async def wait_for_log_change():
 async def register(websocket):  # Runs every time someone connects
     CONNECTIONS.add(websocket)
     print("Someone has connected to the websocket.")
+
     for c in range(file_open_attempts):
         time.sleep(wait_between_attempts)  # give it time to write the file.
         try:  # this runs until the bot has finished writing the image
@@ -172,7 +163,12 @@ async def register(websocket):  # Runs every time someone connects
     if not bypass:
         img = shrink_image(img)
         img_b64 = im_2_b64(img).decode()
-        await websocket.send(img_b64)
+        await websocket.send("[CAMERA]" + img_b64)
+
+    # Send previous logs
+    for l in log_buffer:
+        await websocket.send(l)
+
     try:
         await websocket.wait_closed()
     finally:
@@ -184,7 +180,6 @@ async def main():
         await asyncio.gather(
             wait_for_picture_change(), wait_for_log_change()
         )  # runs the file change checker and webserver at the same time.
-
 
 asyncio.run(main())
 print("Goodbye.")
