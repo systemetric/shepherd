@@ -121,6 +121,8 @@ async def wait_for_picture_change():
 
 async def wait_for_log_change():
     loop = asyncio.get_event_loop()
+    
+    websockets.broadcast(CONNECTIONS, ERASE_ESCAPE_SEQUENCE + "\n")
 
     while True:
         d = HOPPER_CLIENT.read(LOG_PIPE_NAME)
