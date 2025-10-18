@@ -36,7 +36,7 @@ def upload():
         else:
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
             run.send("upload")
-    return redirect(url_for(".index"))
+    return "", 204
 
 def chown_usercode():
     for root, dirs, files in os.walk(current_app.config["SHEPHERD_USER_CODE_PATH"]):

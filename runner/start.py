@@ -67,15 +67,15 @@ class Runner:
         os.chown(self.USER_CODE_PATH, 1000, 1000) # pi:pi
 
         self.HOPPER_CLIENT = HopperClient()
+        
+        self.LOG_PIPE_NAME = PipeName((PipeType.INPUT, "log", "starter"), self.PIPE_DIRECTORY)
+        self.HOPPER_CLIENT.open_pipe(self.LOG_PIPE_NAME, delete=True, create=True)
 
         self.USER_PIPE_NAME = PipeName((PipeType.INPUT, "start-button", "starter"), self.PIPE_DIRECTORY)
         self.HOPPER_CLIENT.open_pipe(self.USER_PIPE_NAME, delete=True, create=True)
 
         self.FLASK_PIPE_NAME = PipeName((PipeType.OUTPUT, "starter", "starter"), self.PIPE_DIRECTORY)
         self.HOPPER_CLIENT.open_pipe(self.FLASK_PIPE_NAME, delete=True, create=True, blocking=True)
-
-        self.LOG_PIPE_NAME = PipeName((PipeType.INPUT, "log", "starter"), self.PIPE_DIRECTORY)
-        self.HOPPER_CLIENT.open_pipe(self.LOG_PIPE_NAME, delete=True, create=True)
 
         self.__load_start_graphic()
         self.__init_gpio()
@@ -105,6 +105,8 @@ class Runner:
         # Send the erase escape sequence to clear remote logs
         self.HOPPER_CLIENT.write(self.LOG_PIPE_NAME, self.ERASE_ESCAPE_SEQUENCE)
 
+        pipe_fd = self.HOPPER_CLIENT.get_pipe_by_pipe_name(self.LOG_PIPE_NAME).fd
+
         environment = dict(os.environ)
         environment["PYTHONPATH"] = ROBOT_LIB_LOCATION
         # Start the user code.
@@ -113,7 +115,8 @@ class Runner:
                 # python -u /path/to/the_code.py
                 sys.executable, "-u", self.USER_CODE_ENTRYPOINT_PATH,
             ],
-            stderr=subprocess.STDOUT,
+            stdout=pipe_fd,
+            stderr=pipe_fd,
             bufsize=1,  # Line-buffered
             close_fds="posix" in sys.builtin_module_names,  # Only if we're not on Windows
             env=environment,

@@ -47,7 +47,7 @@ def get_output():
 @blueprint.route("/toggle_auto_refresh", methods=["POST"])
 def toggle_auto_refresh():
     session["auto_refresh"] = not session.get("auto_refresh", True)
-    return redirect(url_for(".index"))
+    return "", 204
 
 @blueprint.route("/picture")
 def get_picture():
@@ -61,10 +61,10 @@ def start():
         "mode": mode.value,
         "zone": int(zone)
     })
-    return redirect(url_for(".index"))
+    return "", 204
 
 
 @blueprint.route("/stop", methods=["POST"])
 def stop():
     send("stop")
-    return redirect(url_for(".index"))
+    return "", 204
