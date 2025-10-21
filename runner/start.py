@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import os, sys
+import os, sys, shutil
 import RPi.GPIO as GPIO
 import json
 import time
@@ -106,6 +106,9 @@ class Runner:
         self.HOPPER_CLIENT.write(self.LOG_PIPE_NAME, self.ERASE_ESCAPE_SEQUENCE)
 
         pipe_fd = self.HOPPER_CLIENT.get_pipe_by_pipe_name(self.LOG_PIPE_NAME).fd
+
+        # Reload the image if possible
+        self.__load_start_graphic()
 
         environment = dict(os.environ)
         environment["PYTHONPATH"] = ROBOT_LIB_LOCATION
