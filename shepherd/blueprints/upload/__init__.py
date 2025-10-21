@@ -14,7 +14,6 @@ from shepherd.blueprints import run  # FIXME: this coupling is horrific
 
 blueprint = Blueprint("upload", __name__, template_folder="templates")
 
-
 @blueprint.route("/")
 def index():
     return render_template("upload/index.html", last_upload_time=None)
@@ -37,6 +36,21 @@ def upload():
             flash("Your file looks good!", "success")  # TODO: run a linter on the code?
             run.send("upload")
     return "", 204
+
+@blueprint.route("/upload-image", methods=["POST"])
+def upload_image():
+    if request.content_type != "image/jpeg":
+        print("team logo image was not image/jpeg!")
+        abort(400);
+
+    image_bytes = request.data
+
+    with open(current_app.config["SHEEP_TEAM_LOGO_PATH"], "wb") as f:
+        f.write(image_bytes)
+
+    print("team logo image uploaded successfully")
+
+    return "", 204       
 
 def chown_usercode():
     for root, dirs, files in os.walk(current_app.config["SHEPHERD_USER_CODE_PATH"]):
