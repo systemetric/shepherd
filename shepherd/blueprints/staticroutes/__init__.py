@@ -8,15 +8,18 @@ __dirname = path.dirname(path.realpath(__file__))
 docs_path = path.join(__dirname, "docs")
 editor_path = path.join(__dirname, "editor")
 
-
 @blueprint.route("docs/")
 def send_doc_index():
     return send_file(path.join(docs_path, "index.html"))
 
-
-@blueprint.route("docs/<path:filename>")
-def send_doc_file(filename):
-    return send_from_directory(docs_path, filename)
+@blueprint.route("docs/<path:name>")
+def send_doc_file(name):
+    p = path.join(docs_path, name)
+    
+    if path.isfile(p):
+        return send_file(p)
+    else:
+        return send_file(path.join(p, "index.html")) 
 
 @blueprint.route("images/<path:filename>")
 def send_image_for_docs(filename):
