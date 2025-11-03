@@ -25,15 +25,11 @@ def upload():
         file = request.files["uploaded_file"]
     except KeyError:
         abort(400)
-    if file.filename == "":
-        flash("You didn't upload a file.", "error")
-    else:
-        flash("Got a file with filename {}".format(file.filename), "debug")
+    if file.filename != "":
         err = process_uploaded_file(file)
         if err:
-            flash(err, "error")
+            return f"{err}", 400
         else:
-            flash("Your file looks good!", "success")  # TODO: run a linter on the code?
             run.send("upload")
     return "", 204
 
