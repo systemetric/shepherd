@@ -48,7 +48,7 @@ file_open_attempts = 10
 wait_between_attempts = 0.1
 
 picture_watcher.watch(
-    alias="image", path=img_input_file, flags=aionotify.Flags.MODIFY
+    alias="image", path=img_input_file, flags=aionotify.Flags.CLOSE_WRITE
 )  # sets up watcher
 
 
