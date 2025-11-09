@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 import sys
 
 major_version, minor_version, micro_version, *_ = sys.version_info
@@ -92,7 +92,7 @@ async def wait_for_picture_change():
             bypass = False  # reset bypass
 
         for c in range(file_open_attempts):
-            await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
+            #await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
             try:  # this runs until the bot has finished writing the image
                 img = Image.open(img_input_file)
                 img.load()
@@ -100,6 +100,7 @@ async def wait_for_picture_change():
                 break
             except:
                 print("Error opening file: attempt \#" + str(c))
+                await asyncio.sleep(wait_between_attempts)  # give it time to write the file.
 
         if c >= (file_open_attempts - 1):
             print("Cannot open image (failed "+str(c)+" times)")
