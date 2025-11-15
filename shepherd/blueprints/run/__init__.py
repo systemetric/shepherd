@@ -57,8 +57,9 @@ def get_picture():
         lockf(f, LOCK_EX)
         return send_file("/home/pi/shepherd/shepherd/static/image.jpg", mimetype="image/jpeg")
     finally:
-        lockf(f, LOCK_UN)
-        os.close(f)
+        if f in locals():
+            lockf(f, LOCK_UN)
+            os.close(f)
 
 @blueprint.route("/start", methods=["POST"])
 def start():
