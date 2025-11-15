@@ -57,7 +57,7 @@ def get_picture():
         lockf(f, LOCK_EX)
         return send_file("/home/pi/shepherd/shepherd/static/image.jpg", mimetype="image/jpeg")
     finally:
-        if f in locals():
+        if "f" in locals():
             lockf(f, LOCK_UN)
             os.close(f)
 
