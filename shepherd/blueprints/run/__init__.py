@@ -6,6 +6,7 @@ from functools import partial
 import json
 import os
 import sys
+from fcntl import lockf, LOCK_EX, LOCK_UN
 from enum import Enum
 
 from flask import Blueprint, redirect, url_for, request, session, send_file
@@ -51,7 +52,13 @@ def toggle_auto_refresh():
 
 @blueprint.route("/picture")
 def get_picture():
-    return send_file("/home/pi/shepherd/shepherd/static/image.jpg", mimetype="image/jpeg")
+    try:
+        f = os.open("/home/pi/shepherd/shepherd/static/image.jpg", os.O_RDWR)
+        lockf(f, LOCK_EX)
+        return send_file("/home/pi/shepherd/shepherd/static/image.jpg", mimetype="image/jpeg")
+    finally:
+        lockf(f, LOCK_UN)
+        os.close(f)
 
 @blueprint.route("/start", methods=["POST"])
 def start():
