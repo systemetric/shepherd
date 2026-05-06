@@ -1,0 +1,25 @@
+[package]
+name = "shepherd-app"
+version = "0.1.0"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+axum.workspace = true
+chrono.workspace = true
+fs_extra.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tempfile.workspace = true
+tokio.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tower-service.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+zip.workspace = true
+
+shepherd-common = { path = "../shepherd-common" }
+shepherd-mqtt = { path = "../shepherd-mqtt" }

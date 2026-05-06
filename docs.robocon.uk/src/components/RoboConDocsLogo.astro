@@ -1,0 +1,32 @@
+---
+interface Props {
+    clickable?: boolean;
+    href?: string;
+}
+let { clickable = true, href = "/" } = Astro.props;
+---
+
+<div>
+    <a href={clickable ? href : ""} class="no-underline">
+        <span class="logo">ROBOCON</span>
+        <span class="font-sans text-3xl inline-block align-baseline text-slate-800 dark:text-slate-400">Docs</span>
+    </a>
+</div>
+
+<style>
+    .logo {
+        height: 1em;
+        font-family: "Fugaz One";
+        font-size: 2em;
+        line-height: 1em;
+        padding-left: 0.1em;
+        padding-right: 0.1em;
+        color: var(--rc-red);
+        text-decoration: none;
+        color: red;
+        text-shadow: -0.05em 0.05em black;
+        cursor: {
+            clickable? "auto" : "default";
+        }
+    }
+</style>
