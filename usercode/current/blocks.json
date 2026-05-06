@@ -1,0 +1,55 @@
+{
+    "requires": ["nice_robot.py"],
+    "header": "from __future__ import print_function\nfrom nice_robot import *\nimport time",
+    "blocks": [
+        {
+            "id": "sleep",
+            "definition": [
+                "Wait",
+                {
+                    "id": "seconds",
+                    "type": "number",
+                    "default": 1
+                },
+               "second(s)"
+            ],
+            "template": "time.sleep(<%= seconds %>)"
+        },
+        {
+            "id": "move",
+            "definition": [
+                "Move",
+                {
+                    "id": "distance",
+                    "type": "number",
+                    "default": 1
+                },
+                "metre(s)"
+            ],
+            "template": "move(<%= distance %>)"
+        },
+        {
+            "id": "turn",
+            "definition": [
+                "Turn",
+                {
+                    "id": "angle",
+                    "type": "number",
+                    "default": 90
+                },
+                "degree(s)"
+            ],
+            "template": "move(<%= angle %>)"
+        },
+        {
+            "id": "turn_to_cube",
+            "definition": "Turn to cube",
+            "template": "turn_to_cube()"
+        },
+        {
+            "id": "move_to_cube",
+            "definition": "Move to cube",
+            "template": "move_to_cube()"
+        }
+    ]
+}
