@@ -102,6 +102,8 @@ pub struct RunConfig {
     pub comp_timeout: u64,
     #[serde(default = "default_run_reset_script")]
     pub reset_script: PathBuf,
+    #[serde(default = "default_run_usercode_script")]
+    pub usercode_script: PathBuf,
 }
 
 fn default_run_service_id() -> String {
@@ -119,6 +121,9 @@ fn default_run_comp_timeout() -> u64 {
 fn default_run_reset_script() -> PathBuf {
     PathBuf::from("/usr/local/bin/robot_reset.py")
 }
+fn default_run_usercode_script() -> PathBuf {
+    PathBuf::from("/usr/local/bin/usercode.py")
+}
 
 impl Default for RunConfig {
     fn default() -> Self {
@@ -128,6 +133,7 @@ impl Default for RunConfig {
             gpio_device: default_run_gpio_device(),
             comp_timeout: default_run_comp_timeout(),
             reset_script: default_run_reset_script(),
+            usercode_script: default_run_usercode_script(),
         }
     }
 }

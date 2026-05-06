@@ -135,7 +135,7 @@ impl Usercode {
                             let err_pipe = self.log_pipe.fd()?.try_clone()?;
 
                             let child = Command::new("/usr/bin/env")
-                                .args(["python3", "-u", &entrypoint])
+                                .args(["python3", "-u", &self.config.run.usercode_script.to_string_lossy(), &entrypoint])
                                 .env("HOPPER_PATH", hopper)
                                 .current_dir(&self.config.path.user_cur_dir)
                                 .stdout(log_pipe)
