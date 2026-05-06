@@ -268,13 +268,25 @@ impl Config {
         Ok(cfg)
     }
 
-    pub fn setup_dirs(&self) -> Result<()> {
-        fs::create_dir_all(&self.path.root)?;
-        fs::create_dir_all(&self.path.hopper)?;
-        fs::create_dir_all(&self.path.user_cur_dir)?;
+    fn create_dir<P>(path: P) -> Result<()>
+    where
+        P: AsRef<Path>,
+    {
+        if !path.as_ref().is_dir() {
+            tracing::debug!("creating {:?}", path.as_ref());
+            fs::create_dir_all(path.as_ref())?;
+        }
 
-        fs::create_dir_all(&self.app.static_dir)?;
-        fs::create_dir_all(&self.app.user_src_dir)?;
+        Ok(())
+    }
+
+    pub fn setup_dirs(&self) -> Result<()> {
+        Self::create_dir(&self.path.root)?;
+        Self::create_dir(&self.path.hopper)?;
+        Self::create_dir(&self.path.user_cur_dir)?;
+
+        Self::create_dir(&self.app.static_dir)?;
+        Self::create_dir(&self.app.user_src_dir)?;
 
         Ok(())
     }

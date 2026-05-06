@@ -207,7 +207,7 @@ impl Runner {
                     self.target_mode = mode;
                     self.target_zone = zone;
 
-                    info!("update (mode, zone) to ({:#?}, {:#?})", mode, zone);
+                    info!("update (mode, zone) to ({:?}, {:?})", mode, zone);
                 }
             }
         }

@@ -29,11 +29,11 @@ async fn _main(config: Config) -> Result<()> {
 
     tokio::select!(
         res = axum::serve(listener, app) => {
-            warn!("server exited: {:#?}", res);
+            warn!("server exited: {:?}", res);
             res?
         }
         res = event_loop.run() => {
-            warn!("mqtt client exited: {:#?}", res);
+            warn!("mqtt client exited: {:?}", res);
             res?
         }
     );
