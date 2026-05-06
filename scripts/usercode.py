@@ -19,7 +19,25 @@ except ImportError:
 user_src = os.path.dirname(os.path.abspath(sys.argv[1]))
 old_cwd = os.getcwd()
 
+def read_project_attrs(path):
+    """ read sheep project attributes """
+    attrs = {}
+    with open(path, "r") as f:
+        l = ""
+        # attrs are formatted as "#::sheep:KEY:VAL"
+        while (l := f.readline()).startswith("#::sheep:"):
+            kv = l[9:].split(":")
+            if len(kv) > 1:
+                key = kv[0].strip()
+                val = kv[1].strip()
+                attrs[key] = val
+    return attrs
+
 try:
+    attrs = read_project_attrs(sys.argv[1])
+    if "project_name" in attrs:
+        print(f"Loading project '{attrs['project_name']}'...", end="")
+
     # import everything big here for module caching
     import robocon
     from robocon.game import *
@@ -113,6 +131,10 @@ try:
         settings["zone"] = TEAM[f"T{settings['zone']}"]
         settings["mode"] = MODE[settings["mode"].upper()]
         return settings
+
+    # just fancy status display
+    if "project_name" in attrs:
+        print("done\n")
 
     report_hardware_status()
 
