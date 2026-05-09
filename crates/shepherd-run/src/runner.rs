@@ -160,10 +160,8 @@ impl Runner {
     async fn dispatch_state(
         &mut self,
         mqttc: &MqttAsyncClient,
-        recv: UnboundedReceiver<StateEvent>,
+        mut recv: UnboundedReceiver<StateEvent>,
     ) -> Result<()> {
-        let mut recv = recv;
-
         while let Some(ev) = recv.recv().await {
             match ev {
                 StateEvent::Transition(next, prev) => {
@@ -239,10 +237,9 @@ impl Runner {
     /// Dispatch GPIO events to state transitions
     async fn dispatch_gpio(
         config: Config,
-        lines: Lines<Input>,
+        mut lines: Lines<Input>,
         sender: UnboundedSender<StateEvent>,
     ) -> Result<()> {
-        let mut lines = lines;
         let mut last_event = Duration::ZERO;
         loop {
             let event = lines.read_event().await?;
