@@ -2,11 +2,15 @@ use std::{collections::HashMap, pin::Pin, sync::Arc, time::Duration};
 
 use bytes::Bytes;
 use futures::future::join_all;
-use rumqttc::{AsyncClient, Event, EventLoop, MqttOptions, Packet, QoS};
+use rumqttc::{AsyncClient, Event, EventLoop, LastWill, MqttOptions, Packet, QoS};
 use tokio::sync::Mutex;
 use tracing::{debug, warn};
 
-use crate::{Wildcard, messages::MqttMessage};
+use crate::{
+    Wildcard,
+    messages::{MqttMessage, ServiceStatus, StatusMessage},
+    status_for,
+};
 
 pub type MqttHandler = Box<
     dyn Fn(String, Bytes) -> Pin<Box<dyn Future<Output = anyhow::Result<()>> + Send>> + Send + Sync,
@@ -106,6 +110,8 @@ impl MqttAsyncClient {
 
 pub struct MqttEventLoop {
     event_loop: EventLoop,
+    client: AsyncClient,
+    service_id: String,
     registry: Arc<Mutex<Registry>>,
 }
 
@@ -147,8 +153,23 @@ impl MqttEventLoop {
                         Self::dispatch(registry, topic, payload).await;
                     });
                 }
-                Event::Incoming(Packet::Connect(c)) => {
-                    debug!("mqtt client connected with id '{}'", c.client_id);
+                Event::Incoming(Packet::ConnAck(_)) => {
+                    debug!("mqtt client connected");
+
+                    // generate a birth message
+                    let birth_topic = status_for(&self.service_id);
+                    let birth_message = serde_json::to_vec(&StatusMessage {
+                        status: ServiceStatus::Online,
+                    })
+                    .expect("birth message generation failed");
+
+                    if let Err(e) = self
+                        .client
+                        .publish(birth_topic, QoS::AtLeastOnce, true, birth_message)
+                        .await
+                    {
+                        warn!("failed to send birth message: {e}");
+                    }
                 }
                 Event::Incoming(Packet::Disconnect) => {
                     debug!("mqtt client disconnected");
@@ -169,8 +190,17 @@ impl MqttClient {
     where
         S: AsRef<str>,
     {
+        // generate a last will for this client
+        let last_will_topic = status_for(service_id.as_ref());
+        let last_will_message = serde_json::to_vec(&StatusMessage {
+            status: ServiceStatus::Offline,
+        })
+        .expect("last will generation failed"); // this should never be able to fail
+        let last_will = LastWill::new(last_will_topic, last_will_message, QoS::AtLeastOnce, true);
+
         let mut mqttoptions = MqttOptions::new(service_id.as_ref(), hostname.as_ref(), port);
         mqttoptions.set_keep_alive(Duration::from_secs(5));
+        mqttoptions.set_last_will(last_will);
 
         let (client, event_loop) = AsyncClient::new(mqttoptions, 10);
 
@@ -179,12 +209,14 @@ impl MqttClient {
         debug!("initialised new mqtt client");
 
         let wc = MqttAsyncClient {
-            client,
+            client: client.clone(),
             registry: registry.clone(),
         };
 
         let we = MqttEventLoop {
             event_loop,
+            client,
+            service_id: service_id.as_ref().to_string(),
             registry: registry.clone(),
         };
 

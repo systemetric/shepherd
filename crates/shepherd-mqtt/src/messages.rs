@@ -23,3 +23,15 @@ pub struct ControlMessage {
 pub struct RunStatusMessage {
     pub state: shepherd_common::RunState,
 }
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum ServiceStatus {
+    Online,
+    Offline,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct StatusMessage {
+    pub status: ServiceStatus,
+}
