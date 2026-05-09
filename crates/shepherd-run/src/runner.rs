@@ -3,7 +3,7 @@ use std::{path::PathBuf, sync::Arc, time::Duration};
 use anyhow::{Result, anyhow};
 use base64::Engine;
 use hopper::{Pipe, PipeMode};
-use shepherd_common::{Mode, RunState, Zone, config::Config, status_for};
+use shepherd_common::{Mode, RunState, Zone, config::Config};
 use shepherd_mqtt::{
     MqttAsyncClient, MqttClient,
     messages::{ControlMessage, ControlMessageType, RunStatusMessage},
@@ -184,7 +184,7 @@ impl Runner {
                     // could be used to tell when robot is started/stopped
                     mqttc
                         .publish(
-                            status_for(&self.config.run.service_id),
+                            &self.config.channel.user_status,
                             RunStatusMessage { state: next },
                         )
                         .await?;

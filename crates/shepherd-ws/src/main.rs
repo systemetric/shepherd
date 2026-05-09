@@ -62,19 +62,14 @@ async fn _main(config: Config) -> Result<()> {
     // set up subscription for all mqtt messages
     let mqtt_sender = msg_sender.clone();
     let mqtt_log_handle = log_handle.clone();
+    let mqtt_user_status = config.channel.user_status.clone();
     mqtt_client
         .subscribe_raw("#", move |t, v| {
             let mqtt_sender = mqtt_sender.clone();
             let mqtt_log_handle = mqtt_log_handle.clone();
+            let mqtt_user_status = mqtt_user_status.clone();
             async move {
-                dispatch_mqtt_message(
-                    mqtt_sender,
-                    mqtt_log_handle,
-                    t,
-                    "shepherd-run/status".to_string(),
-                    v,
-                )
-                .await
+                dispatch_mqtt_message(mqtt_sender, mqtt_log_handle, t, mqtt_user_status, v).await
             }
         })
         .await?;
