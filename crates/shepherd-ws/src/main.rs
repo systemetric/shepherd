@@ -62,7 +62,7 @@ async fn _main(config: Config) -> Result<()> {
     // set up subscription for all mqtt messages
     let mqtt_sender = msg_sender.clone();
     let mqtt_log_handle = log_handle.clone();
-    let mqtt_user_status = config.channel.user_status.clone();
+    let mqtt_user_status = config.channel.user_state.clone();
     mqtt_client
         .subscribe_raw("#", move |t, v| {
             let mqtt_sender = mqtt_sender.clone();

@@ -184,7 +184,7 @@ impl Runner {
                     // could be used to tell when robot is started/stopped
                     mqttc
                         .publish(
-                            &self.config.channel.user_status,
+                            &self.config.channel.user_state,
                             RunStatusMessage { state: next },
                         )
                         .await?;

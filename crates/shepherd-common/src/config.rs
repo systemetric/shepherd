@@ -191,7 +191,7 @@ pub struct ChannelConfig {
     #[serde(default = "default_channel_camera")]
     pub camera: String,
     #[serde(default = "default_user_status")]
-    pub user_status: String,
+    pub user_state: String,
 }
 
 fn default_channel_robot_control() -> String {
@@ -204,7 +204,7 @@ fn default_channel_camera() -> String {
     "camera".to_string()
 }
 fn default_user_status() -> String {
-    "user/status".to_string()
+    "user/state".to_string()
 }
 
 impl Default for ChannelConfig {
@@ -213,7 +213,7 @@ impl Default for ChannelConfig {
             robot_control: default_channel_robot_control(),
             robot_log: default_channel_robot_log(),
             camera: default_channel_camera(),
-            user_status: default_user_status(),
+            user_state: default_user_status(),
         }
     }
 }
