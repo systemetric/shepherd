@@ -141,7 +141,7 @@ async fn upload_file(
 
     state
         .mqttc
-        .publish(state.robot_control, msg)
+        .publish(state.robot_control, msg, false)
         .await
         .map_err(|e| {
             ShepherdError(

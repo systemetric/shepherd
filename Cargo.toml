@@ -5,6 +5,7 @@ members = [
     "crates/shepherd-common",
     "crates/shepherd-mqtt",
     "crates/shepherd-run",
+    "crates/shepherd-watch",
     "crates/shepherd-ws",
 ]
 

@@ -32,7 +32,7 @@ async fn start(
 
     state
         .mqttc
-        .publish(state.robot_control, msg)
+        .publish(state.robot_control, msg, false)
         .await
         .map_err(|e| {
             ShepherdError(
@@ -53,7 +53,7 @@ async fn stop(State(state): State<ControlState>) -> ShepherdResult<()> {
 
     state
         .mqttc
-        .publish(state.robot_control, msg)
+        .publish(state.robot_control, msg, false)
         .await
         .map_err(|e| {
             ShepherdError(
@@ -74,7 +74,7 @@ async fn reset(State(state): State<ControlState>) -> ShepherdResult<()> {
 
     state
         .mqttc
-        .publish(state.robot_control, msg)
+        .publish(state.robot_control, msg, false)
         .await
         .map_err(|e| {
             ShepherdError(

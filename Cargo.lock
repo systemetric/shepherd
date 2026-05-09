@@ -1311,6 +1311,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "shepherd-watch"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "futures-util",
+ "serde_json",
+ "shepherd-common",
+ "shepherd-mqtt",
+ "tokio",
+ "tokio-tungstenite",
+ "tracing",
+]
+
+[[package]]
 name = "shepherd-ws"
 version = "0.1.0"
 dependencies = [
