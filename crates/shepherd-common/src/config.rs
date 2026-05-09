@@ -19,6 +19,8 @@ pub struct Config {
     #[serde(default)]
     pub ws: WsConfig,
     #[serde(default)]
+    pub watch: WatchConfig,
+    #[serde(default)]
     pub channel: ChannelConfig,
     #[serde(default)]
     pub path: PathConfig,
@@ -183,6 +185,36 @@ impl Default for WsConfig {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct WatchConfig {
+    #[serde(default = "default_watch_service_id")]
+    pub service_id: String,
+    #[serde(default = "default_watch_host")]
+    pub host: String,
+    #[serde(default = "default_watch_port")]
+    pub port: u16,
+}
+
+fn default_watch_service_id() -> String {
+    "shepherd-watch".to_string()
+}
+fn default_watch_host() -> String {
+    "0.0.0.0".to_string()
+}
+fn default_watch_port() -> u16 {
+    1010
+}
+
+impl Default for WatchConfig {
+    fn default() -> Self {
+        Self {
+            service_id: default_watch_service_id(),
+            host: default_watch_host(),
+            port: default_watch_port(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ChannelConfig {
     #[serde(default = "default_channel_robot_control")]
     pub robot_control: String,
@@ -192,6 +224,8 @@ pub struct ChannelConfig {
     pub camera: String,
     #[serde(default = "default_user_status")]
     pub user_state: String,
+    #[serde(default = "default_status")]
+    pub status: String,
 }
 
 fn default_channel_robot_control() -> String {
@@ -206,6 +240,9 @@ fn default_channel_camera() -> String {
 fn default_user_status() -> String {
     "user/state".to_string()
 }
+fn default_status() -> String {
+    "status".to_string()
+}
 
 impl Default for ChannelConfig {
     fn default() -> Self {
@@ -214,6 +251,7 @@ impl Default for ChannelConfig {
             robot_log: default_channel_robot_log(),
             camera: default_channel_camera(),
             user_state: default_user_status(),
+            status: default_status(),
         }
     }
 }

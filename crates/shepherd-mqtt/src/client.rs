@@ -80,7 +80,7 @@ impl MqttAsyncClient {
         Ok(())
     }
 
-    pub async fn publish<T, S>(&self, topic: S, msg: T) -> anyhow::Result<()>
+    pub async fn publish<T, S>(&self, topic: S, msg: T, retain: bool) -> anyhow::Result<()>
     where
         T: MqttMessage,
         S: AsRef<str>,
@@ -88,18 +88,18 @@ impl MqttAsyncClient {
         let b = serde_json::to_vec(&msg)
             .map_err(|e| anyhow::anyhow!("failed to serialize message: {e}"))?;
 
-        self.publish_raw(topic, b).await?;
+        self.publish_raw(topic, b, retain).await?;
 
         Ok(())
     }
 
-    pub async fn publish_raw<S, V>(&self, topic: S, msg: V) -> anyhow::Result<()>
+    pub async fn publish_raw<S, V>(&self, topic: S, msg: V, retain: bool) -> anyhow::Result<()>
     where
         S: AsRef<str>,
         V: Into<Vec<u8>>,
     {
         self.client
-            .publish(topic.as_ref(), QoS::AtLeastOnce, false, msg)
+            .publish(topic.as_ref(), QoS::AtLeastOnce, retain, msg)
             .await?;
 
         debug!("client published to topic '{}'", topic.as_ref());
@@ -159,6 +159,7 @@ impl MqttEventLoop {
                     // generate a birth message
                     let birth_topic = status_for(&self.service_id);
                     let birth_message = serde_json::to_vec(&StatusMessage {
+                        service: self.service_id.clone(),
                         status: ServiceStatus::Online,
                     })
                     .expect("birth message generation failed");
@@ -193,6 +194,7 @@ impl MqttClient {
         // generate a last will for this client
         let last_will_topic = status_for(service_id.as_ref());
         let last_will_message = serde_json::to_vec(&StatusMessage {
+            service: service_id.as_ref().to_string(),
             status: ServiceStatus::Offline,
         })
         .expect("last will generation failed"); // this should never be able to fail

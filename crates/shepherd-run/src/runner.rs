@@ -186,6 +186,7 @@ impl Runner {
                         .publish(
                             &self.config.channel.user_state,
                             RunStatusMessage { state: next },
+                            false,
                         )
                         .await?;
 

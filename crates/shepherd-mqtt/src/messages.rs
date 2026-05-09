@@ -24,14 +24,20 @@ pub struct RunStatusMessage {
     pub state: shepherd_common::RunState,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum ServiceStatus {
     Online,
     Offline,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StatusMessage {
+    pub service: String,
     pub status: ServiceStatus,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct StatusSummary {
+    pub statuses: Vec<StatusMessage>,
 }

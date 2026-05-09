@@ -7,6 +7,8 @@ license.workspace = true
 
 [dependencies]
 anyhow.workspace = true
+futures-util.workspace = true
+serde_json.workspace = true
 shepherd-common = { path = "../shepherd-common" }
 shepherd-mqtt = { path = "../shepherd-mqtt" }
 tokio.workspace = true
