@@ -1253,7 +1253,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "axum",
- "chrono",
  "fs_extra",
  "serde",
  "serde_json",
@@ -1263,9 +1262,7 @@ dependencies = [
  "tokio",
  "tower",
  "tower-http",
- "tower-service",
  "tracing",
- "tracing-subscriber",
  "zip",
 ]
 
@@ -1288,7 +1285,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "bytes",
- "chrono",
  "futures",
  "rumqttc",
  "serde",
@@ -1304,7 +1300,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "base64",
- "chrono",
  "hopper",
  "serde",
  "serde_json",
@@ -1313,7 +1308,6 @@ dependencies = [
  "tokio",
  "tokio-gpiod",
  "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]
@@ -1322,17 +1316,14 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "bytes",
- "chrono",
  "futures-util",
  "hopper",
- "serde",
  "serde_json",
  "shepherd-common",
  "shepherd-mqtt",
  "tokio",
  "tokio-tungstenite",
  "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]
