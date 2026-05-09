@@ -1,0 +1,14 @@
+[package]
+name = "shepherd-watch"
+version = "0.1.0"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+shepherd-common = { path = "../shepherd-common" }
+shepherd-mqtt = { path = "../shepherd-mqtt" }
+tokio.workspace = true
+tokio-tungstenite.workspace = true
+tracing.workspace = true
