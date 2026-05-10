@@ -17,12 +17,12 @@ shift
 
 send_online() {
     printf "{\"service\":\"$SERVICE_ID\",\"status\":\"online\"}\n" \
-        | $MIDGE -a "$ADDR" "$SERVICE_ID" "$SERVICE_ID/status"
+        | $MIDGE -x -a "$ADDR" "$SERVICE_ID" "$SERVICE_ID/status"
 }
 
 send_offline() {
     printf "{\"service\":\"$SERVICE_ID\",\"status\":\"offline\"}\n" \
-        | $MIDGE -a "$ADDR" "$SERVICE_ID" "$SERVICE_ID/status"
+        | $MIDGE -x -a "$ADDR" "$SERVICE_ID" "$SERVICE_ID/status"
 }
 
 trap send_offline EXIT INT TERM HUP
