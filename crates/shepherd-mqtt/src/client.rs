@@ -106,6 +106,18 @@ impl MqttAsyncClient {
 
         Ok(())
     }
+
+    pub async fn unsubscribe<S>(&self, topic: S) -> anyhow::Result<()>
+    where
+        S: AsRef<str>,
+    {
+        self.registry.lock().await.remove_entry(topic.as_ref());
+        self.client.unsubscribe(topic.as_ref()).await?;
+
+        debug!("client unsubscribed from topic '{}'", topic.as_ref());
+
+        Ok(())
+    }
 }
 
 pub struct MqttEventLoop {

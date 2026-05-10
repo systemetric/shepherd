@@ -4,7 +4,7 @@ use anyhow::Result;
 use futures_util::{SinkExt, StreamExt};
 use shepherd_common::{args::call_with_args, config::Config};
 use shepherd_mqtt::{
-    MqttAsyncClient, MqttClient,
+    MqttAsyncClient, MqttClient, MqttEventLoop,
     messages::{ServiceStatus, StatusMessage, StatusSummary},
 };
 use tokio::{
@@ -13,9 +13,18 @@ use tokio::{
         Mutex,
         broadcast::{self, Receiver, Sender},
     },
+    task::JoinHandle,
 };
 use tokio_tungstenite::{accept_async, tungstenite::Message};
-use tracing::{debug, error, info, warn};
+use tracing::{debug, info, warn};
+
+#[derive(Clone)]
+struct MqttContext {
+    statuses: Arc<Mutex<HashMap<String, ServiceStatus>>>,
+    status_sender: Sender<String>,
+    mqtt_client: MqttAsyncClient,
+    status_channel: String,
+}
 
 async fn create_summary(statuses: Arc<Mutex<HashMap<String, ServiceStatus>>>) -> Result<String> {
     let statuses = statuses.lock().await;
@@ -71,18 +80,12 @@ async fn handle_websocket(
     }
 }
 
-async fn handle_status_message(
-    statuses: Arc<Mutex<HashMap<String, ServiceStatus>>>,
-    status_sender: Sender<String>,
-    mqtt_client: MqttAsyncClient,
-    status_topic: String,
-    message: StatusMessage,
-) -> Result<()> {
+async fn handle_status_message(context: MqttContext, message: StatusMessage) -> Result<()> {
     info!("status for {}: {:?}", message.service, message.status);
 
     // update status table, generate summary array
     let status_arr: Vec<StatusMessage> = {
-        let mut statuses = statuses.lock().await;
+        let mut statuses = context.statuses.lock().await;
         statuses.insert(message.service, message.status);
 
         statuses
@@ -102,88 +105,80 @@ async fn handle_status_message(
 
     match serde_json::to_string(&summary) {
         Ok(summary) => {
-            let _ = status_sender.send(summary.clone());
+            let _ = context.status_sender.send(summary.clone());
         }
         Err(e) => {
             warn!("failed to serialise status summary: {e}");
         }
     }
 
-    let _ = mqtt_client.publish(status_topic, summary, true).await;
+    let _ = context
+        .mqtt_client
+        .publish(context.status_channel, summary, true)
+        .await;
 
     Ok(())
+}
+
+fn spawn_mqtt(mut event_loop: MqttEventLoop, mut context: MqttContext) -> JoinHandle<Result<()>> {
+    tokio::spawn(async move {
+        let ctx = context.clone();
+        context
+            .mqtt_client
+            .subscribe("+/status", move |_, v| {
+                let ctx = ctx.clone();
+                async move { handle_status_message(ctx, v).await }
+            })
+            .await?;
+
+        event_loop.run().await
+    })
 }
 
 async fn _main(config: Config) -> Result<()> {
     let (status_sender, _) = broadcast::channel::<String>(64);
     let statuses: Arc<Mutex<HashMap<String, ServiceStatus>>> = Arc::new(Mutex::new(HashMap::new()));
 
-    let (mut mqtt_client, mut mqtt_event_loop) = MqttClient::new(
+    // spawn an mqtt client to check status messages
+
+    let (mqtt_client, mqtt_event_loop) = MqttClient::new(
         &config.watch.service_id,
         &config.mqtt.broker,
         config.mqtt.port,
     );
 
-    // TODO: wrap these in a context object
-    let mqtt_statuses = statuses.clone();
-    let mqtt_status_sender = status_sender.clone();
-    let mqtt_status = config.channel.status.clone();
-    let mqtt_mqtt_client = mqtt_client.clone();
-    mqtt_client
-        .subscribe("+/status", move |_, v| {
-            let mqtt_statuses = mqtt_statuses.clone();
-            let mqtt_status_sender = mqtt_status_sender.clone();
-            let mqtt_status = mqtt_status.clone();
-            let mqtt_mqtt_client = mqtt_mqtt_client.clone();
+    let mqtt_context = MqttContext {
+        statuses: statuses.clone(),
+        status_sender: status_sender.clone(),
+        mqtt_client,
+        status_channel: config.channel.status.clone(),
+    };
+    let mqtt_loop = spawn_mqtt(mqtt_event_loop, mqtt_context);
 
-            async move {
-                handle_status_message(
-                    mqtt_statuses,
-                    mqtt_status_sender,
-                    mqtt_mqtt_client,
-                    mqtt_status,
-                    v,
-                )
-                .await
-            }
-        })
-        .await?;
-
-    // run mqtt event loop independently
-    let mqtt_loop = tokio::spawn(async move {
-        loop {
-            if let Err(e) = mqtt_event_loop.run().await {
-                error!("mqtt loop exited: {e}");
-            }
-        }
-    });
+    // now mqtt is spawned, run websocket server forever
 
     let listener =
         TcpListener::bind(format!("{}:{}", &config.watch.host, config.watch.port)).await?;
 
-    tokio::select! {
-        res = async {
-            loop {
-                match listener.accept().await {
-                    Ok((stream, _)) => {
-                        // default to a blank string if serialisation failed
-                        let summary = create_summary(statuses.clone()).await.unwrap_or("".to_string());
-                        tokio::spawn(handle_websocket(stream, summary, status_sender.subscribe()) );
-                    }
-                    Err(e) => return Err(e),
+    let ws_loop = async || -> anyhow::Result<()> {
+        loop {
+            match listener.accept().await {
+                Ok((stream, _)) => {
+                    // default to a blank string if serialisation failed
+                    let summary = create_summary(statuses.clone())
+                        .await
+                        .unwrap_or("".to_string());
+                    tokio::spawn(handle_websocket(stream, summary, status_sender.subscribe()));
                 }
+                Err(e) => return Err(anyhow::anyhow!("{:?}", e)),
             }
-        } => {
-            warn!("websocket handler exited {:?}", res);
-            res?
         }
+    };
 
-        _ = mqtt_loop => {
-            error!("mqtt client exited?");
-        }
+    tokio::select! {
+        res = ws_loop() => res,
+        res = mqtt_loop => Err(anyhow::anyhow!("mqtt error: {:?}", res))
     }
-
-    Ok(())
 }
 
 #[tokio::main]

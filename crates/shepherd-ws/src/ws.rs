@@ -20,7 +20,7 @@ use crate::{
 };
 
 #[derive(Debug)]
-pub struct WsState {
+pub struct WebSocketContext {
     pub camera: String,
     pub robot_log: String,
     pub log_handle: LogBufferHandle,
@@ -30,7 +30,10 @@ pub struct WsState {
 }
 
 /// handle a single incoming websocket connection until it exits
-pub async fn handle_websocket_connection(stream: TcpStream, state: WsState) -> Result<()> {
+pub async fn handle_websocket_connection(
+    stream: TcpStream,
+    context: WebSocketContext,
+) -> Result<()> {
     let mut sub_topic: Option<String> = None;
 
     #[allow(clippy::result_large_err)]
@@ -50,26 +53,30 @@ pub async fn handle_websocket_connection(stream: TcpStream, state: WsState) -> R
 
     info!("subscription from {:?}, topic {:?}", addr, sub_topic);
 
-    let mut rx = if sub_topic == state.camera {
+    // set up an appropriate receiver, send initial content if applicable
+
+    let mut rx = if sub_topic == context.camera {
         // send the existing image
-        let current = state.camera_handle.get().await;
+        let current = context.camera_handle.get().await;
         ws_tx.send(Message::Binary(current)).await?;
 
         debug!("sent current image to new client");
 
-        MessageReceiver::Image(state.camera, state.cam_rx)
-    } else if sub_topic == state.robot_log {
+        MessageReceiver::Image(context.camera, context.cam_rx)
+    } else if sub_topic == context.robot_log {
         // send stored logs to new connections
-        for msg in state.log_handle.current_log().await {
+        for msg in context.log_handle.current_log().await {
             ws_tx.send(Message::Binary(msg)).await?;
         }
 
         debug!("sent current logs to new client");
 
-        MessageReceiver::Raw(sub_topic.clone(), state.msg_rx)
+        MessageReceiver::Raw(sub_topic.clone(), context.msg_rx)
     } else {
-        MessageReceiver::Raw(sub_topic.clone(), state.msg_rx)
+        MessageReceiver::Raw(sub_topic.clone(), context.msg_rx)
     };
+
+    // dispatch incoming messages until the websocket is closed
 
     loop {
         tokio::select! {

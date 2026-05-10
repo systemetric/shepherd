@@ -21,6 +21,7 @@ where
     F: FnOnce(Config) -> Fut + Send + Sync + 'static,
     Fut: Future<Output = anyhow::Result<()>> + Send + 'static,
 {
+    let mut res = 0;
     let args = Args::parse();
 
     tracing_subscriber::fmt()
@@ -37,9 +38,13 @@ where
     }
 
     if let Err(e) = f(config).await {
+        res = 1;
         tracing::error!("{} failed with error: {e}", name.as_ref());
     }
 
     let now = chrono::Local::now();
     tracing::info!("{} exited at {}", name.as_ref(), now.to_rfc3339());
+
+    // if anything isn't dead by now it will die here
+    std::process::exit(res);
 }
