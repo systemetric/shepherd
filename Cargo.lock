@@ -613,8 +613,8 @@ dependencies = [
 
 [[package]]
 name = "hopper"
-version = "0.1.2"
-source = "git+https://github.com/systemetric/hopper?rev=v0.1.2#9503106beabe35398bd0be78db060075f7507c07"
+version = "0.1.3"
+source = "git+https://github.com/systemetric/hopper?rev=v0.1.3#260cf527aca357c79e4446a120689d33439c19ad"
 dependencies = [
  "bitflags 2.11.0",
  "nix 0.31.2",
