@@ -201,7 +201,7 @@ fn default_watch_host() -> String {
     "0.0.0.0".to_string()
 }
 fn default_watch_port() -> u16 {
-    1010
+    10100
 }
 
 impl Default for WatchConfig {
