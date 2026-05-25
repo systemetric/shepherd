@@ -134,7 +134,7 @@ fn default_run_uid() -> u32 {
     1000
 }
 fn default_run_gid() -> u32 {
-    100
+    1000
 }
 
 impl Default for RunConfig {
