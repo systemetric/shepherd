@@ -65,9 +65,8 @@ pub async fn handle_websocket_connection(
         MessageReceiver::Image(context.camera, context.cam_rx)
     } else if sub_topic == context.robot_log {
         // send stored logs to new connections
-        for msg in context.log_handle.current_log().await {
-            ws_tx.send(Message::Binary(msg)).await?;
-        }
+        let msg = context.log_handle.current_log().await;
+        ws_tx.send(Message::Binary(msg)).await?;
 
         debug!("sent current logs to new client");
 

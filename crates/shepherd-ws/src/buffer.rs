@@ -1,7 +1,7 @@
 use std::{collections::VecDeque, sync::Arc};
 
 use anyhow::Result;
-use bytes::Bytes;
+use bytes::{Bytes, BytesMut};
 use tokio::sync::{Mutex, mpsc};
 use tracing::debug;
 
@@ -30,9 +30,20 @@ impl LogBufferHandle {
     }
 
     /// Acquire a copy of the current buffer contents
-    pub async fn current_log(&self) -> Vec<Bytes> {
+    pub async fn current_log(&self) -> Bytes {
         let buffer = self.buffer.lock().await;
-        buffer.iter().cloned().collect()
+        let content: Vec<Bytes> = buffer.iter().cloned().collect();
+
+        // don't hold the lock for too long
+        std::mem::drop(buffer);
+
+        // merge messages into a single buffer
+        let mut nbuf = BytesMut::new();
+        for msg in content {
+            nbuf.extend_from_slice(&msg);
+        }
+
+        nbuf.freeze()
     }
 }
 
