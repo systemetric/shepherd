@@ -138,6 +138,8 @@ impl Usercode {
                                 .args(["python3", "-u", &self.config.run.usercode_script.to_string_lossy(), &entrypoint])
                                 .env("HOPPER_PATH", hopper)
                                 .current_dir(&self.config.path.user_cur_dir)
+                                .uid(self.config.run.uid)
+                                .gid(self.config.run.gid)
                                 .stdout(log_pipe)
                                 .stderr(err_pipe).spawn()?;
 

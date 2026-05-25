@@ -106,6 +106,10 @@ pub struct RunConfig {
     pub reset_script: PathBuf,
     #[serde(default = "default_run_usercode_script")]
     pub usercode_script: PathBuf,
+    #[serde(default = "default_run_uid")]
+    pub uid: u32,
+    #[serde(default = "default_run_gid")]
+    pub gid: u32,
 }
 
 fn default_run_service_id() -> String {
@@ -126,6 +130,12 @@ fn default_run_reset_script() -> PathBuf {
 fn default_run_usercode_script() -> PathBuf {
     PathBuf::from("/usr/local/bin/usercode.py")
 }
+fn default_run_uid() -> u32 {
+    1000
+}
+fn default_run_gid() -> u32 {
+    100
+}
 
 impl Default for RunConfig {
     fn default() -> Self {
@@ -136,6 +146,8 @@ impl Default for RunConfig {
             comp_timeout: default_run_comp_timeout(),
             reset_script: default_run_reset_script(),
             usercode_script: default_run_usercode_script(),
+            uid: default_run_uid(),
+            gid: default_run_gid(),
         }
     }
 }
