@@ -33,6 +33,15 @@ def read_project_attrs(path):
                 attrs[key] = val
     return attrs
 
+def read_int(s):
+    if s == None:
+        return None
+    try:
+        r = int(s)
+        return r
+    except ValueError:
+        return None
+
 try:
     attrs = read_project_attrs(sys.argv[1])
     if "project_name" in attrs:
@@ -46,7 +55,13 @@ try:
 
     # the stuff we actually care about
     from robocon import MODE
-    from robocon.brain.greengiant import GreenGiantInternal
+    from robocon.brain import PWM_SERVO
+    from robocon.brain.greengiant import (
+        GreenGiantInternal,
+        GreenGiantGPIOPinList,
+        _GG_SERVO_GPIO_BASE,
+        _GG_SERVO_PWM_BASE,
+    )
     from hopper import HopperPipe, HopperPipeType, JsonReader
 
     start_pressed = False
@@ -58,6 +73,58 @@ try:
     bus = smbus2.SMBus(1)
     green_giant = GreenGiantInternal(bus)
     gg_version = green_giant.get_version()
+
+    if gg_version >= 10:
+        gg_servos = GreenGiantGPIOPinList(bus, gg_version, 5, _GG_SERVO_GPIO_BASE, _GG_SERVO_PWM_BASE)
+    else:
+        gg_servos = GreenGiantGPIOPinList(bus, gg_version, None, None, _GG_SERVO_PWM_BASE)
+
+    def setup_defaults():
+        """Load defaults from project attributes"""
+
+        # whether we changed anything
+        r = False
+
+        # 12V power
+        if attrs.get("enable_12v") == "true":
+            print("Enabling 12V accessory power...", end="")
+            green_giant.set_12v_acc_power(True)
+            print("done")
+            r = True
+        elif attrs.get("enable_12v") == "false":
+            print("Disabling 12V accessory power...", end="")
+            green_giant.set_12v_acc_power(False)
+            print("done")
+            r = True
+
+        # 5V power
+        if attrs.get("enable_5v") == "true":
+            print("Enabling 5V accessory power...", end="")
+            green_giant.set_5v_acc_power(True)
+            print("done")
+            r = True
+        elif attrs.get("enable_5v") == "false":
+            print("Disabling 5V accessory power...", end="")
+            green_giant.set_5v_acc_power(False)
+            print("done")
+            r = True
+
+        # Servos
+        def try_set_servo_pos(n):
+            pos = read_int(attrs.get(f"servo{n}_pos"))
+            if pos and pos >= -100 and pos <= 100:
+                print(f"Setting servo {n} to position {pos}...", end="")
+                gg_servos[n].mode = PWM_SERVO
+                gg_servos[n] = pos
+                print("done")
+                r = True
+
+        try_set_servo_pos(0)
+        try_set_servo_pos(1)
+        try_set_servo_pos(2)
+        try_set_servo_pos(3)
+
+        return r
 
     def report_hardware_status():
         """Print out a nice log message at the start of each robot init with
@@ -132,9 +199,12 @@ try:
         settings["mode"] = MODE[settings["mode"].upper()]
         return settings
 
-    # just fancy status display
+    # just a fancy status display
     if "project_name" in attrs:
-        print("done\n")
+        print("done")
+
+    if setup_defaults() or "project_name" in attrs:
+        print("\n")
 
     report_hardware_status()
 
@@ -152,6 +222,7 @@ try:
     blink_thread.join()
 
     # usercode needs these later
+    del gg_servos
     del gg_version
     del green_giant
     del bus
