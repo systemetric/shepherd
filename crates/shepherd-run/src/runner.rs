@@ -40,6 +40,7 @@ impl Runner {
         let opts = Options::input([config.run.start_button])
             .edge(EdgeDetect::Falling)
             .bias(Bias::PullUp)
+            .debounce(Duration::from_millis(250))
             .consumer(config.run.service_id.clone());
         let lines = chip.request_lines(opts).await?;
         Ok((chip, lines))
@@ -241,33 +242,30 @@ impl Runner {
         mut lines: Lines<Input>,
         sender: UnboundedSender<StateEvent>,
     ) -> Result<()> {
-        let mut last_event = Duration::ZERO;
         loop {
-            let event = lines.read_event().await?;
-            if event.time - last_event >= Duration::from_millis(1000) {
-                info!("gpio start detected");
-                last_event = event.time;
+            let _ = lines.read_event().await?;
 
-                let arena_usb = PathBuf::from(&config.path.arena_usb);
+            info!("gpio start detected");
 
-                // pull zone info from arena usb
-                let zone = if arena_usb.join("zone1.txt").is_file() {
-                    Zone::from_id(1)
-                } else if arena_usb.join("zone2.txt").is_file() {
-                    Zone::from_id(2)
-                } else if arena_usb.join("zone3.txt").is_file() {
-                    Zone::from_id(3)
-                } else {
-                    // default to zone 0 always
-                    Zone::from_id(0)
-                };
+            let arena_usb = PathBuf::from(&config.path.arena_usb);
 
-                sender.send(StateEvent::SetTarget(Mode::Comp, zone))?;
-                sender.send(StateEvent::Transition(
-                    RunState::Running,
-                    Some(RunState::Ready),
-                ))?;
-            }
+            // pull zone info from arena usb
+            let zone = if arena_usb.join("zone1.txt").is_file() {
+                Zone::from_id(1)
+            } else if arena_usb.join("zone2.txt").is_file() {
+                Zone::from_id(2)
+            } else if arena_usb.join("zone3.txt").is_file() {
+                Zone::from_id(3)
+            } else {
+                // default to zone 0 always
+                Zone::from_id(0)
+            };
+
+            sender.send(StateEvent::SetTarget(Mode::Comp, zone))?;
+            sender.send(StateEvent::Transition(
+                RunState::Running,
+                Some(RunState::Ready),
+            ))?;
         }
     }
 
