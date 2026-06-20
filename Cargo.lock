@@ -574,9 +574,8 @@ dependencies = [
 
 [[package]]
 name = "gpiod-core"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15a60e3beb5444643d049a3f8769b47ce246ec1f57e6cd1aed1e417d57a47110"
+version = "0.3.1"
+source = "git+https://github.com/systemetric/gpiod-rs?rev=v0.3.1#f4b177bf61927b2724589af9984a8668edc69d94"
 dependencies = [
  "nix 0.26.4",
 ]
@@ -614,7 +613,7 @@ dependencies = [
 [[package]]
 name = "hopper"
 version = "0.1.3"
-source = "git+https://github.com/systemetric/hopper?rev=v0.1.3#260cf527aca357c79e4446a120689d33439c19ad"
+source = "git+https://github.com/systemetric/hopper?rev=v0.1.3#f20d86e9508e043c55d648b1c27f28cf51e7ef53"
 dependencies = [
  "bitflags 2.11.0",
  "nix 0.31.2",
@@ -1502,9 +1501,8 @@ dependencies = [
 
 [[package]]
 name = "tokio-gpiod"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce15fa0021a7acacd2be506f72aeb5044a0a8b53d684963f133b37ace5c57f47"
+version = "0.3.1"
+source = "git+https://github.com/systemetric/gpiod-rs?rev=v0.3.1#f4b177bf61927b2724589af9984a8668edc69d94"
 dependencies = [
  "gpiod-core",
  "libc",
