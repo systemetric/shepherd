@@ -31,7 +31,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 tempfile = "3.27.0"
 tokio = { version = "1.51.1", features = ["fs", "io-util", "macros", "net", "process", "rt-multi-thread", "sync"] }
-tokio-gpiod = { git = "https://github.com/systemetric/gpiod-rs", rev = "v0.3.1", version = "0.3.1" }
+tokio-gpiod = { git = "https://github.com/systemetric/gpiod-rs", rev = "v0.3.2", version = "0.3.2" }
 tokio-tungstenite = "0.29.0"
 toml = "1.1.2"
 tower = "0.5.3"
