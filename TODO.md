@@ -13,11 +13,11 @@
 
 - [x] structured subscriptions
 - [x] structured publications
-- [ ] unsubscribing?
+- [x] unsubscribing?
 
 # `shepherd-run`
 
-- [ ] handles events from gpio (start button), impl. further testing
+- [x] handles events from gpio (start button)
 - [x] handles events from mqtt
 - [x] sets up hopper for usercode (log + start)
 - [x] copies initial image to tmp
