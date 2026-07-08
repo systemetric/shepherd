@@ -330,7 +330,7 @@ impl Config {
         Ok(cfg)
     }
 
-    fn create_dir<P>(path: P) -> Result<()>
+    pub fn create_dir<P>(path: P) -> Result<()>
     where
         P: AsRef<Path>,
     {
@@ -343,12 +343,25 @@ impl Config {
     }
 
     pub fn setup_dirs(&self) -> Result<()> {
-        Self::create_dir(&self.path.root)?;
-        Self::create_dir(&self.path.hopper)?;
-        Self::create_dir(&self.path.user_cur_dir)?;
+        fn _create_dir<P>(path: P)
+        where
+            P: AsRef<Path>,
+        {
+            if let Err(e) = Config::create_dir(path.as_ref()) {
+                tracing::warn!(
+                    "directory creation for '{:?}' failed: {:?}",
+                    path.as_ref(),
+                    e
+                );
+            }
+        }
 
-        Self::create_dir(&self.app.static_dir)?;
-        Self::create_dir(&self.app.user_src_dir)?;
+        _create_dir(&self.path.root);
+        _create_dir(&self.path.hopper);
+        _create_dir(&self.path.user_cur_dir);
+
+        _create_dir(&self.app.static_dir);
+        _create_dir(&self.app.user_src_dir);
 
         Ok(())
     }
