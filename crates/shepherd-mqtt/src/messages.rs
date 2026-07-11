@@ -9,6 +9,7 @@ pub enum ControlMessageType {
     Start,
     Stop,
     Reset,
+    Patch,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -40,17 +41,4 @@ pub struct StatusMessage {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StatusSummary {
     pub statuses: Vec<StatusMessage>,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum PatchStatus {
-    Receive,
-    Apply,
-    Failed,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct PatchStatusMessage {
-    pub status: PatchStatus,
 }

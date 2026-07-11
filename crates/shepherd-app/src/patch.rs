@@ -6,10 +6,10 @@ use axum::{
     http::StatusCode,
     routing::post,
 };
-use shepherd_common::config::Config;
+use shepherd_common::{Mode, Zone, config::Config};
 use shepherd_mqtt::{
     MqttAsyncClient,
-    messages::{PatchStatus, PatchStatusMessage},
+    messages::{ControlMessage, ControlMessageType},
 };
 use tracing::info;
 use zip::ZipArchive;
@@ -20,7 +20,7 @@ use crate::error::{ShepherdError, ShepherdResult};
 struct PatchState {
     patch_dir: PathBuf,
     mqttc: MqttAsyncClient,
-    patch_status: String,
+    robot_control: String,
 }
 
 async fn process_zip(state: PatchState, mut field: Field<'_>) -> ShepherdResult<()> {
@@ -55,9 +55,11 @@ async fn process_zip(state: PatchState, mut field: Field<'_>) -> ShepherdResult<
     state
         .mqttc
         .publish(
-            &state.patch_status,
-            PatchStatusMessage {
-                status: PatchStatus::Apply,
+            &state.robot_control,
+            ControlMessage {
+                _type: ControlMessageType::Patch,
+                mode: Mode::Dev,
+                zone: Zone::Red,
             },
             true,
         )
@@ -68,18 +70,6 @@ async fn process_zip(state: PatchState, mut field: Field<'_>) -> ShepherdResult<
 }
 
 async fn upload(State(state): State<PatchState>, mut multipart: Multipart) -> ShepherdResult<()> {
-    state
-        .mqttc
-        .publish(
-            &state.patch_status,
-            PatchStatusMessage {
-                status: PatchStatus::Receive,
-            },
-            true,
-        )
-        .await
-        .map_err(|e| ShepherdError(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-
     while let Some(field) = multipart
         .next_field()
         .await
@@ -110,6 +100,6 @@ pub fn router(config: &Config, mqttc: MqttAsyncClient) -> Router {
         .with_state(PatchState {
             patch_dir: config.app.patch_dir.clone(),
             mqttc,
-            patch_status: config.channel.patch_status.clone(),
+            robot_control: config.channel.robot_control.clone(),
         })
 }

@@ -24,6 +24,8 @@ pub struct Config {
     pub channel: ChannelConfig,
     #[serde(default)]
     pub path: PathConfig,
+    #[serde(default)]
+    pub patch: PatchConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -250,8 +252,6 @@ pub struct ChannelConfig {
     pub user_state: String,
     #[serde(default = "default_status")]
     pub status: String,
-    #[serde(default = "default_patch_status")]
-    pub patch_status: String,
 }
 
 fn default_channel_robot_control() -> String {
@@ -269,9 +269,6 @@ fn default_user_status() -> String {
 fn default_status() -> String {
     "status".to_string()
 }
-fn default_patch_status() -> String {
-    "patch/status".to_string()
-}
 
 impl Default for ChannelConfig {
     fn default() -> Self {
@@ -281,7 +278,6 @@ impl Default for ChannelConfig {
             camera: default_channel_camera(),
             user_state: default_user_status(),
             status: default_status(),
-            patch_status: default_patch_status(),
         }
     }
 }
@@ -336,6 +332,36 @@ impl Default for PathConfig {
             game_image: default_path_game_image(),
             robot_usb: default_path_robot_usb(),
             arena_usb: default_path_arena_usb(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct PatchConfig {
+    #[serde(default = "default_patch_uid")]
+    pub uid: u32,
+    #[serde(default = "default_patch_gid")]
+    pub gid: u32,
+    #[serde(default = "default_patch_working_dir")]
+    pub working_dir: PathBuf,
+}
+
+fn default_patch_uid() -> u32 {
+    0u32
+}
+fn default_patch_gid() -> u32 {
+    0u32
+}
+fn default_patch_working_dir() -> PathBuf {
+    PathBuf::from("/")
+}
+
+impl Default for PatchConfig {
+    fn default() -> Self {
+        Self {
+            uid: default_patch_uid(),
+            gid: default_patch_gid(),
+            working_dir: default_patch_working_dir(),
         }
     }
 }
