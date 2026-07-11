@@ -1,7 +1,11 @@
-use std::{ffi::OsStr, path::Path, time::Duration};
+use std::{
+    ffi::{CString, OsStr},
+    path::Path,
+    time::Duration,
+};
 
 use anyhow::Result;
-use nix::unistd::{Gid, Uid};
+use nix::unistd::{Gid, Uid, User};
 use serde::{Deserialize, Serialize};
 use shepherd_common::{Mode, Zone, config::Config};
 use tokio::{
@@ -159,15 +163,54 @@ impl Usercode {
         let log_pipe = self.log_pipe.fd()?.try_clone()?;
         let err_pipe = self.log_pipe.fd()?.try_clone()?;
 
-        let child = Command::new("/usr/bin/env")
-            .args(args.args)
-            .env("HOPPER_PATH", hopper)
-            .current_dir(args.working_dir)
-            .uid(args.uid)
-            .gid(args.gid)
-            .stdout(log_pipe)
-            .stderr(err_pipe)
-            .spawn()?;
+        let child = unsafe {
+            Command::new("/usr/bin/env")
+                .args(args.args)
+                .env("HOPPER_PATH", hopper)
+                .current_dir(args.working_dir)
+                .stdout(log_pipe)
+                .stderr(err_pipe)
+                .pre_exec(move || {
+                    fn init_suppl_groups(uid: Uid, gid: Gid) {
+                        // user database lookup to init suppl groups
+                        let user = match User::from_uid(uid) {
+                            Ok(Some(u)) => u,
+                            Ok(None) => {
+                                println!("[warn] user {:?} not found in user database, skipping supplementary groups", uid);
+                                return;
+                            }
+                            Err(e) => {
+                                println!(
+                                    "[warn] failed to query user ({:?})  database, skipping supplementary groups: {:?}",
+                                    uid,
+                                    e
+                                );
+                                return;
+                            }
+                        };
+
+                        let Ok(un) = CString::new(user.name.clone()) else {
+                            println!("[warn] user ({:?}) name contained a null byte, skipping supplementary groups", uid);
+                            return;
+                        };
+
+                        if let Err(e) = nix::unistd::initgroups(&un, gid) {
+                            println!("[warn] failed to initialise supplementary groups, ignoring: {:?}", e);
+                        }
+                    }
+
+                    let uid = Uid::from_raw(args.uid);
+                    let gid = Gid::from_raw(args.gid);
+
+                    init_suppl_groups(uid, gid);
+
+                    nix::unistd::setgid(gid)?;
+                    nix::unistd::setuid(uid)?;
+
+                    Ok(())
+                })
+                .spawn()?
+        };
 
         Ok(child)
     }
