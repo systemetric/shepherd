@@ -401,7 +401,6 @@ impl Config {
         }
 
         _create_dir(&self.path.root);
-        _create_dir(&self.path.hopper);
         _create_dir(&self.path.user_cur_dir);
 
         _create_dir(&self.app.static_dir);
