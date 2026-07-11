@@ -1,6 +1,7 @@
 use std::{ffi::OsStr, path::Path, time::Duration};
 
 use anyhow::Result;
+use nix::unistd::{Gid, Uid};
 use serde::{Deserialize, Serialize};
 use shepherd_common::{Mode, Zone, config::Config};
 use tokio::{
@@ -9,6 +10,7 @@ use tokio::{
     time::sleep,
 };
 use tracing::debug;
+use walkdir::WalkDir;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct ControlMessage {
@@ -127,7 +129,24 @@ impl Usercode {
         }
     }
 
-    // spawn a generic child with logging to hopper
+    fn prep_user_cur_dir(&self) -> Result<()> {
+        let uid = Some(Uid::from_raw(self.config.run.uid));
+        let gid = Some(Gid::from_raw(self.config.run.gid));
+
+        debug!("setting user dir ownership: ({:?}, {:?})", uid, gid);
+
+        // set owner to usercode uid, gid
+        for entry in WalkDir::new(&self.config.path.user_cur_dir) {
+            let entry = entry?;
+            nix::unistd::chown(entry.path(), uid, gid)?;
+        }
+
+        nix::unistd::chown(&self.config.path.user_cur_dir, uid, gid)?;
+
+        Ok(())
+    }
+
+    /// spawn a generic child with logging to hopper
     fn spawn_child<P, I, S>(&self, args: SpawnChildArgs<P, I, S>) -> Result<Child>
     where
         P: AsRef<Path>,
@@ -173,6 +192,8 @@ impl Usercode {
                                 .join("main.py")
                                 .to_string_lossy()
                                 .to_string();
+
+                            self.prep_user_cur_dir()?;
 
                             let sc_args = SpawnChildArgs {
                                 uid: self.config.run.uid,

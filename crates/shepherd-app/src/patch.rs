@@ -61,7 +61,7 @@ async fn process_zip(state: PatchState, mut field: Field<'_>) -> ShepherdResult<
                 mode: Mode::Dev,
                 zone: Zone::Red,
             },
-            true,
+            false,
         )
         .await
         .map_err(|e| ShepherdError(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
