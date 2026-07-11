@@ -9,6 +9,7 @@ use tower_http::{services::fs::ServeDir, trace::TraceLayer};
 mod control;
 mod error;
 mod files;
+mod patch;
 mod upload;
 
 async fn _main(config: Config) -> Result<()> {
@@ -21,7 +22,8 @@ async fn _main(config: Config) -> Result<()> {
     let app = Router::new()
         .nest("/control", control::router(&config, client.clone()))
         .nest("/files", files::router(&config))
-        .nest("/upload", upload::router(&config, client))
+        .nest("/upload", upload::router(&config, client.clone()))
+        .nest("/patch", patch::router(&config, client))
         .fallback_service(ServiceBuilder::new().service(ServeDir::new(config.app.static_dir)))
         .layer(TraceLayer::new_for_http());
     let listener = TcpListener::bind(format!("{}:{}", config.app.host, config.app.port)).await?;

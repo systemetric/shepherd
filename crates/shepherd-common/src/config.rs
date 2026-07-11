@@ -62,6 +62,8 @@ pub struct AppConfig {
     pub static_dir: PathBuf,
     #[serde(default = "default_app_user_src_dir")]
     pub user_src_dir: PathBuf,
+    #[serde(default = "default_app_patch_dir")]
+    pub patch_dir: PathBuf,
 }
 
 fn default_app_service_id() -> String {
@@ -79,6 +81,9 @@ fn default_app_static_dir() -> PathBuf {
 fn default_app_user_src_dir() -> PathBuf {
     default_path_root().join("usercode/projects")
 }
+fn default_app_patch_dir() -> PathBuf {
+    PathBuf::from("/var/patchtool/staging")
+}
 
 impl Default for AppConfig {
     fn default() -> Self {
@@ -88,6 +93,7 @@ impl Default for AppConfig {
             port: default_app_port(),
             static_dir: default_app_static_dir(),
             user_src_dir: default_app_user_src_dir(),
+            patch_dir: default_app_patch_dir(),
         }
     }
 }
@@ -110,6 +116,8 @@ pub struct RunConfig {
     pub uid: u32,
     #[serde(default = "default_run_gid")]
     pub gid: u32,
+    #[serde(default = "default_run_patch_apply")]
+    pub patch_apply: PathBuf,
 }
 
 fn default_run_service_id() -> String {
@@ -136,6 +144,9 @@ fn default_run_uid() -> u32 {
 fn default_run_gid() -> u32 {
     1000
 }
+fn default_run_patch_apply() -> PathBuf {
+    PathBuf::from("/usr/local/bin/patchtool-apply.sh")
+}
 
 impl Default for RunConfig {
     fn default() -> Self {
@@ -148,6 +159,7 @@ impl Default for RunConfig {
             usercode_script: default_run_usercode_script(),
             uid: default_run_uid(),
             gid: default_run_gid(),
+            patch_apply: default_run_patch_apply(),
         }
     }
 }
@@ -238,6 +250,8 @@ pub struct ChannelConfig {
     pub user_state: String,
     #[serde(default = "default_status")]
     pub status: String,
+    #[serde(default = "default_patch_status")]
+    pub patch_status: String,
 }
 
 fn default_channel_robot_control() -> String {
@@ -255,6 +269,9 @@ fn default_user_status() -> String {
 fn default_status() -> String {
     "status".to_string()
 }
+fn default_patch_status() -> String {
+    "patch/status".to_string()
+}
 
 impl Default for ChannelConfig {
     fn default() -> Self {
@@ -264,6 +281,7 @@ impl Default for ChannelConfig {
             camera: default_channel_camera(),
             user_state: default_user_status(),
             status: default_status(),
+            patch_status: default_patch_status(),
         }
     }
 }
@@ -362,6 +380,7 @@ impl Config {
 
         _create_dir(&self.app.static_dir);
         _create_dir(&self.app.user_src_dir);
+        _create_dir(&self.app.patch_dir);
 
         Ok(())
     }
