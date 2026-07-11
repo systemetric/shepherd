@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{ffi::OsStr, path::Path, time::Duration};
 
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
@@ -18,6 +18,7 @@ struct ControlMessage {
 
 enum UsercodeMessage {
     Start,
+    StartPatch,
     SendStartInfo(Mode, Zone),
     SetTimeout(Duration),
     Kill,
@@ -31,6 +32,12 @@ impl UsercodeHandle {
     /// start usercode, if it is already running it will be killed first
     pub fn start(&self) -> Result<()> {
         self.send.send(UsercodeMessage::Start)?;
+        Ok(())
+    }
+
+    /// start patch applictaion, usercode will be killed
+    pub fn start_patch(&self) -> Result<()> {
+        self.send.send(UsercodeMessage::StartPatch)?;
         Ok(())
     }
 
@@ -52,6 +59,18 @@ impl UsercodeHandle {
         self.send.send(UsercodeMessage::Kill)?;
         Ok(())
     }
+}
+
+struct SpawnChildArgs<P, I, S>
+where
+    P: AsRef<Path>,
+    I: IntoIterator<Item = S>,
+    S: AsRef<OsStr>,
+{
+    uid: u32,
+    gid: u32,
+    working_dir: P,
+    args: I,
 }
 
 pub struct Usercode {
@@ -108,6 +127,32 @@ impl Usercode {
         }
     }
 
+    // spawn a generic child with logging to hopper
+    fn spawn_child<P, I, S>(&self, args: SpawnChildArgs<P, I, S>) -> Result<Child>
+    where
+        P: AsRef<Path>,
+        I: IntoIterator<Item = S>,
+        S: AsRef<OsStr>,
+    {
+        let hopper = self.config.path.hopper.to_string_lossy().to_string();
+
+        // stdio handles are owned, clone fds here
+        let log_pipe = self.log_pipe.fd()?.try_clone()?;
+        let err_pipe = self.log_pipe.fd()?.try_clone()?;
+
+        let child = Command::new("/usr/bin/env")
+            .args(args.args)
+            .env("HOPPER_PATH", hopper)
+            .current_dir(args.working_dir)
+            .uid(args.uid)
+            .gid(args.gid)
+            .stdout(log_pipe)
+            .stderr(err_pipe)
+            .spawn()?;
+
+        Ok(child)
+    }
+
     pub async fn run(&mut self) -> Result<()> {
         let mut timeout = None;
 
@@ -121,7 +166,6 @@ impl Usercode {
                                 let _ = child.wait().await;
                             }
 
-                            let hopper = self.config.path.hopper.to_string_lossy().to_string();
                             let entrypoint = self
                                 .config
                                 .path
@@ -130,20 +174,36 @@ impl Usercode {
                                 .to_string_lossy()
                                 .to_string();
 
-                            // stdio handles are owned, clone fds here
-                            let log_pipe = self.log_pipe.fd()?.try_clone()?;
-                            let err_pipe = self.log_pipe.fd()?.try_clone()?;
+                            let sc_args = SpawnChildArgs {
+                                uid: self.config.run.uid,
+                                gid: self.config.run.gid,
+                                working_dir: &self.config.path.user_cur_dir,
+                                args: ["python3", "-u", &self.config.run.usercode_script.to_string_lossy(), &entrypoint],
+                            };
 
-                            let child = Command::new("/usr/bin/env")
-                                .args(["python3", "-u", &self.config.run.usercode_script.to_string_lossy(), &entrypoint])
-                                .env("HOPPER_PATH", hopper)
-                                .current_dir(&self.config.path.user_cur_dir)
-                                .uid(self.config.run.uid)
-                                .gid(self.config.run.gid)
-                                .stdout(log_pipe)
-                                .stderr(err_pipe).spawn()?;
+                            let child = self.spawn_child(sc_args)?;
 
                             debug!("Start( {:?} )", child.id());
+
+                            self.usercode = Some(child);
+                            timeout = None;
+                        },
+                        UsercodeMessage::StartPatch => {
+                            if let Some(mut child) = self.usercode.take() {
+                                let _ = child.kill().await;
+                                let _ = child.wait().await;
+                            }
+
+                            let sc_args = SpawnChildArgs {
+                                uid: self.config.patch.uid,
+                                gid: self.config.patch.gid,
+                                working_dir: &self.config.patch.working_dir,
+                                args: [&self.config.run.patch_apply],
+                            };
+
+                            let child = self.spawn_child(sc_args)?;
+
+                            debug!("StartPatch ( {:?} )", child.id());
 
                             self.usercode = Some(child);
                             timeout = None;

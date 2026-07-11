@@ -21,6 +21,7 @@ use crate::usercode::{Usercode, UsercodeHandle};
 pub enum StateEvent {
     Transition(RunState, Option<RunState>),
     SetTarget(Mode, Zone),
+    SpawnPatch,
 }
 
 pub struct Runner {
@@ -209,6 +210,24 @@ impl Runner {
 
                     info!("update (mode, zone) to ({:?}, {:?})", mode, zone);
                 }
+                StateEvent::SpawnPatch => {
+                    if self.state != RunState::PostRun {
+                        warn!(
+                            "cannot spawn patch, requires {:?}, got {:?}",
+                            RunState::PostRun,
+                            self.state
+                        );
+                        continue;
+                    }
+
+                    if let Some(uh) = &self.usercode_handle {
+                        uh.start_patch()?;
+                    } else {
+                        return Err(anyhow!(
+                            "tried to start patch, but usercode handle was not set?"
+                        ));
+                    }
+                }
             }
         }
 
@@ -231,6 +250,11 @@ impl Runner {
             }
             ControlMessageType::Reset => {
                 sender.send(StateEvent::Transition(RunState::Ready, None))?
+            }
+            ControlMessageType::Patch => {
+                // patch should overrides user code
+                sender.send(StateEvent::Transition(RunState::PostRun, None))?;
+                sender.send(StateEvent::SpawnPatch)?;
             }
         }
         Ok(())
