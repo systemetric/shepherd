@@ -1,13 +1,16 @@
 #!/bin/sh
 set -eu
 
+# clear sheep
+echo -e "\e[2J"
+
 if [ "$(id -u)" != "0" ]; then
     echo "patchtool-apply must be run as root"
     exit 1
 fi
 
 : "${STAGING:=/var/patchtool/staging}"
-: "${WRAPPER:=/home/pi/robot/robot/wrapper.py}"
+: "${WRAPPER:=/usr/local/bin/usercode.py}"
 
 echo "STAGING $STAGING"
 
@@ -57,7 +60,9 @@ awk '{print $2}' ./CHECKSUMS \
 diff -u "$TMP_FILES" "$TMP_HASHES" && echo "OK" || exit 1
 
 echo
-echo "Ready to apply patch..."
+echo "PATCH OK"
+echo
+echo "APPLYING PATCH..."
 echo
 
 echo "COPYING ROOT"
@@ -68,7 +73,7 @@ else
     EXCL=""
 fi
 
-tar -cvf - $EXCL "$STAGING" | tar -xpf - -C /
+tar -C "$STAGING" $EXCL -cvf - . | tar -C / -xpf -
 echo
 
 [ -f ./APPLY ] && echo "APPLY SCRIPT" && source ./APPLY && echo
@@ -76,9 +81,11 @@ echo
 echo "MISC"
 [ -f ./VERSION ] && [ -f "$WRAPPER" ] \
     && sed -i \
-        "s/\(.*_logger.info(\"Patch Version:\).*/\1     $(cat ./VERSION)\"\)/" \
+        "s/\(.*print(\"Patch Version:\).*/\1     $(cat ./VERSION)\"\)/" \
         "$WRAPPER"
 echo
 
 cd "$OLD_DIR"
 echo "PATCH APPLIED"
+
+rm -rf "$STAGING" || true

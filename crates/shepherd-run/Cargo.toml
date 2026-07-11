@@ -9,6 +9,7 @@ license.workspace = true
 anyhow.workspace = true
 base64.workspace = true
 hopper.workspace = true
+nix.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 shepherd-common = { path = "../shepherd-common" }
@@ -16,3 +17,4 @@ shepherd-mqtt = { path = "../shepherd-mqtt" }
 tokio.workspace = true
 tokio-gpiod.workspace = true
 tracing.workspace = true
+walkdir.workspace = true
