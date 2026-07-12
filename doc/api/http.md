@@ -162,6 +162,17 @@ Stop running usercode, if it is running.
 
 If this request succeeds, status code 204 is set.
 
+## Patch
+
+### `/patch/upload`
+
+Upload and start a patch ZIP.
+
+- Methods: `POST`
+
+Patches should be uploaded as form data, the format requirements are the same
+as for `/upload/file`.
+
 ## Errors
 
 If an error occurs during processing of any of the above requests, an

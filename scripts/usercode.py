@@ -72,7 +72,6 @@ try:
         _GG_SERVO_PWM_BASE,
     )
 
-
     bus = smbus2.SMBus(1)
     green_giant = GreenGiantInternal(bus)
     gg_version = green_giant.get_version()
