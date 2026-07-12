@@ -97,6 +97,7 @@ impl Usercode {
             &config.run.service_id,
             &config.channel.robot_control,
             Some(&config.path.hopper),
+            config.hopper.gid,
         )?;
 
         let mut log_pipe = hopper::Pipe::new(
@@ -104,6 +105,7 @@ impl Usercode {
             &config.run.service_id,
             &config.channel.robot_log,
             Some(&config.path.hopper),
+            config.hopper.gid,
         )?;
 
         start_pipe.open()?;
@@ -163,13 +165,22 @@ impl Usercode {
         let log_pipe = self.log_pipe.fd()?.try_clone()?;
         let err_pipe = self.log_pipe.fd()?.try_clone()?;
 
-        let child = unsafe {
-            Command::new("/usr/bin/env")
-                .args(args.args)
-                .env("HOPPER_PATH", hopper)
-                .current_dir(args.working_dir)
-                .stdout(log_pipe)
-                .stderr(err_pipe)
+        let mut command = Command::new("/usr/bin/env");
+
+        command
+            .args(args.args)
+            .env("HOPPER_PATH", hopper)
+            .current_dir(args.working_dir)
+            .stdout(log_pipe)
+            .stderr(err_pipe);
+
+        if let Some(gid) = self.config.hopper.gid {
+            command.env("HOPPER_GID", format!("{gid}"));
+        }
+
+        unsafe {
+            command
+                // runs after fork to init suppl groups and change gid/uid
                 .pre_exec(move || {
                     fn init_suppl_groups(uid: Uid, gid: Gid) {
                         // user database lookup to init suppl groups
@@ -208,9 +219,10 @@ impl Usercode {
                     nix::unistd::setuid(uid)?;
 
                     Ok(())
-                })
-                .spawn()?
-        };
+                });
+        }
+
+        let child = command.spawn()?;
 
         Ok(child)
     }

@@ -70,12 +70,14 @@ async fn _main(config: Config) -> Result<()> {
         &config.ws.service_id,
         &config.channel.robot_log,
         Some(config.path.hopper.clone()),
+        config.hopper.gid,
     )?;
     let mut camera_pipe = Pipe::new(
         PipeMode::OUT,
         &config.ws.service_id,
         &config.channel.camera,
         Some(config.path.hopper.clone()),
+        config.hopper.gid,
     )?;
 
     log_pipe.open()?;

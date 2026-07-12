@@ -47,6 +47,15 @@ try:
     if "project_name" in attrs:
         print(f"Loading project '{attrs['project_name']}'...", end="")
 
+    # set up hopper first
+    from hopper import HopperPipe, HopperPipeType, JsonReader
+
+    start_pressed = False
+    warnings = []
+    start_pipe = HopperPipe(HopperPipeType.OUT, "robot", "robot/control")
+    start_pipe.open()
+    start_json_reader = JsonReader(start_pipe)
+
     # import everything big here for module caching
     import robocon
     from robocon.game import *
@@ -62,13 +71,7 @@ try:
         _GG_SERVO_GPIO_BASE,
         _GG_SERVO_PWM_BASE,
     )
-    from hopper import HopperPipe, HopperPipeType, JsonReader
 
-    start_pressed = False
-    warnings = []
-    start_pipe = HopperPipe(HopperPipeType.OUT, "robot", "robot/control")
-    start_pipe.open()
-    start_json_reader = JsonReader(start_pipe)
 
     bus = smbus2.SMBus(1)
     green_giant = GreenGiantInternal(bus)
@@ -204,7 +207,7 @@ try:
         print("done")
 
     if setup_defaults() or "project_name" in attrs:
-        print("\n")
+        print()
 
     report_hardware_status()
 

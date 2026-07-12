@@ -26,6 +26,8 @@ pub struct Config {
     pub path: PathConfig,
     #[serde(default)]
     pub patch: PatchConfig,
+    #[serde(default)]
+    pub hopper: HopperConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -362,6 +364,24 @@ impl Default for PatchConfig {
             uid: default_patch_uid(),
             gid: default_patch_gid(),
             working_dir: default_patch_working_dir(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct HopperConfig {
+    #[serde(default = "default_hopper_gid")]
+    pub gid: Option<u32>,
+}
+
+fn default_hopper_gid() -> Option<u32> {
+    None
+}
+
+impl Default for HopperConfig {
+    fn default() -> Self {
+        Self {
+            gid: default_hopper_gid(),
         }
     }
 }
