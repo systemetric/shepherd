@@ -308,6 +308,7 @@ impl Runner {
             &self.config.run.service_id,
             &self.config.channel.camera,
             Some(&self.config.path.hopper),
+            self.config.hopper.gid,
         )?;
         image_pipe.open()?;
         self.image_pipe = Some(Arc::new(image_pipe));
