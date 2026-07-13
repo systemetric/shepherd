@@ -23,10 +23,17 @@ cd "$STAGING"
 [ -f ./NAME ] && echo "NAME $(cat ./NAME)"
 [ -f ./VERSION ] && echo "VERSION $(cat ./VERSION)"
 [ -f ./DESC ] && echo "DESCRIPTION $(cat ./DESC)"
-[ -f ./APPLY ] && echo "CONTAINS APPLY SCRIPT"
+[ -f ./PRE_APPLY ] && echo "CONTAINS PRE-APPLY SCRIPT"
 
-if [ -f ./APPLY ] && [ ! -x ./APPLY ]; then
-    echo "APPLY SCRIPT NOT EXECUTABLE?"
+if [ -f ./PRE_APPLY ] && [ ! -x ./PRE_APPLY ]; then
+    echo "PRE-APPLY SCRIPT NOT EXECUTABLE?"
+    exit 1
+fi
+
+[ -f ./POST_APPLY ] && echo "CONTAINS POST-APPLY SCRIPT"
+
+if [ -f ./POST_APPLY ] && [ ! -x ./POST_APPLY ]; then
+    echo "POST-APPLY SCRIPT NOT EXECUTABLE?"
     exit 1
 fi
 
@@ -65,6 +72,8 @@ echo
 echo "APPLYING PATCH..."
 echo
 
+[ -f ./PRE_APPLY ] && echo "PRE-APPLY SCRIPT" && source ./PRE_APPLY && echo
+
 echo "COPYING ROOT"
 
 if [ -f ./EXCLUDE ]; then
@@ -76,7 +85,7 @@ fi
 tar -C "$STAGING" $EXCL -cvf - . | tar -C / -xpf -
 echo
 
-[ -f ./APPLY ] && echo "APPLY SCRIPT" && source ./APPLY && echo
+[ -f ./POST_APPLY ] && echo "POST-APPLY SCRIPT" && source ./POST_APPLY && echo
 
 echo "MISC"
 [ -f ./VERSION ] && [ -f "$WRAPPER" ] \
