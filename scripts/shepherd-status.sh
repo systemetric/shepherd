@@ -22,7 +22,7 @@ send_online() {
 
 send_offline() {
     printf "{\"service\":\"$SERVICE_ID\",\"status\":\"offline\"}\n" \
-        | $MIDGE -x -a "$ADDR" "$SERVICE_ID" "$SERVICE_ID/status"
+        | $MIDGE -nx -a "$ADDR" "$SERVICE_ID" "$SERVICE_ID/status"
 }
 
 trap send_offline EXIT INT TERM HUP
