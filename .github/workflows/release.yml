@@ -20,10 +20,11 @@ jobs:
 
     - name: Package Shepherd x86_64
       run: |
-          mkdir -p out
+          mkdir -p out/bin/x86_64
+          cp -r result/bin/* out/bin/x86_64/
           (
-            cd result/bin
-            zip -r ../../out/shepherd-x86_64.zip .
+            cd out/bin/x86_64
+            zip -r ../../shepherd-x86_64.zip .
           )
 
     - name: Build Shepherd aarch64
@@ -31,14 +32,15 @@ jobs:
 
     - name: Package Shepherd aarch64
       run: |
-          mkdir -p out
+          mkdir -p out/bin/aarch64
+          cp -r result/bin/* out/bin/aarch64/
           (
-            cd result/bin
-            zip -r ../../out/shepherd-aarch64.zip .
+            cd out/bin/aarch64
+            zip -r ../../shepherd-aarch64.zip .
           )
 
     - name: Create release
       uses: softprops/action-gh-release@v3
       with:
-        files: out/*
+        files: out/*.zip
         generate_release_notes: true
