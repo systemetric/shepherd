@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v26
+
+    - name: Build Shepherd x86_64
+      run: nix build .#cross-x86_64
+
+    - name: Package Shepherd x86_64
+      run: |
+          mkdir -p out
+          (
+            cd result/bin
+            zip -r ../../out/shepherd-x86_64.zip
+          )
+
+    - name: Build Shepherd aarch64
+      run: nix build .#cross-aarch64
+
+    - name: Package Shepherd aarch64
+      run: |
+          mkdir -p out
+          (
+            cd result/bin
+            zip -r ../../out/shepherd-aarch64.zip
+          )
+
+    - name: Create release
+      uses: softprops/action-gh-release@v3
+      with:
+        files: out/*
+        generate_release_notes: true
