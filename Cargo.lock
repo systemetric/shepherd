@@ -1257,7 +1257,7 @@ dependencies = [
 
 [[package]]
 name = "shepherd-app"
-version = "0.1.0"
+version = "5.0.0"
 dependencies = [
  "anyhow",
  "axum",
@@ -1276,7 +1276,7 @@ dependencies = [
 
 [[package]]
 name = "shepherd-common"
-version = "0.1.0"
+version = "5.0.0"
 dependencies = [
  "anyhow",
  "chrono",
@@ -1289,7 +1289,7 @@ dependencies = [
 
 [[package]]
 name = "shepherd-mqtt"
-version = "0.1.0"
+version = "5.0.0"
 dependencies = [
  "anyhow",
  "bytes",
@@ -1304,7 +1304,7 @@ dependencies = [
 
 [[package]]
 name = "shepherd-run"
-version = "0.1.0"
+version = "5.0.0"
 dependencies = [
  "anyhow",
  "base64",
@@ -1322,7 +1322,7 @@ dependencies = [
 
 [[package]]
 name = "shepherd-watch"
-version = "0.1.0"
+version = "5.0.0"
 dependencies = [
  "anyhow",
  "futures-util",
@@ -1336,7 +1336,7 @@ dependencies = [
 
 [[package]]
 name = "shepherd-ws"
-version = "0.1.0"
+version = "5.0.0"
 dependencies = [
  "anyhow",
  "bytes",
