@@ -23,7 +23,7 @@ jobs:
           mkdir -p out
           (
             cd result/bin
-            zip -r ../../out/shepherd-x86_64.zip
+            zip -r ../../out/shepherd-x86_64.zip .
           )
 
     - name: Build Shepherd aarch64
@@ -34,7 +34,7 @@ jobs:
           mkdir -p out
           (
             cd result/bin
-            zip -r ../../out/shepherd-aarch64.zip
+            zip -r ../../out/shepherd-aarch64.zip .
           )
 
     - name: Create release
