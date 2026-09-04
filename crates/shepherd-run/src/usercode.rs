@@ -169,6 +169,7 @@ impl Usercode {
 
         command
             .args(args.args)
+            .env_clear()    // remove our environment from the child
             .env("HOPPER_PATH", hopper)
             .current_dir(args.working_dir)
             .stdout(log_pipe)
