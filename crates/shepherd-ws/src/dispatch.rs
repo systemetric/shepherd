@@ -23,7 +23,7 @@ pub async fn dispatch_mqtt_message(
 ) -> Result<()> {
     if topic == context.status_channel
         && let Ok(msg) = serde_json::from_slice::<RunStatusMessage>(&message)
-        && msg.state == RunState::Ready
+        && (msg.state == RunState::Ready || msg.state == RunState::Patch)
     {
         // clear logs when reset message received
         let _ = context.log_handle.clear();

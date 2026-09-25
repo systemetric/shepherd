@@ -20,6 +20,7 @@ use crate::usercode::{Usercode, UsercodeHandle};
 
 pub enum StateEvent {
     Transition(RunState, Option<RunState>),
+    SetKillTarget(u64),
     SetTarget(Mode, Zone),
     SpawnPatch,
 }
@@ -32,6 +33,7 @@ pub struct Runner {
     usercode_handle: Option<UsercodeHandle>,
     state_sender: Option<UnboundedSender<StateEvent>>,
     image_pipe: Option<Arc<Pipe>>,
+    kill_target: Option<u64>,
 }
 
 impl Runner {
@@ -56,6 +58,7 @@ impl Runner {
             usercode_handle: None,
             state_sender: None,
             image_pipe: None,
+            kill_target: None,
         })
     }
 
@@ -149,7 +152,7 @@ impl Runner {
     /// post-run transition, kill usercode, reset state
     async fn state_post_run(&mut self) -> Result<()> {
         if let Some(uh) = &self.usercode_handle {
-            uh.kill()?;
+            uh.kill(self.kill_target.take())?;
         } else {
             return Err(anyhow!("tried to kill usercode, but handle was not set?"));
         }
@@ -167,6 +170,12 @@ impl Runner {
         while let Some(ev) = recv.recv().await {
             match ev {
                 StateEvent::Transition(next, prev) => {
+                    if next == RunState::Patch {
+                        // what are you even trying to do?
+                        warn!("cannot manually transition into Patch state");
+                        continue;
+                    }
+
                     // states must transition in specified sequence
                     if let Some(prev) = prev
                         && self.state != prev
@@ -202,7 +211,14 @@ impl Runner {
                         RunState::Ready => self.state_ready().await,
                         RunState::Running => self.state_running().await,
                         RunState::PostRun => self.state_post_run().await,
+                        _ => {
+                            continue;
+                        }
                     }?;
+                }
+                StateEvent::SetKillTarget(target) => {
+                    info!("set kill target {:?}", target);
+                    self.kill_target = Some(target);
                 }
                 StateEvent::SetTarget(mode, zone) => {
                     self.target_mode = mode;
@@ -221,6 +237,17 @@ impl Runner {
                     }
 
                     if let Some(uh) = &self.usercode_handle {
+                        // report we have started patching
+                        mqttc
+                            .publish(
+                                &self.config.channel.user_state,
+                                RunStatusMessage {
+                                    state: RunState::Patch,
+                                },
+                                false,
+                            )
+                            .await?;
+
                         uh.start_patch()?;
                     } else {
                         return Err(anyhow!(
@@ -362,8 +389,9 @@ impl Runner {
         let (mut usercode, usercode_handle) = Usercode::new(self.config.clone())?;
 
         let usercode_state_sender = state_sender.clone();
-        usercode.on_exit(Some(move || {
+        usercode.on_exit(Some(move |id| {
             // force transition to post-run since usercode state is unknown
+            let _ = usercode_state_sender.send(StateEvent::SetKillTarget(id));
             let _ = usercode_state_sender.send(StateEvent::Transition(RunState::PostRun, None));
         }));
 

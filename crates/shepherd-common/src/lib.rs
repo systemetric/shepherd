@@ -11,6 +11,7 @@ pub enum RunState {
     Ready,
     Running,
     PostRun,
+    Patch,
 }
 
 #[derive(Debug, Default, PartialEq, Serialize, Deserialize, Copy, Clone)]

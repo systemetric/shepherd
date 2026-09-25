@@ -1,9 +1,6 @@
 #!/bin/sh
 set -eu
 
-# clear sheep
-echo -e "\e[2J"
-
 if [ "$(id -u)" != "0" ]; then
     echo "patchtool-apply must be run as root"
     exit 1
@@ -72,7 +69,7 @@ echo
 echo "APPLYING PATCH..."
 echo
 
-[ -f ./PRE_APPLY ] && echo "PRE-APPLY SCRIPT" && source ./PRE_APPLY && echo
+[ -f ./PRE_APPLY ] && echo "PRE-APPLY SCRIPT" && . ./PRE_APPLY && echo
 
 echo "COPYING ROOT"
 
@@ -85,7 +82,7 @@ fi
 tar -C "$STAGING" $EXCL -cvf - . | tar -C / -xpf -
 echo
 
-[ -f ./POST_APPLY ] && echo "POST-APPLY SCRIPT" && source ./POST_APPLY && echo
+[ -f ./POST_APPLY ] && echo "POST-APPLY SCRIPT" && . ./POST_APPLY && echo
 
 echo "MISC"
 [ -f ./VERSION ] && [ -f "$WRAPPER" ] \
