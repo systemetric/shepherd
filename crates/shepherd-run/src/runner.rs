@@ -43,7 +43,7 @@ impl Runner {
         let opts = Options::input([config.run.start_button])
             .edge(EdgeDetect::Falling)
             .bias(Bias::PullUp)
-            .debounce(Duration::from_millis(250))
+            .debounce(Duration::from_millis(100))
             .consumer(config.run.service_id.clone());
         let lines = chip.request_lines(opts).await?;
         Ok((chip, lines))
