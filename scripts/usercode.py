@@ -223,8 +223,9 @@ try:
     start_pressed = True
     blink_thread.join()
 
-    # configure 5v on by default
-    green_giant.set_5v_acc_power(True)
+    # configure 5v on by default, pilow only
+    if gg_version >= 10:
+        green_giant.set_5v_acc_power(True)
 
     # usercode needs these later
     del gg_servos
