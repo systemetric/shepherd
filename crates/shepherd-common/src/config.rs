@@ -296,6 +296,8 @@ pub struct PathConfig {
     pub team_image: PathBuf,
     #[serde(default = "default_path_game_image")]
     pub game_image: PathBuf,
+    #[serde(default = "default_path_corner_image")]
+    pub corner_image: PathBuf,
     #[serde(default = "default_path_robot_usb")]
     pub robot_usb: PathBuf,
     #[serde(default = "default_path_arena_usb")]
@@ -317,6 +319,9 @@ fn default_path_team_image() -> PathBuf {
 fn default_path_game_image() -> PathBuf {
     default_path_root().join("game-image.jpg")
 }
+fn default_path_corner_image() -> PathBuf {
+    default_path_arena_usb().join("Corner.jpg")
+}
 fn default_path_robot_usb() -> PathBuf {
     PathBuf::from("/media/RobotUSB")
 }
@@ -332,6 +337,7 @@ impl Default for PathConfig {
             user_cur_dir: default_path_user_cur_dir(),
             team_image: default_path_team_image(),
             game_image: default_path_game_image(),
+            corner_image: default_path_corner_image(),
             robot_usb: default_path_robot_usb(),
             arena_usb: default_path_arena_usb(),
         }

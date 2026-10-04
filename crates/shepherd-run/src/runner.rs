@@ -85,6 +85,8 @@ impl Runner {
     async fn load_start_image(&self) -> Result<()> {
         let start_image = if self.config.path.team_image.is_file() {
             &self.config.path.team_image
+        } else if self.config.path.corner_image.is_file() {
+            &self.config.path.corner_image
         } else if self.config.path.game_image.is_file() {
             &self.config.path.game_image
         } else {
