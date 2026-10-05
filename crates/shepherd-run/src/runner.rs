@@ -34,6 +34,7 @@ pub struct Runner {
     state_sender: Option<UnboundedSender<StateEvent>>,
     image_pipe: Option<Arc<Pipe>>,
     kill_target: Option<u64>,
+    reset_log_pipe: hopper::Pipe,
 }
 
 impl Runner {
@@ -50,6 +51,16 @@ impl Runner {
     }
 
     pub async fn new(config: Config) -> Result<Self> {
+        let mut reset_log_pipe = hopper::Pipe::new(
+            hopper::PipeMode::IN,
+            format!("{}-reset", &config.run.service_id),
+            (&config.channel.robot_log).to_string(),
+            Some(&config.path.hopper),
+            config.hopper.gid,
+        )?;
+
+        reset_log_pipe.open()?;
+
         Ok(Self {
             config,
             state: RunState::Init,
@@ -59,15 +70,23 @@ impl Runner {
             state_sender: None,
             image_pipe: None,
             kill_target: None,
+            reset_log_pipe,
         })
     }
 
-    async fn reset_state(&mut self) {
+    async fn reset_state(&mut self) -> Result<()> {
         self.target_mode = Mode::Dev;
         self.target_zone = Zone::from_id(0);
 
+        let log_pipe = self.reset_log_pipe.fd()?.try_clone()?;
+        let err_pipe = self.reset_log_pipe.fd()?.try_clone()?;
+
         // spawn hardware reset script
-        match Command::new(&self.config.run.reset_script).spawn() {
+        match Command::new(&self.config.run.reset_script)
+            .stdout(log_pipe)
+            .stderr(err_pipe)
+            .spawn()
+        {
             Ok(mut child) => match child.wait().await {
                 Ok(status) if !status.success() => {
                     warn!("reset script exited with status {:?}", status)
@@ -79,6 +98,8 @@ impl Runner {
                 error!("failed to run robot reset script: {e}");
             }
         }
+
+        Ok(())
     }
 
     /// Dump start image into hopper
@@ -159,7 +180,7 @@ impl Runner {
             return Err(anyhow!("tried to kill usercode, but handle was not set?"));
         }
 
-        self.reset_state().await;
+        self.reset_state().await?;
         Ok(())
     }
 
@@ -329,7 +350,7 @@ impl Runner {
         self.state_sender = None;
         self.usercode_handle = None;
         self.image_pipe = None;
-        self.reset_state().await;
+        self.reset_state().await?;
 
         // create an image pipe for dumping images
         let mut image_pipe = Pipe::new(
