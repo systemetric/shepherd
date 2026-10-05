@@ -210,6 +210,14 @@ impl Runner {
                         continue;
                     }
 
+                    if self.state == next {
+                        warn!(
+                            "not switching into {:?} while already in {:?}",
+                            next, self.state
+                        );
+                        continue;
+                    }
+
                     info!("transition to {:?}", next);
 
                     self.state = next;
