@@ -114,12 +114,11 @@ try:
         # Servos
         def try_set_servo_pos(n):
             pos = read_int(attrs.get(f"servo{n}_pos"))
-            if pos and pos >= -100 and pos <= 100:
-                print(f"Setting servo {n} to position {pos}...", end="")
-                gg_servos[n].mode = PWM_SERVO
-                gg_servos[n] = pos
-                print("done")
-                r = True
+            print(f"Setting servo {n} to position {pos}...", end="")
+            gg_servos[n].mode = PWM_SERVO
+            gg_servos[n] = pos
+            print("done")
+            r = True
 
         try_set_servo_pos(0)
         try_set_servo_pos(1)
