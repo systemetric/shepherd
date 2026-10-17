@@ -20,7 +20,7 @@ use crate::usercode::{Usercode, UsercodeHandle};
 
 pub enum StateEvent {
     Transition(RunState, Option<RunState>),
-    SetKillTarget(u64),
+    SetKillTarget(Option<u64>),
     SetTarget(Mode, Zone),
     SpawnPatch,
 }
@@ -54,7 +54,7 @@ impl Runner {
         let mut reset_log_pipe = hopper::Pipe::new(
             hopper::PipeMode::IN,
             format!("{}-reset", &config.run.service_id),
-            (&config.channel.robot_log).to_string(),
+            config.channel.robot_log.to_string(),
             Some(&config.path.hopper),
             config.hopper.gid,
         )?;
@@ -249,7 +249,7 @@ impl Runner {
                 }
                 StateEvent::SetKillTarget(target) => {
                     info!("set kill target {:?}", target);
-                    self.kill_target = Some(target);
+                    self.kill_target = target;
                 }
                 StateEvent::SetTarget(mode, zone) => {
                     self.target_mode = mode;
@@ -304,6 +304,7 @@ impl Runner {
                 ))?
             }
             ControlMessageType::Stop => {
+                sender.send(StateEvent::SetKillTarget(None))?;
                 sender.send(StateEvent::Transition(RunState::PostRun, None))?
             }
             ControlMessageType::Reset => {
@@ -422,7 +423,7 @@ impl Runner {
         let usercode_state_sender = state_sender.clone();
         usercode.on_exit(Some(move |id| {
             // force transition to post-run since usercode state is unknown
-            let _ = usercode_state_sender.send(StateEvent::SetKillTarget(id));
+            let _ = usercode_state_sender.send(StateEvent::SetKillTarget(Some(id)));
             let _ = usercode_state_sender.send(StateEvent::Transition(RunState::PostRun, None));
         }));
 
