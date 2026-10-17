@@ -134,7 +134,7 @@ try:
         battery_voltage = green_giant.get_battery_voltage()
         battery_str = "Battery Voltage: %.2fv" % battery_voltage
         # GG cannot read voltages above 12.2v
-        if battery_voltage > 12.2 && gg_version < 10:
+        if battery_voltage > 12.2 and gg_version < 10:
            battery_str = "Battery Voltage: > 12.2v"
         elif battery_voltage < 11.5:
             warnings.append("Battery voltage below 11.5v, consider changing for a charged battery")
@@ -208,6 +208,10 @@ try:
         print()
 
     report_hardware_status()
+
+    # clear wait led on newer pilow
+    if gg_version >= 14:
+        green_giant.set_wait_led(False)
 
     blink_thread = threading.Thread(target=wait_start_blink, daemon=True)
     blink_thread.start()
