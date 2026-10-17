@@ -28,8 +28,8 @@ impl Zone {
     pub fn from_id(id: u32) -> Self {
         match id {
             1 => Self::Yellow,
-            2 => Self::Blue,
-            3 => Self::Green,
+            2 => Self::Green,
+            3 => Self::Blue,
             _ => Self::Red,
         }
     }
@@ -38,8 +38,8 @@ impl Zone {
         match self {
             Self::Red => 0,
             Self::Yellow => 1,
-            Self::Blue => 2,
-            Self::Green => 3,
+            Self::Green => 2,
+            Self::Blue => 3,
         }
     }
 }
