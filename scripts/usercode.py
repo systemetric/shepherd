@@ -75,6 +75,7 @@ try:
     bus = smbus2.SMBus(1)
     green_giant = GreenGiantInternal(bus)
     gg_version = green_giant.get_version()
+    battery_lock = False
 
     if gg_version >= 10:
         gg_servos = GreenGiantGPIOPinList(bus, gg_version, 5, _GG_SERVO_GPIO_BASE, _GG_SERVO_PWM_BASE)
@@ -138,6 +139,10 @@ try:
            battery_str = "Battery Voltage: > 12.2v"
         elif battery_voltage < 11.5:
             warnings.append("Battery voltage below 11.5v, consider changing for a charged battery")
+
+        # battery must be changed at this point
+        if gg_version >= 14 and battery_voltage <= 10:
+            battery_lock = True
 
         if gg_version < 3:
             warnings.append(
@@ -212,6 +217,10 @@ try:
     # clear wait led on newer pilow
     if gg_version >= 14:
         green_giant.set_wait_led(False)
+
+    if battery_lock:
+        print("\nBattery voltage is critically low (<= 10V), refusing to start")
+        sys.exit(1)
 
     blink_thread = threading.Thread(target=wait_start_blink, daemon=True)
     blink_thread.start()
