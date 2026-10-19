@@ -115,6 +115,8 @@ try:
         # Servos
         def try_set_servo_pos(n):
             pos = read_float(attrs.get(f"servo{n}_pos"))
+            if pos == None:
+                return
             print(f"Setting servo {n} to position {pos}...", end="")
             gg_servos[n].mode = PWM_SERVO
             gg_servos[n] = pos
