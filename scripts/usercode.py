@@ -33,11 +33,11 @@ def read_project_attrs(path):
                 attrs[key] = val
     return attrs
 
-def read_int(s):
+def read_float(s):
     if s == None:
         return None
     try:
-        r = int(s)
+        r = float(s)
         return r
     except ValueError:
         return None
@@ -89,24 +89,24 @@ try:
         r = False
 
         # 12V power
-        if attrs.get("enable_12v") == "true":
+        if attrs.get("enable_12v").lower() == "true":
             print("Enabling 12V accessory power...", end="")
             green_giant.set_12v_acc_power(True)
             print("done")
             r = True
-        elif attrs.get("enable_12v") == "false":
+        elif attrs.get("enable_12v").lower() == "false":
             print("Disabling 12V accessory power...", end="")
             green_giant.set_12v_acc_power(False)
             print("done")
             r = True
 
         # 5V power
-        if attrs.get("enable_5v") == "true":
+        if attrs.get("enable_5v").lower() == "true":
             print("Enabling 5V accessory power...", end="")
             green_giant.set_5v_acc_power(True)
             print("done")
             r = True
-        elif attrs.get("enable_5v") == "false":
+        elif attrs.get("enable_5v").lower() == "false":
             print("Disabling 5V accessory power...", end="")
             green_giant.set_5v_acc_power(False)
             print("done")
@@ -114,7 +114,7 @@ try:
 
         # Servos
         def try_set_servo_pos(n):
-            pos = read_int(attrs.get(f"servo{n}_pos"))
+            pos = read_float(attrs.get(f"servo{n}_pos"))
             print(f"Setting servo {n} to position {pos}...", end="")
             gg_servos[n].mode = PWM_SERVO
             gg_servos[n] = pos
