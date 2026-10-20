@@ -89,24 +89,24 @@ try:
         r = False
 
         # 12V power
-        if attrs.get("enable_12v").lower() == "true":
+        if attrs.get("enable_12v") and attrs.get("enable_12v").lower() == "true":
             print("Enabling 12V accessory power...", end="")
             green_giant.set_12v_acc_power(True)
             print("done")
             r = True
-        elif attrs.get("enable_12v").lower() == "false":
+        elif attrs.get("enable_12v") and attrs.get("enable_12v").lower() == "false":
             print("Disabling 12V accessory power...", end="")
             green_giant.set_12v_acc_power(False)
             print("done")
             r = True
 
         # 5V power
-        if attrs.get("enable_5v").lower() == "true":
+        if attrs.get("enable_5v") and attrs.get("enable_5v").lower() == "true":
             print("Enabling 5V accessory power...", end="")
             green_giant.set_5v_acc_power(True)
             print("done")
             r = True
-        elif attrs.get("enable_5v").lower() == "false":
+        elif attrs.get("enable_5v") and attrs.get("enable_5v").lower() == "false":
             print("Disabling 5V accessory power...", end="")
             green_giant.set_5v_acc_power(False)
             print("done")
