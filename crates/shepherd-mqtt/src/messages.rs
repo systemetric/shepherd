@@ -10,6 +10,7 @@ pub enum ControlMessageType {
     Stop,
     Reset,
     Patch,
+    TeamImage,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

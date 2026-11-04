@@ -170,6 +170,24 @@ async fn process_team_image(state: &UploadState, mut field: Field<'_>) -> Shephe
 
     info!("uploaded {} bytes", file_size);
 
+    // updates the image shown to the user immediately
+    let msg = ControlMessage {
+        _type: ControlMessageType::TeamImage,
+        zone: Zone::default(),
+        mode: Mode::default(),
+    };
+
+    state
+        .mqttc
+        .publish(&state.robot_control, msg, false)
+        .await
+        .map_err(|e| {
+            ShepherdError(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                format!("mqtt error: {e}"),
+            )
+        })?;
+
     Ok(())
 }
 

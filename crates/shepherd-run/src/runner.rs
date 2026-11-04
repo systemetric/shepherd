@@ -14,15 +14,17 @@ use tokio::{
     sync::mpsc::{self, UnboundedReceiver, UnboundedSender},
 };
 use tokio_gpiod::{Bias, Chip, EdgeDetect, Input, Lines, Options};
-use tracing::{error, info, warn};
+use tracing::{debug, error, info, warn};
 
 use crate::usercode::{Usercode, UsercodeHandle};
 
+#[derive(Debug)]
 pub enum StateEvent {
     Transition(RunState, Option<RunState>),
     SetKillTarget(Option<u64>),
     SetTarget(Mode, Zone),
     SpawnPatch,
+    SendTeamImage,
 }
 
 pub struct Runner {
@@ -191,6 +193,8 @@ impl Runner {
         mut recv: UnboundedReceiver<StateEvent>,
     ) -> Result<()> {
         while let Some(ev) = recv.recv().await {
+            debug!("received state event: {:?}", ev);
+
             match ev {
                 StateEvent::Transition(next, prev) => {
                     if next == RunState::Patch {
@@ -286,6 +290,10 @@ impl Runner {
                         ));
                     }
                 }
+                StateEvent::SendTeamImage => {
+                    self.load_start_image().await?;
+                    info!("sent updated team image");
+                }
             }
         }
 
@@ -314,6 +322,10 @@ impl Runner {
                 // patch should overrides user code
                 sender.send(StateEvent::Transition(RunState::PostRun, None))?;
                 sender.send(StateEvent::SpawnPatch)?;
+            }
+            ControlMessageType::TeamImage => {
+                // team image was updated, send again
+                sender.send(StateEvent::SendTeamImage)?;
             }
         }
         Ok(())
