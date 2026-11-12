@@ -1,4 +1,4 @@
-use std::{path::PathBuf, sync::Arc, time::Duration};
+use std::{collections::VecDeque, path::PathBuf, sync::Arc, time::Duration};
 
 use anyhow::{Result, anyhow};
 use base64::Engine;
@@ -20,8 +20,8 @@ use crate::usercode::{Usercode, UsercodeHandle};
 
 #[derive(Debug)]
 pub enum StateEvent {
+    Kill,
     Transition(RunState, Option<RunState>),
-    SetKillTarget(Option<u64>),
     SetTarget(Mode, Zone),
     SpawnPatch,
     SendTeamImage,
@@ -35,7 +35,7 @@ pub struct Runner {
     usercode_handle: Option<UsercodeHandle>,
     state_sender: Option<UnboundedSender<StateEvent>>,
     image_pipe: Option<Arc<Pipe>>,
-    kill_target: Option<u64>,
+    state_queue: Option<VecDeque<StateEvent>>,
     reset_log_pipe: hopper::Pipe,
 }
 
@@ -71,7 +71,7 @@ impl Runner {
             usercode_handle: None,
             state_sender: None,
             image_pipe: None,
-            kill_target: None,
+            state_queue: None,
             reset_log_pipe,
         })
     }
@@ -176,13 +176,125 @@ impl Runner {
 
     /// post-run transition, kill usercode, reset state
     async fn state_post_run(&mut self) -> Result<()> {
-        if let Some(uh) = &self.usercode_handle {
-            uh.kill(self.kill_target.take())?;
-        } else {
-            return Err(anyhow!("tried to kill usercode, but handle was not set?"));
+        self.reset_state().await?;
+        Ok(())
+    }
+
+    async fn handle_state_ev(&mut self, mqttc: &MqttAsyncClient, ev: StateEvent) -> Result<()> {
+        match ev {
+            StateEvent::Transition(next, prev) => {
+                if next == RunState::Patch {
+                    // what are you even trying to do?
+                    warn!("cannot manually transition into Patch state");
+                    return Ok(());
+                }
+
+                // states must transition in specified sequence
+                if let Some(prev) = prev
+                    && self.state != prev
+                {
+                    warn!(
+                        "cannot switch to {:?} from {:?}, requires {:?}",
+                        next, self.state, prev
+                    );
+                    return Ok(());
+                }
+
+                if self.state == next {
+                    warn!(
+                        "not switching into {:?} while already in {:?}",
+                        next, self.state
+                    );
+                    return Ok(());
+                }
+
+                info!("transition to {:?}", next);
+
+                self.state = next;
+
+                // publish a status message for consumers
+                // could be used to tell when robot is started/stopped
+                mqttc
+                    .publish(
+                        &self.config.channel.user_state,
+                        RunStatusMessage { state: next },
+                        false,
+                    )
+                    .await?;
+
+                // call handler functions for state transitions
+                match next {
+                    RunState::Init => {
+                        // Init only ever runs once
+                        warn!("cannot transition to Init state");
+                        return Ok(());
+                    }
+                    RunState::Ready => self.state_ready().await,
+                    RunState::Running => self.state_running().await,
+                    RunState::PostRun => self.state_post_run().await,
+                    _ => {
+                        return Ok(());
+                    }
+                }?;
+            }
+            StateEvent::Kill => {
+                info!("requested to kill");
+
+                if self.state == RunState::PostRun {
+                    warn!("not killing as usercode is already dead");
+                    return Ok(());
+                }
+
+                if let Some(uh) = &self.usercode_handle {
+                    uh.kill()?;
+
+                    // defer other events until the kill is complete
+                    self.state_queue = Some(VecDeque::new());
+                } else {
+                    return Err(anyhow!("tried to kill usercode, but handle was not set?"));
+                }
+            }
+            StateEvent::SetTarget(mode, zone) => {
+                self.target_mode = mode;
+                self.target_zone = zone;
+
+                info!("update (mode, zone) to ({:?}, {:?})", mode, zone);
+            }
+            StateEvent::SpawnPatch => {
+                if self.state != RunState::PostRun {
+                    warn!(
+                        "cannot spawn patch, requires {:?}, got {:?}",
+                        RunState::PostRun,
+                        self.state
+                    );
+                    return Ok(());
+                }
+
+                if let Some(uh) = &self.usercode_handle {
+                    // report we have started patching
+                    mqttc
+                        .publish(
+                            &self.config.channel.user_state,
+                            RunStatusMessage {
+                                state: RunState::Patch,
+                            },
+                            false,
+                        )
+                        .await?;
+
+                    uh.start_patch()?;
+                } else {
+                    return Err(anyhow!(
+                        "tried to start patch, but usercode handle was not set?"
+                    ));
+                }
+            }
+            StateEvent::SendTeamImage => {
+                self.load_start_image().await?;
+                info!("sent updated team image");
+            }
         }
 
-        self.reset_state().await?;
         Ok(())
     }
 
@@ -195,106 +307,29 @@ impl Runner {
         while let Some(ev) = recv.recv().await {
             debug!("received state event: {:?}", ev);
 
-            match ev {
-                StateEvent::Transition(next, prev) => {
-                    if next == RunState::Patch {
-                        // what are you even trying to do?
-                        warn!("cannot manually transition into Patch state");
-                        continue;
-                    }
+            // handle deferred events
+            if let StateEvent::Transition(rs, _) = ev
+                && rs == RunState::PostRun
+                && let Some(state_queue) = self.state_queue.take()
+            {
+                self.handle_state_ev(mqttc, ev).await?;
 
-                    // states must transition in specified sequence
-                    if let Some(prev) = prev
-                        && self.state != prev
-                    {
-                        warn!(
-                            "cannot switch to {:?} from {:?}, requires {:?}",
-                            next, self.state, prev
-                        );
-                        continue;
-                    }
-
-                    if self.state == next {
-                        warn!(
-                            "not switching into {:?} while already in {:?}",
-                            next, self.state
-                        );
-                        continue;
-                    }
-
-                    info!("transition to {:?}", next);
-
-                    self.state = next;
-
-                    // publish a status message for consumers
-                    // could be used to tell when robot is started/stopped
-                    mqttc
-                        .publish(
-                            &self.config.channel.user_state,
-                            RunStatusMessage { state: next },
-                            false,
-                        )
-                        .await?;
-
-                    // call handler functions for state transitions
-                    match next {
-                        RunState::Init => {
-                            // Init only ever runs once
-                            warn!("cannot transition to Init state");
-                            continue;
-                        }
-                        RunState::Ready => self.state_ready().await,
-                        RunState::Running => self.state_running().await,
-                        RunState::PostRun => self.state_post_run().await,
-                        _ => {
-                            continue;
-                        }
-                    }?;
+                for ev in state_queue {
+                    info!("replaying deferred event: {:?}", ev);
+                    self.handle_state_ev(mqttc, ev).await?;
                 }
-                StateEvent::SetKillTarget(target) => {
-                    info!("set kill target {:?}", target);
-                    self.kill_target = target;
-                }
-                StateEvent::SetTarget(mode, zone) => {
-                    self.target_mode = mode;
-                    self.target_zone = zone;
 
-                    info!("update (mode, zone) to ({:?}, {:?})", mode, zone);
-                }
-                StateEvent::SpawnPatch => {
-                    if self.state != RunState::PostRun {
-                        warn!(
-                            "cannot spawn patch, requires {:?}, got {:?}",
-                            RunState::PostRun,
-                            self.state
-                        );
-                        continue;
-                    }
-
-                    if let Some(uh) = &self.usercode_handle {
-                        // report we have started patching
-                        mqttc
-                            .publish(
-                                &self.config.channel.user_state,
-                                RunStatusMessage {
-                                    state: RunState::Patch,
-                                },
-                                false,
-                            )
-                            .await?;
-
-                        uh.start_patch()?;
-                    } else {
-                        return Err(anyhow!(
-                            "tried to start patch, but usercode handle was not set?"
-                        ));
-                    }
-                }
-                StateEvent::SendTeamImage => {
-                    self.load_start_image().await?;
-                    info!("sent updated team image");
-                }
+                continue;
             }
+
+            // push to deferred event queue
+            if let Some(state_queue) = &mut self.state_queue {
+                info!("deferring: {:?}", ev);
+                state_queue.push_back(ev);
+                continue;
+            }
+
+            self.handle_state_ev(mqttc, ev).await?;
         }
 
         Ok(())
@@ -309,18 +344,18 @@ impl Runner {
                 sender.send(StateEvent::Transition(
                     RunState::Running,
                     Some(RunState::Ready),
-                ))?
+                ))?;
             }
             ControlMessageType::Stop => {
-                sender.send(StateEvent::SetKillTarget(None))?;
-                sender.send(StateEvent::Transition(RunState::PostRun, None))?
+                sender.send(StateEvent::Kill)?;
             }
             ControlMessageType::Reset => {
-                sender.send(StateEvent::Transition(RunState::Ready, None))?
+                sender.send(StateEvent::Kill)?;
+                sender.send(StateEvent::Transition(RunState::Ready, None))?;
             }
             ControlMessageType::Patch => {
                 // patch should overrides user code
-                sender.send(StateEvent::Transition(RunState::PostRun, None))?;
+                sender.send(StateEvent::Kill)?;
                 sender.send(StateEvent::SpawnPatch)?;
             }
             ControlMessageType::TeamImage => {
@@ -433,10 +468,13 @@ impl Runner {
         let (mut usercode, usercode_handle) = Usercode::new(self.config.clone())?;
 
         let usercode_state_sender = state_sender.clone();
-        usercode.on_exit(Some(move |id| {
-            // force transition to post-run since usercode state is unknown
-            let _ = usercode_state_sender.send(StateEvent::SetKillTarget(Some(id)));
-            let _ = usercode_state_sender.send(StateEvent::Transition(RunState::PostRun, None));
+        usercode.on_exit(Some(move || {
+            // kill is now done, this will unfreeze the state event loop
+            if let Err(e) =
+                usercode_state_sender.send(StateEvent::Transition(RunState::PostRun, None))
+            {
+                warn!("failed to signal state queue: {:?}", e);
+            }
         }));
 
         self.usercode_handle = Some(usercode_handle);

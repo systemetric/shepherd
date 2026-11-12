@@ -1,8 +1,6 @@
 use std::{
     ffi::{CString, OsStr},
     path::Path,
-    sync::atomic::AtomicU64,
-    sync::atomic::Ordering,
     time::Duration,
 };
 
@@ -15,10 +13,8 @@ use tokio::{
     sync::mpsc::{UnboundedReceiver, UnboundedSender, unbounded_channel},
     time::sleep,
 };
-use tracing::{debug, warn};
+use tracing::debug;
 use walkdir::WalkDir;
-
-static USERCODE_ID: AtomicU64 = AtomicU64::new(0);
 
 #[derive(Debug, Serialize, Deserialize)]
 struct ControlMessage {
@@ -31,7 +27,7 @@ enum UsercodeMessage {
     StartPatch,
     SendStartInfo(Mode, Zone),
     SetTimeout(Duration),
-    Kill(Option<u64>),
+    Kill,
 }
 
 pub struct UsercodeHandle {
@@ -65,8 +61,8 @@ impl UsercodeHandle {
     }
 
     /// kill usercode by id
-    pub fn kill(&self, id: Option<u64>) -> Result<()> {
-        self.send.send(UsercodeMessage::Kill(id))?;
+    pub fn kill(&self) -> Result<()> {
+        self.send.send(UsercodeMessage::Kill)?;
         Ok(())
     }
 }
@@ -86,10 +82,10 @@ where
 pub struct Usercode {
     config: Config,
     recv: UnboundedReceiver<UsercodeMessage>,
-    usercode: Option<(Child, u64)>,
+    usercode: Option<Child>,
     start_pipe: hopper::Pipe,
     log_pipe: hopper::Pipe,
-    _on_exit: Option<Box<dyn Fn(u64) + Send + Sync>>,
+    _on_exit: Option<Box<dyn Fn() + Send + Sync>>,
 }
 
 impl Usercode {
@@ -130,7 +126,7 @@ impl Usercode {
 
     pub fn on_exit<F>(&mut self, f: Option<F>)
     where
-        F: Fn(u64) + Send + Sync + 'static,
+        F: Fn() + Send + Sync + 'static,
     {
         if let Some(f) = f {
             self._on_exit = Some(Box::new(f));
@@ -240,7 +236,7 @@ impl Usercode {
                 Some(msg) = self.recv.recv() => {
                     match msg {
                         UsercodeMessage::Start => {
-                            if let Some((mut child, _id)) = self.usercode.take() {
+                            if let Some(mut child) = self.usercode.take() {
                                 let _ = child.kill().await;
                                 let _ = child.wait().await;
                             }
@@ -263,15 +259,14 @@ impl Usercode {
                             };
 
                             let child = self.spawn_child(sc_args)?;
-                            let id = USERCODE_ID.fetch_add(1, Ordering::SeqCst);
 
-                            debug!("Start( {:?} )", id);
+                            debug!("Start( {:?} )", child.id());
 
-                            self.usercode = Some((child, id));
+                            self.usercode = Some(child);
                             timeout = None;
                         },
                         UsercodeMessage::StartPatch => {
-                            if let Some((mut child, _id)) = self.usercode.take() {
+                            if let Some(mut child) = self.usercode.take() {
                                 let _ = child.kill().await;
                                 let _ = child.wait().await;
                             }
@@ -284,11 +279,10 @@ impl Usercode {
                             };
 
                             let child = self.spawn_child(sc_args)?;
-                            let id = USERCODE_ID.fetch_add(1, Ordering::SeqCst);
 
-                            debug!("StartPatch ( {:?} )", id);
+                            debug!("StartPatch ( {:?} )", child.id());
 
-                            self.usercode = Some((child, id));
+                            self.usercode = Some(child);
                             timeout = None;
                         },
                         UsercodeMessage::SendStartInfo(mode, zone) => {
@@ -301,38 +295,11 @@ impl Usercode {
                             timeout = Some(Box::pin(sleep(duration)));
                             debug!("SetTimeout( {:?} )", duration);
                         },
-                        UsercodeMessage::Kill(id) => {
-                            debug!("Kill ( {:?} ) (request)", id);
-                            if let Some((child, child_id)) = &mut self.usercode {
-                                if let Some(id) = id && id != *child_id {
-                                    warn!("not killing, id mismatch: {:?} != {:?}", id, *child_id);
-                                } else {
-                                    let _ = child.kill().await;
-                                }
+                        UsercodeMessage::Kill => {
+                            debug!("Kill (request)");
+                            if let Some(child) = &mut self.usercode {
+                                let _ = child.kill().await;
                             }
-                        }
-                    }
-                }
-
-                id = async {
-                    if let Some((child, id)) = &mut self.usercode {
-                        let _ = child.wait().await;
-                        Some(*id)
-                    } else {
-                        None
-                    }
-                }, if self.usercode.is_some() => {
-                    // rustfmt refused to format this thing
-                    if let Some(id) = id
-                        && let Some((_child, child_id)) = &mut self.usercode
-                        && id == *child_id {
-                        self.usercode = None;
-                        timeout = None;
-
-                        debug!("Exit ( {:?} )", id);
-
-                        if let Some(on_exit) = &self._on_exit {
-                            on_exit(id);
                         }
                     }
                 }
@@ -344,8 +311,23 @@ impl Usercode {
                 }, if timeout.is_some() => {
                     debug!("Kill (timeout)");
                     timeout = None;
-                    if let Some((child, _id)) = &mut self.usercode {
+                    if let Some(child) = &mut self.usercode {
                         let _ = child.kill().await;
+                    }
+                }
+
+                _ = async {
+                    if let Some(child) = &mut self.usercode {
+                        let _ = child.wait().await;
+                    }
+                }, if self.usercode.is_some() => {
+                    self.usercode = None;
+                    timeout = None;
+
+                    debug!("Exit");
+
+                    if let Some(on_exit) = &self._on_exit {
+                        on_exit();
                     }
                 }
             }
@@ -355,7 +337,7 @@ impl Usercode {
 
 impl Drop for Usercode {
     fn drop(&mut self) {
-        if let Some((mut child, _id)) = self.usercode.take() {
+        if let Some(mut child) = self.usercode.take() {
             tokio::spawn(async move { child.kill().await });
         }
     }
